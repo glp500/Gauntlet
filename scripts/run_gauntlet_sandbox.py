@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.util
 import json
 import sys
@@ -34,6 +35,7 @@ CORE_ARTIFACTS = [
     "analysis_summary.md",
     "model_metrics.json",
     "report.md",
+    "data_preview.json",
 ]
 
 
@@ -77,6 +79,14 @@ def run_pipeline(config_path: Path) -> int:
         runtime_config = _build_runtime_config(config, resolved_config_path)
         manifest_data["prompt_file"] = runtime_config["resolved_paths"]["prompt_file"]
         manifest_data["dataset_path"] = runtime_config["resolved_paths"]["dataset_file"]
+        manifest_data["prompt_hash"] = _sha256_file(Path(runtime_config["resolved_paths"]["prompt_file"]))
+        manifest_data["dataset_hash"] = _sha256_file(Path(runtime_config["resolved_paths"]["dataset_file"]))
+        manifest_data["data_sources"] = [
+            {
+                "type": runtime_config["input"]["data"]["type"],
+                "path": runtime_config["resolved_paths"]["dataset_file"],
+            }
+        ]
         manifest_data["pipeline_order"] = list(runtime_config["pipeline"]["steps"])
 
         step_outputs: dict[str, Any] = {}
@@ -142,6 +152,8 @@ def _build_runtime_config(config: dict[str, Any], config_path: Path) -> dict[str
 
     if not prompt_path.exists():
         raise FileNotFoundError(f"Configured prompt file not found: {prompt_path}")
+    if not dataset_path.exists():
+        raise FileNotFoundError(f"Configured dataset file not found: {dataset_path}")
 
     prompt_text = prompt_path.read_text(encoding="utf-8")
 
@@ -151,6 +163,7 @@ def _build_runtime_config(config: dict[str, Any], config_path: Path) -> dict[str
         "prompt_file": str(prompt_path),
         "dataset_file": str(dataset_path),
         "outputs_dir": str((sandbox_dir / "outputs").resolve()),
+        "figures_dir": str((sandbox_dir / "outputs" / "figures").resolve()),
     }
     runtime_config["prompt_text"] = prompt_text
 
@@ -227,12 +240,20 @@ def _write_artifacts(
 ) -> list[dict[str, str]]:
     """Write the core sandbox artifacts from the in-memory step outputs."""
     data_profile_path = outputs_dir / "data_profile.json"
+    data_preview_path = outputs_dir / "data_preview.json"
     preprocessing_report_path = outputs_dir / "preprocessing_report.json"
     analysis_summary_path = outputs_dir / "analysis_summary.md"
     model_metrics_path = outputs_dir / "model_metrics.json"
     report_path = outputs_dir / "report.md"
 
     _write_json(data_profile_path, step_outputs["data_loader"]["profile"])
+    _write_json(
+        data_preview_path,
+        {
+            "columns": step_outputs["data_loader"]["profile"]["columns"],
+            "preview_rows": step_outputs["data_loader"]["profile"]["preview_rows"],
+        },
+    )
     _write_json(
         preprocessing_report_path,
         step_outputs["data_preprocessing"]["report"],
@@ -244,7 +265,7 @@ def _write_artifacts(
     _write_json(
         model_metrics_path,
         {
-            "train": step_outputs["train"],
+            "train": step_outputs["train"]["summary"],
             "evaluation": step_outputs["eval"],
             "visualization": step_outputs["visualization"],
         },
@@ -256,10 +277,23 @@ def _write_artifacts(
 
     return [
         {"name": "data_profile", "path": str(data_profile_path)},
+        {"name": "data_preview", "path": str(data_preview_path)},
         {"name": "preprocessing_report", "path": str(preprocessing_report_path)},
         {"name": "analysis_summary", "path": str(analysis_summary_path)},
         {"name": "model_metrics", "path": str(model_metrics_path)},
         {"name": "report", "path": str(report_path)},
+    ] + [
+        {"name": figure["figure_id"], "path": figure["png_path"]}
+        for figure in step_outputs["visualization"]["figures"]
+    ] + [
+        {"name": f"{figure['figure_id']}_svg", "path": figure["svg_path"]}
+        for figure in step_outputs["visualization"]["figures"]
+    ] + [
+        {"name": f"{figure['figure_id']}_json", "path": figure["json_path"]}
+        for figure in step_outputs["visualization"]["figures"]
+    ] + [
+        {"name": f"{figure['figure_id']}_python", "path": figure["python_path"]}
+        for figure in step_outputs["visualization"]["figures"]
     ]
 
 
@@ -283,12 +317,15 @@ def _build_report(config: dict[str, Any], step_outputs: dict[str, Any]) -> str:
         f"- Mode: {preprocessing_report['mode']}",
         "",
         "## Modeling",
-        "- Training remains a placeholder in this slice.",
-        "- Evaluation remains a placeholder in this slice.",
+        f"- Target column: `{step_outputs['train']['target_column']}`",
+        f"- Model: {step_outputs['train']['model_name']}",
+        f"- Accuracy: {step_outputs['eval']['metrics']['accuracy']}",
+        f"- F1: {step_outputs['eval']['metrics']['f1']}",
+        f"- ROC AUC: {step_outputs['eval']['metrics']['roc_auc']}",
         "",
         "## Visualization",
-        "- Figure generation remains a placeholder in this slice.",
-        "- No figure files were written.",
+        f"- Figures written: {step_outputs['visualization']['figure_count']}",
+        "- Confusion matrix figure saved as SVG, PNG, JSON, and Python.",
     ]
 
     return "\n".join(lines) + "\n"
@@ -300,6 +337,14 @@ def _clear_previous_outputs(outputs_dir: Path) -> None:
         artifact_path = outputs_dir / file_name
         if artifact_path.exists():
             artifact_path.unlink()
+
+    figures_dir = outputs_dir / "figures"
+    if figures_dir.exists():
+        for child_path in figures_dir.iterdir():
+            if child_path.is_file():
+                child_path.unlink()
+    else:
+        figures_dir.mkdir(parents=True, exist_ok=True)
 
 
 def _write_json(path: Path, payload: Any) -> None:
@@ -324,6 +369,18 @@ def _build_run_id(created_at: str) -> str:
     """Create a readable run identifier from the current timestamp."""
     timestamp = created_at.replace(":", "").replace("-", "").replace("+00:00", "Z")
     return f"run_{timestamp}"
+
+
+def _sha256_file(path: Path) -> str:
+    """Hash a file for reproducibility metadata."""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        while True:
+            chunk = handle.read(1024 * 1024)
+            if not chunk:
+                break
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 if __name__ == "__main__":

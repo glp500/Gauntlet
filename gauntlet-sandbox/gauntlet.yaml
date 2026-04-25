@@ -28,6 +28,8 @@ pipeline:
 
 modeling:
   baseline_only: true
+  target_column: depression_label
+  model_type: logistic_regression
   train_test_split: 0.2
   random_seed: 42
 

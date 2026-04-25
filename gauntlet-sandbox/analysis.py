@@ -28,6 +28,14 @@ def _build_summary_markdown(profile: dict[str, Any], prompt_text: str) -> str:
     numeric_columns = profile["numeric_columns"]
     categorical_columns = profile["categorical_columns"]
     preview_columns = ", ".join(profile["columns"][:6])
+    depression_summary = profile["numeric_summary"].get("depression_label")
+    imbalance_note = ""
+    if depression_summary is not None:
+        positive_rate = depression_summary["mean"]
+        imbalance_note = (
+            f"- `depression_label` has a positive-class rate of approximately {positive_rate:.4f}, "
+            "so the baseline model should account for class imbalance."
+        )
 
     lines = [
         "# Analysis Summary",
@@ -45,7 +53,8 @@ def _build_summary_markdown(profile: dict[str, Any], prompt_text: str) -> str:
         "## Initial Observations",
         f"- The first columns in the dataset are: {preview_columns}.",
         "- The dataset includes behavioral, sleep, stress, anxiety, and social media usage signals.",
-        "- This slice only profiles the data and prepares the runner contract for later modeling work.",
+        imbalance_note or "- The dataset profile is available for downstream modeling.",
+        "- This slice adds a first baseline model and evaluation path around the profiled data.",
     ]
 
     return "\n".join(lines) + "\n"

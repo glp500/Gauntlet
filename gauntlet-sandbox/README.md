@@ -9,13 +9,15 @@ modules, the project manifest, and the generated artifact directory.
 
 ## Current scope
 
-The current slice implements a local Python runner for the sandbox contract.
-This keeps the first runnable flow narrow and local:
+The current slice implements a local Python runner plus a first baseline modeling
+loop for the sandbox contract. This keeps the MVP narrow and local while proving
+the full data-to-artifact path:
 
 - where the sandbox reads prompt and dataset inputs
 - which pipeline steps exist
 - which artifacts should be produced
 - which runtime policies should govern execution
+- how a first baseline model and figure artifact are generated
 
 ## Pipeline contract
 
@@ -66,6 +68,7 @@ gauntlet-sandbox/
   outputs/
     run_manifest.json
     data_profile.json
+    data_preview.json
     preprocessing_report.json
     analysis_summary.md
     model_metrics.json
@@ -86,6 +89,7 @@ The forward-looking repository contract uses:
 - `../input/raw_input.txt` as the active prototype prompt file
 - `../input/run_config.yaml` as the canonical run-specific config file
 - `../input_data/Teen_Mental_Health_Dataset.csv` as the active prototype dataset
+- `depression_label` as the active prototype target column for the baseline model
 
 `input/prompt.md` remains a template prompt file. Legacy `input/agent_task.md` and
 `input/agent_scaffold.md` are transitional files and are not yet wired into the
@@ -93,7 +97,9 @@ sandbox contract.
 
 ## Local dependencies
 
-The runner and profiling slice currently rely on:
+The current sandbox slice relies on:
 
 - `pandas` for CSV loading and profiling
 - `PyYAML` for reading `gauntlet.yaml`
+- `scikit-learn` for the baseline classification pipeline
+- `matplotlib` for the first figure artifacts

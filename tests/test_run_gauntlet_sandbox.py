@@ -37,6 +37,7 @@ class RunGauntletSandboxTests(unittest.TestCase):
         for file_name in [
             "run_manifest.json",
             "data_profile.json",
+            "data_preview.json",
             "preprocessing_report.json",
             "analysis_summary.md",
             "model_metrics.json",
@@ -46,6 +47,12 @@ class RunGauntletSandboxTests(unittest.TestCase):
             if artifact_path.exists():
                 artifact_path.unlink()
 
+        figures_dir = self.outputs_dir / "figures"
+        if figures_dir.exists():
+            for child_path in figures_dir.iterdir():
+                if child_path.is_file():
+                    child_path.unlink()
+
     def test_runner_smoke_creates_core_artifacts(self) -> None:
         """The checked-in config should produce the expected output set."""
         exit_code = self.runner.run_pipeline(self.config_path)
@@ -53,10 +60,15 @@ class RunGauntletSandboxTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertTrue((self.outputs_dir / "run_manifest.json").exists())
         self.assertTrue((self.outputs_dir / "data_profile.json").exists())
+        self.assertTrue((self.outputs_dir / "data_preview.json").exists())
         self.assertTrue((self.outputs_dir / "preprocessing_report.json").exists())
         self.assertTrue((self.outputs_dir / "analysis_summary.md").exists())
         self.assertTrue((self.outputs_dir / "model_metrics.json").exists())
         self.assertTrue((self.outputs_dir / "report.md").exists())
+        self.assertTrue((self.outputs_dir / "figures" / "figure_001.png").exists())
+        self.assertTrue((self.outputs_dir / "figures" / "figure_001.svg").exists())
+        self.assertTrue((self.outputs_dir / "figures" / "figure_001.json").exists())
+        self.assertTrue((self.outputs_dir / "figures" / "figure_001.py").exists())
 
         profile = self._read_json(self.outputs_dir / "data_profile.json")
         self.assertEqual(profile["dataset"]["row_count"], 1200)
@@ -64,6 +76,12 @@ class RunGauntletSandboxTests(unittest.TestCase):
         self.assertIn("age", profile["numeric_columns"])
         self.assertIn("gender", profile["categorical_columns"])
         self.assertEqual(len(profile["preview_rows"]), 5)
+
+        model_metrics = self._read_json(self.outputs_dir / "model_metrics.json")
+        self.assertEqual(model_metrics["train"]["status"], "completed")
+        self.assertEqual(model_metrics["evaluation"]["status"], "completed")
+        self.assertEqual(model_metrics["visualization"]["figure_count"], 1)
+        self.assertGreater(model_metrics["evaluation"]["metrics"]["accuracy"], 0.0)
 
     def test_manifest_records_paths_and_step_order(self) -> None:
         """The run manifest should capture configured paths and execution order."""
@@ -77,6 +95,8 @@ class RunGauntletSandboxTests(unittest.TestCase):
         self.assertTrue(
             manifest["dataset_path"].endswith("input_data\\Teen_Mental_Health_Dataset.csv")
         )
+        self.assertIn("prompt_hash", manifest)
+        self.assertIn("dataset_hash", manifest)
         self.assertEqual(
             [step["name"] for step in manifest["pipeline_steps"]],
             [
@@ -88,6 +108,9 @@ class RunGauntletSandboxTests(unittest.TestCase):
                 "visualization",
             ],
         )
+        figure_artifact_names = {artifact["name"] for artifact in manifest["artifacts"]}
+        self.assertIn("figure_001", figure_artifact_names)
+        self.assertIn("figure_001_svg", figure_artifact_names)
 
     def test_missing_dataset_path_fails_clearly(self) -> None:
         """The runner should fail on a missing configured dataset path."""
@@ -143,6 +166,8 @@ class RunGauntletSandboxTests(unittest.TestCase):
                     "",
                     "modeling:",
                     "  baseline_only: true",
+                    "  target_column: depression_label",
+                    "  model_type: logistic_regression",
                     "  train_test_split: 0.2",
                     "  random_seed: 42",
                     "",
