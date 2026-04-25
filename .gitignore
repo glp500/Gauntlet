@@ -1,0 +1,39 @@
+# Gauntlet-generated sandbox outputs
+gauntlet-sandbox/outputs/*
+!gauntlet-sandbox/outputs/.gitkeep
+
+# Local dataset drops for sandbox runs
+input_data/*
+!input_data/.gitkeep
+
+# Python caches and virtual environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Sandbox and local caches
+.cache/
+gauntlet-sandbox/.cache/
+
+# Node and package caches
+node_modules/
+.pnpm-store/
+
+# Model and ML caches
+.huggingface/
+.hf/
+
+# Environment files and secrets
+.env
+.env.*
+*.env
+secrets/
+*.secret
+*.secrets
+*.key
+*.pem
+

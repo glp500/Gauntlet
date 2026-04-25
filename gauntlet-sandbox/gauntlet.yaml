@@ -1,0 +1,40 @@
+project:
+  name: gauntlet-demo
+  task: auto
+  created_by: gauntlet
+
+input:
+  prompt_file: ../input/prompt.md
+  run_config_file: ../input/run_config.yaml
+  data:
+    type: local_file
+    path: ../input_data/dataset.csv
+
+runtime:
+  python: "3.11"
+  allow_network: false
+  max_runtime_seconds: 120
+  max_memory_mb: 4096
+  max_output_mb: 256
+
+pipeline:
+  steps:
+    - data_loader
+    - data_preprocessing
+    - analysis
+    - train
+    - eval
+    - visualization
+
+modeling:
+  baseline_only: true
+  train_test_split: 0.2
+  random_seed: 42
+
+figures:
+  output_format:
+    - svg
+    - png
+    - json
+  editable: true
+

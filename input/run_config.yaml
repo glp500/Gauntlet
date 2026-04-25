@@ -1,0 +1,18 @@
+run:
+  name: local-demo-run
+  project_manifest: ../gauntlet-sandbox/gauntlet.yaml
+  prompt_file: prompt.md
+
+input:
+  dataset_path: ../input_data/dataset.csv
+
+execution:
+  mode: sandbox_only
+  selected_steps:
+    - data_loader
+    - data_preprocessing
+    - analysis
+    - train
+    - eval
+    - visualization
+
