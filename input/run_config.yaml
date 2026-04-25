@@ -1,10 +1,10 @@
 run:
   name: local-demo-run
   project_manifest: ../gauntlet-sandbox/gauntlet.yaml
-  prompt_file: prompt.md
+  prompt_file: raw_input.txt
 
 input:
-  dataset_path: ../input_data/dataset.csv
+  dataset_path: ../input_data/Teen_Mental_Health_Dataset.csv
 
 execution:
   mode: sandbox_only
@@ -15,4 +15,3 @@ execution:
     - train
     - eval
     - visualization
-

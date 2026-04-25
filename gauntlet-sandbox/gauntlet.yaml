@@ -4,11 +4,11 @@ project:
   created_by: gauntlet
 
 input:
-  prompt_file: ../input/prompt.md
+  prompt_file: ../input/raw_input.txt
   run_config_file: ../input/run_config.yaml
   data:
     type: local_file
-    path: ../input_data/dataset.csv
+    path: ../input_data/Teen_Mental_Health_Dataset.csv
 
 runtime:
   python: "3.11"
@@ -37,4 +37,3 @@ figures:
     - png
     - json
   editable: true
-

@@ -9,8 +9,8 @@ modules, the project manifest, and the generated artifact directory.
 
 ## Current scope
 
-This scaffold does not implement the runner yet.
-It only defines the contract for future work:
+The current slice implements a local Python runner for the sandbox contract.
+This keeps the first runnable flow narrow and local:
 
 - where the sandbox reads prompt and dataset inputs
 - which pipeline steps exist
@@ -83,10 +83,17 @@ Generated artifacts in `outputs/` are ignored by git, except for `.gitkeep`.
 
 The forward-looking repository contract uses:
 
-- `../input/prompt.md` as the canonical prompt file
+- `../input/raw_input.txt` as the active prototype prompt file
 - `../input/run_config.yaml` as the canonical run-specific config file
-- `../input_data/` as the local dataset directory
+- `../input_data/Teen_Mental_Health_Dataset.csv` as the active prototype dataset
 
-Legacy `input/agent_task.md` and `input/agent_scaffold.md` are transitional files
-and are not yet wired into the sandbox contract.
+`input/prompt.md` remains a template prompt file. Legacy `input/agent_task.md` and
+`input/agent_scaffold.md` are transitional files and are not yet wired into the
+sandbox contract.
 
+## Local dependencies
+
+The runner and profiling slice currently rely on:
+
+- `pandas` for CSV loading and profiling
+- `PyYAML` for reading `gauntlet.yaml`

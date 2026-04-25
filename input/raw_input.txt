@@ -1,0 +1,11 @@
+Dataset Overview:
+
+This dataset studies how social media use affects the mental health of teenagers. It includes daily habits like social media hours, sleep, stress, anxiety, and physical activity.
+
+The goal is to understand if high social media use is linked with problems like stress, anxiety, and depression. The data helps in analyzing behavior and building machine learning models to predict mental health risk.
+
+Overall, this dataset is useful for basic research and for creating models that can help in early detection of mental health issues in teenagers.
+
+Dataset Tags:
+
+mental health, teen health, social media impact, depression prediction, anxiety analysis, machine learning, dataset, behavioral data, health analytics, AI in healthcare
