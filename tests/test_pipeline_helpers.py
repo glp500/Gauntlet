@@ -8,7 +8,9 @@ from pathlib import Path
 from gauntlet.config import Settings
 from gauntlet.llm.base import LLMResponse
 from gauntlet.orchestrator.pipeline import (
+    _build_semantic_guidance,
     _extract_execution_issues,
+    _extract_semantic_validation_issues,
     _summarize_stderr,
     build_pipeline,
 )
@@ -57,6 +59,43 @@ def test_summarize_stderr_uses_tail_lines() -> None:
     )
 
     assert summary == "line 2 | line 3 | line 4"
+
+
+def test_extract_semantic_validation_issues_includes_stderr_summary() -> None:
+    """Semantic smoke stderr should be preserved in repairable issue text."""
+    issues = _extract_semantic_validation_issues(
+        {
+            "failure_reason": "Semantic smoke check failed with exit code 1. NameError: name 'pd' is not defined",
+            "raw_stderr": (
+                "Traceback (most recent call last):\n"
+                "  File \"<string>\", line 10, in <module>\n"
+                "  File \"preprocessing.py\", line 1, in <module>\n"
+                "NameError: name 'pd' is not defined\n"
+            ),
+        }
+    )
+
+    assert any("NameError" in issue for issue in issues)
+    assert any("Semantic smoke stderr summary" in issue for issue in issues)
+
+
+def test_build_semantic_guidance_targets_import_failure_file() -> None:
+    """Import-time semantic failures should produce file-specific repair guidance."""
+    guidance = _build_semantic_guidance(
+        {
+            "failure_reason": "Semantic smoke check failed with exit code 1. NameError: name 'pd' is not defined",
+            "raw_stderr": (
+                "Traceback (most recent call last):\n"
+                "  File \"<string>\", line 10, in <module>\n"
+                "  File \"preprocessing.py\", line 1, in <module>\n"
+                "NameError: name 'pd' is not defined\n"
+            ),
+        }
+    )
+
+    assert "preprocessing.py" in guidance
+    assert any("import-safe" in entry for entry in guidance["preprocessing.py"])
+    assert any("module-level annotations" in entry for entry in guidance["preprocessing.py"])
 
 
 def test_normalize_review_result_keeps_contract_issues_advisory(tmp_path: Path) -> None:

@@ -5,7 +5,10 @@ from __future__ import annotations
 import json
 
 
-def build_review_prompts(code_bundle: dict[str, str]) -> tuple[str, str]:
+def build_review_prompts(
+    code_bundle: dict[str, str],
+    bundle_contract: dict[str, list[str]] | None = None,
+) -> tuple[str, str]:
     """Build prompts that validate the generated bundle."""
     system_prompt = (
         "You review a constrained Python analysis bundle. "
@@ -19,14 +22,25 @@ def build_review_prompts(code_bundle: dict[str, str]) -> tuple[str, str]:
     for file_name, content in code_bundle.items():
         rendered_files.append(f"File: {file_name}\n{content}")
 
+    contract_section = ""
+    if bundle_contract is not None:
+        contract_section = (
+            "\nShared bundle contract:\n"
+            f"{json.dumps(bundle_contract, indent=2)}\n"
+        )
+
     user_prompt = (
         "Review the generated bundle for the following rules:\n"
         "- Only the expected file roles are present.\n"
         "- Required public functions exist with the exact names: load_data, preprocess, run_analysis, create_figures.\n"
+        "- Dictionary keys passed from load_data to preprocess to run_analysis to create_figures stay consistent.\n"
+        "- run_analysis returns only pandas DataFrames and does not mix in text or scalar values.\n"
+        "- The bundle appears likely to write at least one result table and at least one figure for this task.\n"
         "- Code is readable and explicit.\n"
         "- Dependencies stay within pandas, matplotlib, and the standard library.\n"
         "- No network access or shell execution.\n"
         "- No hidden writes outside provided output paths.\n\n"
+        + contract_section
         + "\n\n".join(rendered_files)
     )
     return system_prompt, user_prompt

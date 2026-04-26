@@ -1,0 +1,126 @@
+{
+  "artifacts": {
+    "figures": [
+      "outputs/figures/revenue_by_region.png"
+    ],
+    "results": [
+      "outputs/results/revenue_by_region.csv"
+    ]
+  },
+  "created_at": "2026-04-26T01:02:16.610403+00:00",
+  "execution": {
+    "duration_seconds": 4.372,
+    "exit_code": 0,
+    "failure_reason": null,
+    "status": "completed",
+    "stderr": "",
+    "stdout": "Results written:\nC:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_010216_610403\\outputs\\results\\revenue_by_region.csv\nFigures written:\nC:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_010216_610403\\outputs\\figures\\revenue_by_region.png\n"
+  },
+  "input_manifest": {
+    "datasets": [
+      {
+        "columns": [
+          "region",
+          "category",
+          "units",
+          "revenue"
+        ],
+        "dtypes": {
+          "category": "str",
+          "region": "str",
+          "revenue": "int64",
+          "units": "int64"
+        },
+        "file_name": "sample.csv",
+        "rows": 8,
+        "sample_values": {
+          "category": [
+            "Hardware",
+            "Software"
+          ],
+          "region": [
+            "North",
+            "South",
+            "West"
+          ],
+          "revenue": [
+            "1200",
+            "900",
+            "1040"
+          ],
+          "units": [
+            "10",
+            "6",
+            "8"
+          ]
+        }
+      }
+    ],
+    "task_text": "Analyze the sample sales dataset and produce a clear summary of revenue by region and category. Create at least one figure that helps explain the result."
+  },
+  "review_result": {
+    "issues": [],
+    "status": "approved",
+    "summary": "Looks compliant."
+  },
+  "run_id": "run_20260426_010216_610403",
+  "status": "completed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T01:02:16.630580+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": null
+      },
+      "model": "mock-openai",
+      "recorded_at": "2026-04-26T01:02:16.633807+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": null
+      },
+      "model": "mock-openai",
+      "recorded_at": "2026-04-26T01:02:16.633807+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": null
+      },
+      "model": "mock-openai",
+      "recorded_at": "2026-04-26T01:02:16.643660+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_010216_610403\\sandbox"
+      },
+      "recorded_at": "2026-04-26T01:02:16.660614+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "details": {
+        "duration_seconds": 4.372,
+        "exit_code": 0
+      },
+      "recorded_at": "2026-04-26T01:02:21.034698+00:00",
+      "status": "completed",
+      "step": "execute_sandbox"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_010216_610403\\outputs\\summary.json"
+}

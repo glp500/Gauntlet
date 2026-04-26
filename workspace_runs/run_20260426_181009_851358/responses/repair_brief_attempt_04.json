@@ -1,0 +1,19 @@
+{
+  "attempt_number": 4,
+  "failure_stage": "execution",
+  "file_guidance": {},
+  "file_issues": {},
+  "issues": [
+    "Generated code returned or consumed an invalid runtime type.",
+    "Sandbox stderr summary: File \"C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_181009_851358\\sandbox\\run_analysis.py\", line 23, in _write_results | raise TypeError(f\"Analysis result '{table_name}' is not a pandas DataFrame.\") | TypeError: Analysis result 'text_summary' is not a pandas DataFrame."
+  ],
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ],
+  "stderr_summary": "File \"C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_181009_851358\\sandbox\\run_analysis.py\", line 23, in _write_results | raise TypeError(f\"Analysis result '{table_name}' is not a pandas DataFrame.\") | TypeError: Analysis result 'text_summary' is not a pandas DataFrame.",
+  "violation_details": []
+}

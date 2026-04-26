@@ -1,0 +1,99 @@
+SYSTEM:
+You plan one shared contract for a constrained Python analysis bundle. Return JSON only with exactly these keys: loaded_keys, processed_keys, result_table_names, figure_file_names. Each value must be a non-empty list of short strings. loaded_keys, processed_keys, and result_table_names must use lowercase snake_case names. loaded_keys and processed_keys must name whole pandas tables or datasets, never raw CSV columns. Use result table names without file extensions. Use figure file names that end in .png and use lowercase snake_case stems.
+
+USER:
+Plan a single shared contract for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and inventory dataset to generate a clear summary of the data trends, and visualize these trends using at least one appropriate figure to explain the findings.
+
+# Input Dataset Summary
+The analysis will be performed on the file `Warehouse_and_Retail_Sales.csv`.
+The dataset contains 307,645 rows and 9 columns:
+*   `YEAR` (int64)
+*   `MONTH` (int64)
+*   `SUPPLIER` (str)
+*   `ITEM CODE` (str)
+*   `ITEM DESCRIPTION` (str)
+*   `ITEM TYPE` (str)
+*   `RETAIL SALES` (float64)
+*   `RETAIL TRANSFERS` (float64)
+*   `WAREHOUSE SALES` (float64)
+
+# Assumptions From Schema
+1. The data is time-series oriented, allowing for yearly and monthly trend analysis.
+2. Numerical columns (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`) represent quantifiable financial or inventory metrics.
+3. The analysis should focus on identifying relationships between sales, transfers, and warehouse activity across different years, suppliers, and item types.
+
+# Required Outputs
+1. A clear textual summary derived from the analysis of the dataset.
+2. At least one figure (visualization) generated using pandas and matplotlib that effectively explains the key results of the analysis.
+
+# Code Constraints
+1. **File Scope:** Generated code must be implemented across the modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+2. **Libraries:** Only `pandas` and `matplotlib` are permitted for data manipulation and visualization.
+3. **Execution Environment:** No network access, shell commands, or external dependencies are allowed.
+4. **Logic:** All analytical logic must be explicit, step-by-step, and highly readable.
+5. **Data Integrity:** The code must handle the specified `float64` and `int64` data types correctly during processing.
+
+The contract will be reused by data_loader.py, preprocessing.py, analysis.py, and figures.py.
+Rules:
+- loaded_keys are the dictionary keys returned by load_data.
+- processed_keys are the dictionary keys returned by preprocess.
+- result_table_names are the dictionary keys returned by run_analysis.
+- figure_file_names are the .png file names returned by create_figures.
+- Keep the contract small and explicit.
+- loaded_keys and processed_keys must usually contain 1 to 3 whole-table keys such as `sales_data`, `monthly_sales`, or `supplier_summary`.
+- Do not use CSV schema columns such as `YEAR`, `MONTH`, or `RETAIL SALES` as contract keys.
+- Every non-figure contract name must be lowercase snake_case.
+- For this task, include at least one result table name and at least one figure file name.
+- The keys and file names must be internally consistent across the whole bundle.
+
+Repair guidance:
+Use the previous attempt issues below to keep all four generated files aligned.
+
+Repair brief JSON:
+{
+  "attempt_number": 3,
+  "failure_stage": "semantic_validation",
+  "issues": [
+    "\"Label(s) ['Average_Monthly_Sales', 'RETAIL TRANSFERS'] do not exist\"",
+    "load_data returned keys: ['warehouse_and_retail_sales']",
+    "preprocess returned keys: ['monthly_sales_pivot', 'yearly_sales_summary']"
+  ],
+  "file_issues": {},
+  "file_guidance": {
+    "data_loader.py": [
+      "Keep load_data aligned with the shared contract keys and return the dataset dictionary expected by preprocess."
+    ],
+    "preprocessing.py": [
+      "preprocess must preserve or intentionally transform dictionary keys in a way that still matches what run_analysis expects."
+    ]
+  },
+  "violation_details": [],
+  "semantic_validation_result": {
+    "status": "failed",
+    "loaded_keys": [
+      "warehouse_and_retail_sales"
+    ],
+    "processed_keys": [
+      "monthly_sales_pivot",
+      "yearly_sales_summary"
+    ],
+    "result_table_names": [],
+    "result_value_types": {},
+    "figure_paths": [],
+    "figure_file_names": [],
+    "failure_reason": "\"Label(s) ['Average_Monthly_Sales', 'RETAIL TRANSFERS'] do not exist\"",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 89, in <module>\n  File \"C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_194413_967323\\sandbox\\analysis.py\", line 51, in run_analysis\n    monthly_summary = monthly_pivot.groupby('YEAR', as_index=False).agg(\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\pandas\\core\\groupby\\generic.py\", line 2291, in aggregate\n    result = op.agg()\n             ^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\pandas\\core\\apply.py\", line 294, in agg\n    return self.agg_dict_like()\n           ^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\pandas\\core\\apply.py\", line 511, in agg_dict_like\n    return self.agg_or_apply_dict_like(op_name=\"agg\")\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\pandas\\core\\apply.py\", line 1677, in agg_or_apply_dict_like\n    result_index, result_data = self.compute_dict_like(\n                                ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\pandas\\core\\apply.py\", line 550, in compute_dict_like\n    func = self.normalize_dictlike_arg(op_name, selected_obj, func)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\pandas\\core\\apply.py\", line 762, in normalize_dictlike_arg\n    raise KeyError(f\"Label(s) {list(cols)} do not exist\")\nKeyError: \"Label(s) ['Average_Monthly_Sales', 'RETAIL TRANSFERS'] do not exist\"\n",
+    "duration_seconds": 2.605
+  },
+  "stderr_summary": null,
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ]
+}

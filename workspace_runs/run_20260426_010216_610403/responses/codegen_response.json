@@ -1,0 +1,7 @@
+{
+  "backend": "openai",
+  "content": "{\"data_loader.py\": \"from pathlib import Path\\n\\nimport pandas as pd\\n\\ndef load_data(input_dir: str) -> dict[str, pd.DataFrame]:\\n    data = {}\\n    for csv_path in sorted(Path(input_dir).glob(\\\"*.csv\\\")):\\n        data[csv_path.stem] = pd.read_csv(csv_path)\\n    return data\\n\", \"preprocessing.py\": \"import pandas as pd\\n\\ndef preprocess(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:\\n    return data\\n\", \"analysis.py\": \"import pandas as pd\\n\\ndef run_analysis(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:\\n    frame = data[\\\"sample\\\"]\\n    summary = frame.groupby(\\\"region\\\", as_index=False)[\\\"revenue\\\"].sum()\\n    return {\\\"revenue_by_region\\\": summary}\\n\", \"figures.py\": \"from pathlib import Path\\n\\nimport matplotlib.pyplot as plt\\nimport pandas as pd\\n\\ndef create_figures(data: dict[str, pd.DataFrame], results: dict[str, pd.DataFrame], output_dir: str) -> list[str]:\\n    figure_dir = Path(output_dir)\\n    figure_dir.mkdir(parents=True, exist_ok=True)\\n    frame = results[\\\"revenue_by_region\\\"]\\n    fig, ax = plt.subplots(figsize=(6, 4))\\n    ax.bar(frame[\\\"region\\\"], frame[\\\"revenue\\\"])\\n    ax.set_title(\\\"Revenue by Region\\\")\\n    destination = figure_dir / \\\"revenue_by_region.png\\\"\\n    fig.tight_layout()\\n    fig.savefig(destination)\\n    plt.close(fig)\\n    return [str(destination)]\\n\"}",
+  "model": "mock-openai",
+  "raw_response": {},
+  "usage": null
+}

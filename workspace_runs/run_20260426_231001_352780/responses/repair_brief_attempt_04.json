@@ -1,0 +1,34 @@
+{
+  "attempt_number": 4,
+  "failure_stage": "static_validation",
+  "file_guidance": {
+    "analysis.py": [
+      "analysis.py must not reference input file paths, CSV names, or filesystem locations.",
+      "Use only the provided `data` argument inside run_analysis. Do not hard-code dataset names, directories, or CSV filenames."
+    ]
+  },
+  "file_issues": {
+    "analysis.py": [
+      "analysis.py: analysis.py must consume the provided data dictionary and not reference file paths"
+    ]
+  },
+  "issues": [
+    "Generated bundle failed file policy checks: analysis.py: analysis.py must consume the provided data dictionary and not reference file paths"
+  ],
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ],
+  "semantic_validation_result": null,
+  "stderr_summary": null,
+  "violation_details": [
+    {
+      "file": "analysis.py",
+      "message": "analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+      "rule": "analysis_file_path_reference"
+    }
+  ]
+}

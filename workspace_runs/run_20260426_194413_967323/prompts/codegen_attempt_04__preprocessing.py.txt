@@ -1,0 +1,133 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of preprocessing.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `preprocess`.
+
+USER:
+Generate only preprocessing.py for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and inventory dataset to generate a clear summary of the data trends, and visualize these trends using at least one appropriate figure to explain the findings.
+
+# Input Dataset Summary
+The analysis will be performed on the file `Warehouse_and_Retail_Sales.csv`.
+The dataset contains 307,645 rows and 9 columns:
+*   `YEAR` (int64)
+*   `MONTH` (int64)
+*   `SUPPLIER` (str)
+*   `ITEM CODE` (str)
+*   `ITEM DESCRIPTION` (str)
+*   `ITEM TYPE` (str)
+*   `RETAIL SALES` (float64)
+*   `RETAIL TRANSFERS` (float64)
+*   `WAREHOUSE SALES` (float64)
+
+# Assumptions From Schema
+1. The data is time-series oriented, allowing for yearly and monthly trend analysis.
+2. Numerical columns (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`) represent quantifiable financial or inventory metrics.
+3. The analysis should focus on identifying relationships between sales, transfers, and warehouse activity across different years, suppliers, and item types.
+
+# Required Outputs
+1. A clear textual summary derived from the analysis of the dataset.
+2. At least one figure (visualization) generated using pandas and matplotlib that effectively explains the key results of the analysis.
+
+# Code Constraints
+1. **File Scope:** Generated code must be implemented across the modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+2. **Libraries:** Only `pandas` and `matplotlib` are permitted for data manipulation and visualization.
+3. **Execution Environment:** No network access, shell commands, or external dependencies are allowed.
+4. **Logic:** All analytical logic must be explicit, step-by-step, and highly readable.
+5. **Data Integrity:** The code must handle the specified `float64` and `int64` data types correctly during processing.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Shared bundle contract:
+- These names are bundle-level dictionary keys for whole pandas tables, not raw CSV column names.
+- load_data must return keys: warehouse_and_retail_sales.
+- preprocess must return keys: monthly_sales_pivot, yearly_sales_summary.
+- run_analysis must return result tables: monthly_sales_pivot.
+- create_figures must return figure files: monthly_sales_trend.png.
+
+Role contract for preprocessing.py:
+- Required public function: `preprocess`.
+- Transform the provided `data` dictionary and return another `dict[str, pd.DataFrame]`. Do not load files, run analysis, or create plots.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- Do not read from file paths or touch the output directory here.
+
+Files already generated for this attempt:
+
+- data_loader.py: function `load_data`. Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+
+Repair guidance for this file:
+- Prior failure stage: semantic_validation.
+- Keep working parts of this file stable unless the listed issues require a rewrite.
+- Follow this targeted guidance:
+  - preprocess must preserve or intentionally transform dictionary keys in a way that still matches what run_analysis expects.
+- Previous attempt issues:
+  - "Label(s) ['Average_Monthly_Retail_Sales', 'RETAIL TRANSFERS'] do not exist"
+  - load_data returned keys: ['warehouse_and_retail_sales']
+  - preprocess returned keys: ['monthly_sales_pivot', 'yearly_sales_summary']
+
+Previous version of preprocessing.py:
+import pandas as pd
+
+def preprocess(data: dict) -> dict[str, pd.DataFrame]:
+    """
+    Analyzes the input sales data and generates summarized views for
+    yearly trends and monthly pivots.
+
+    Args:
+        data: A dictionary containing the loaded DataFrame, expected to have
+              the key 'warehouse_and_retail_sales'.
+
+    Returns:
+        A dictionary containing two processed DataFrames:
+        - 'yearly_sales_summary': Summary statistics grouped by year.
+        - 'monthly_sales_pivot': Monthly breakdown of sales metrics pivoted by item code.
+    """
+    if 'warehouse_and_retail_sales' not in data:
+        # Return empty results if the expected data is missing
+        return {
+            'yearly_sales_summary': pd.DataFrame(),
+            'monthly_sales_pivot': pd.DataFrame()
+        }
+
+    df = data['warehouse_and_retail_sales'].copy()
+
+    # 1. Create yearly_sales_summary
+    # Calculate aggregate metrics grouped by year
+    yearly_summary = df.groupby('YEAR').agg(
+        total_retail_sales=('RETAIL SALES', 'sum'),
+        total_retail_transfers=('RETAIL TRANSFERS', 'sum'),
+        total_warehouse_sales=('WAREHOUSE SALES', 'sum'),
+        avg_retail_sales=('RETAIL SALES', 'mean')
+    ).reset_index()
+
+    # 2. Create monthly_sales_pivot
+    # Pivot the data to see monthly trends across item codes and sales metrics
+    monthly_pivot = df.pivot_table(
+        index=['YEAR', 'MONTH'],
+        columns='ITEM CODE',
+        values=['RETAIL SALES', 'WAREHOUSE SALES', 'RETAIL TRANSFERS'],
+        aggfunc='sum'
+    ).reset_index()
+
+    return {
+        'yearly_sales_summary': yearly_summary,
+        'monthly_sales_pivot': monthly_pivot
+    }

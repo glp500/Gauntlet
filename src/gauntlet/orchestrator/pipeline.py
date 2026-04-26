@@ -18,8 +18,10 @@ from gauntlet.llm.openai_client import OpenAIBackend
 from gauntlet.logging.setup import configure_run_logging
 from gauntlet.orchestrator.code_generator import (
     ALLOWED_GENERATED_FILES,
+    build_bundle_contract_prompts,
     build_codegen_prompts,
     build_single_file_codegen_prompts,
+    parse_bundle_contract,
     parse_generated_file,
     parse_generated_bundle,
 )
@@ -31,6 +33,7 @@ from gauntlet.orchestrator.prompt_refiner import build_refinement_prompts
 from gauntlet.orchestrator.router import StepRouter
 from gauntlet.run_context import RunContext
 from gauntlet.sandbox.executor import execute_sandbox
+from gauntlet.sandbox.executor import execute_semantic_smoke_check
 from gauntlet.sandbox.file_policy import (
     collect_generated_bundle_violations,
     collect_runtime_contract_violations,
@@ -62,6 +65,7 @@ class PipelineFailure(RuntimeError):
         code_bundle: dict[str, str] | None = None,
         review_result: dict[str, Any] | None = None,
         execution_result: dict[str, Any] | None = None,
+        semantic_validation_result: dict[str, Any] | None = None,
         validation_violations: list[dict[str, str]] | None = None,
     ) -> None:
         self.stage = stage
@@ -70,6 +74,7 @@ class PipelineFailure(RuntimeError):
         self.code_bundle = code_bundle
         self.review_result = review_result
         self.execution_result = execution_result
+        self.semantic_validation_result = semantic_validation_result
         self.validation_violations = validation_violations or []
         self.failure_reason = "; ".join(issues) if issues else stage
         super().__init__(self.failure_reason)
@@ -92,6 +97,7 @@ class RetryableCodegenError(PipelineFailure):
         issues: list[str],
         code_bundle: dict[str, str] | None = None,
         review_result: dict[str, Any] | None = None,
+        semantic_validation_result: dict[str, Any] | None = None,
         validation_violations: list[dict[str, str]] | None = None,
     ) -> None:
         super().__init__(
@@ -100,6 +106,7 @@ class RetryableCodegenError(PipelineFailure):
             retryable=True,
             code_bundle=code_bundle,
             review_result=review_result,
+            semantic_validation_result=semantic_validation_result,
             validation_violations=validation_violations,
         )
 
@@ -203,9 +210,10 @@ class Pipeline:
 
         for attempt_number in range(1, max_attempts + 1):
             code_bundle: dict[str, str] | None = None
+            bundle_contract: dict[str, list[str]] | None = None
 
             try:
-                code_bundle = self._generate_code(
+                code_bundle, bundle_contract = self._generate_code(
                     context=context,
                     analysis_brief=analysis_brief,
                     attempt_number=attempt_number,
@@ -219,9 +227,24 @@ class Pipeline:
                     attempt_number=attempt_number,
                 )
 
+                prepare_sandbox(
+                    context,
+                    self.settings,
+                    code_bundle,
+                    attempt_number=attempt_number,
+                )
+                self._run_semantic_smoke_check(
+                    context=context,
+                    code_bundle=code_bundle,
+                    bundle_contract=bundle_contract,
+                    attempt_number=attempt_number,
+                    logger=execution_logger,
+                )
+
                 review_result = self._review_code(
                     context=context,
                     code_bundle=code_bundle,
+                    bundle_contract=bundle_contract,
                     attempt_number=attempt_number,
                     logger=pipeline_logger,
                 )
@@ -233,12 +256,6 @@ class Pipeline:
                         review_result=review_result,
                     )
 
-                prepare_sandbox(
-                    context,
-                    self.settings,
-                    code_bundle,
-                    attempt_number=attempt_number,
-                )
                 execution_result = execute_sandbox(
                     context=context,
                     timeout_seconds=self.settings.run_timeout_seconds,
@@ -254,6 +271,19 @@ class Pipeline:
                     )
 
                 artifacts = collect_artifacts(context, self.settings)
+                artifact_issues = _collect_missing_artifact_issues(artifacts)
+                if artifact_issues:
+                    raise RetryableExecutionError(
+                        issues=artifact_issues,
+                        code_bundle=code_bundle,
+                        execution_result={
+                            "status": "failed",
+                            "failure_reason": "; ".join(artifact_issues),
+                            "artifacts": artifacts,
+                            "stderr": "",
+                            "stdout": "",
+                        },
+                    )
                 context.record_attempt(
                     attempt_number=attempt_number,
                     stage="execution",
@@ -363,7 +393,7 @@ class Pipeline:
         prior_bundle: dict[str, str] | None,
         repair_brief: dict[str, Any] | None,
         logger: logging.Logger,
-    ) -> dict[str, str]:
+    ) -> tuple[dict[str, str], dict[str, list[str]] | None]:
         """Generate one code bundle for the current attempt."""
         backend = self.router.select_backend("generate_code")
         if backend.backend_name in _LOCAL_BACKEND_NAMES:
@@ -406,7 +436,7 @@ class Pipeline:
             ) from exc
 
         logger.info("Code generation attempt %s created %s files", attempt_number, len(code_bundle))
-        return code_bundle
+        return code_bundle, None
 
     def _generate_code_file_by_file(
         self,
@@ -418,8 +448,15 @@ class Pipeline:
         repair_brief: dict[str, Any] | None,
         backend: LLMBackend,
         logger: logging.Logger,
-    ) -> dict[str, str]:
+    ) -> tuple[dict[str, str], dict[str, list[str]]]:
         """Generate one sandbox bundle through smaller per-file local requests."""
+        bundle_contract = self._generate_bundle_contract(
+            context=context,
+            analysis_brief=analysis_brief,
+            attempt_number=attempt_number,
+            repair_brief=repair_brief,
+            backend=backend,
+        )
         code_bundle: dict[str, str] = {}
         file_responses: list[LLMResponse] = []
 
@@ -427,6 +464,7 @@ class Pipeline:
             system_prompt, user_prompt = build_single_file_codegen_prompts(
                 analysis_brief,
                 file_name=file_name,
+                bundle_contract=bundle_contract,
                 generated_so_far=code_bundle,
                 prior_bundle=prior_bundle,
                 repair_brief=repair_brief,
@@ -479,7 +517,58 @@ class Pipeline:
             len(code_bundle),
             len(file_responses),
         )
-        return code_bundle
+        return code_bundle, bundle_contract
+
+    def _generate_bundle_contract(
+        self,
+        *,
+        context: RunContext,
+        analysis_brief: str,
+        attempt_number: int,
+        repair_brief: dict[str, Any] | None,
+        backend: LLMBackend,
+    ) -> dict[str, list[str]]:
+        """Generate one shared contract for local file-by-file bundle generation."""
+        system_prompt, user_prompt = build_bundle_contract_prompts(
+            analysis_brief,
+            repair_brief=repair_brief,
+        )
+        prompt_name = f"bundle_contract_attempt_{attempt_number:02d}.txt"
+        response_name = f"bundle_contract_attempt_{attempt_number:02d}.json"
+        response = self._generate_backend_response(
+            context=context,
+            backend=backend,
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            response_format="json",
+            prompt_file_name=prompt_name,
+            response_file_name=response_name,
+            step_name="plan_bundle_contract",
+            attempt_number=attempt_number,
+            retry_stage="backend_request",
+        )
+
+        try:
+            bundle_contract = parse_bundle_contract(response.content)
+        except ValueError as exc:
+            raise RetryableCodegenError(
+                stage="semantic_validation",
+                issues=[str(exc)],
+            ) from exc
+
+        context.record_step(
+            "plan_bundle_contract",
+            status="completed",
+            attempt_number=attempt_number,
+            backend=response.backend,
+            model=response.model,
+            details={
+                "usage": response.usage,
+                "request_details": response.request_details,
+                "bundle_contract": bundle_contract,
+            },
+        )
+        return bundle_contract
 
     def _validate_code_bundle(
         self,
@@ -522,11 +611,12 @@ class Pipeline:
         *,
         context: RunContext,
         code_bundle: dict[str, str],
+        bundle_contract: dict[str, list[str]] | None,
         attempt_number: int,
         logger: logging.Logger,
     ) -> dict[str, Any]:
         """Run the LLM review pass and normalize its output into blocking/advisory issues."""
-        system_prompt, user_prompt = build_review_prompts(code_bundle)
+        system_prompt, user_prompt = build_review_prompts(code_bundle, bundle_contract)
         backend = self.router.select_backend("review_code")
         response_name = f"review_attempt_{attempt_number:02d}.json"
         response = self._generate_backend_response(
@@ -574,8 +664,36 @@ class Pipeline:
             raw_review_result["status"],
             len(review_result["blocking_issues"]),
             len(review_result["advisory_issues"]),
-        )
+            )
         return review_result
+
+    def _run_semantic_smoke_check(
+        self,
+        *,
+        context: RunContext,
+        code_bundle: dict[str, str],
+        bundle_contract: dict[str, list[str]] | None,
+        attempt_number: int,
+        logger: logging.Logger,
+    ) -> None:
+        """Run deterministic semantic checks before LLM review."""
+        result = execute_semantic_smoke_check(
+            context=context,
+            bundle_contract=bundle_contract,
+            logger=logger,
+            attempt_number=attempt_number,
+        )
+
+        if result["status"] == "completed":
+            return
+
+        issues = _extract_semantic_validation_issues(result)
+        raise RetryableCodegenError(
+            stage="semantic_validation",
+            issues=issues,
+            code_bundle=code_bundle,
+            semantic_validation_result=result,
+        )
 
     def _normalize_review_result(self, review_result: dict[str, Any]) -> dict[str, Any]:
         """Keep the reviewer advisory unless it flags a narrow class of concrete issues."""
@@ -689,7 +807,7 @@ class Pipeline:
                 )
             raise RuntimeError(completeness_issue)
 
-        if step_name != "generate_code" or backend.backend_name not in _LOCAL_BACKEND_NAMES:
+        if step_name not in {"generate_code", "plan_bundle_contract"} or backend.backend_name not in _LOCAL_BACKEND_NAMES:
             self._record_model_step(
                 context,
                 step_name,
@@ -777,8 +895,12 @@ class Pipeline:
             "failure_stage": failure.stage,
             "issues": failure.issues,
             "file_issues": _group_violations_by_file(failure.validation_violations),
-            "file_guidance": _build_file_guidance(failure.validation_violations),
+            "file_guidance": _merge_file_guidance(
+                _build_file_guidance(failure.validation_violations),
+                _build_semantic_guidance(failure.semantic_validation_result),
+            ),
             "violation_details": failure.validation_violations,
+            "semantic_validation_result": failure.semantic_validation_result,
             "stderr_summary": stderr_summary,
             "preserve_requirements": _REPAIR_REQUIREMENTS,
         }
@@ -968,26 +1090,186 @@ def _build_file_guidance(
             )
             if file_name == "analysis.py":
                 target.append(
-                    "run_analysis is not the pipeline entrypoint. It must consume the provided data dictionary and return results only."
+                    "run_analysis is not the pipeline entrypoint. Rewrite analysis.py as a pure analysis step that consumes the provided data dictionary and returns results only."
+                )
+                target.append(
+                    "The sandbox runtime already loaded and preprocessed the input before calling run_analysis, so remove any load_data, preprocess, create_figures, or sibling-module orchestration."
                 )
         elif rule == "analysis_file_loading":
             target.append(
                 "analysis.py must not load files. It must only work with the provided `data` dictionary."
             )
+            target.append(
+                "Remove file-path inputs and data-loading calls. The sandbox runtime passes preprocessed in-memory data into run_analysis."
+            )
         elif rule == "analysis_file_path_reference":
             target.append(
                 "analysis.py must not reference input file paths, CSV names, or filesystem locations."
+            )
+            target.append(
+                "Use only the provided `data` argument inside run_analysis. Do not hard-code dataset names, directories, or CSV filenames."
             )
         elif rule == "figures_show_call":
             target.append(
                 "figures.py must save plots to the provided output directory and return the saved paths."
             )
+            target.append(
+                "Replace interactive display calls with figure saves in output_dir, close each figure, and return a list of written file paths."
+            )
         elif rule == "main_block":
             target.append(
-                "Generated modules are imported by the runtime, so remove any `if __name__ == \"__main__\"` block."
+                "Generated modules are imported by run_analysis.py, so remove any `if __name__ == \"__main__\"` block and keep the file import-safe."
             )
 
     for file_name, entries in guidance.items():
         guidance[file_name] = list(dict.fromkeys(entries))
 
     return guidance
+
+
+def _build_semantic_guidance(
+    semantic_validation_result: dict[str, Any] | None,
+) -> dict[str, list[str]]:
+    """Translate semantic smoke-check failures into file-scoped repair guidance."""
+    if not semantic_validation_result:
+        return {}
+
+    guidance: dict[str, list[str]] = {}
+
+    loaded_keys = semantic_validation_result.get("loaded_keys", [])
+    processed_keys = semantic_validation_result.get("processed_keys", [])
+    result_table_names = semantic_validation_result.get("result_table_names", [])
+    result_value_types = semantic_validation_result.get("result_value_types", {})
+    figure_file_names = semantic_validation_result.get("figure_file_names", [])
+    failure_reason = str(semantic_validation_result.get("failure_reason") or "")
+    raw_stderr = str(semantic_validation_result.get("raw_stderr") or "")
+    traceback_text = str(semantic_validation_result.get("traceback") or "")
+    diagnostic_text = " ".join(
+        text for text in [failure_reason, raw_stderr, traceback_text] if text
+    ).lower()
+
+    if loaded_keys or "load_data" in failure_reason:
+        guidance.setdefault("data_loader.py", []).append(
+            "Keep load_data aligned with the shared contract keys and return the dataset dictionary expected by preprocess."
+        )
+
+    if processed_keys or "preprocess" in failure_reason:
+        guidance.setdefault("preprocessing.py", []).append(
+            "preprocess must preserve or intentionally transform dictionary keys in a way that still matches what run_analysis expects."
+        )
+
+    if result_table_names or "run_analysis" in failure_reason:
+        guidance.setdefault("analysis.py", []).append(
+            "run_analysis must consume the processed dictionary keys from preprocess and return only pandas DataFrames under the contracted result_table_names."
+        )
+
+    if result_value_types:
+        non_frame_keys = [
+            key
+            for key, value_type in result_value_types.items()
+            if value_type != "DataFrame"
+        ]
+        if non_frame_keys:
+            guidance.setdefault("analysis.py", []).append(
+                "Replace non-DataFrame analysis outputs with pandas DataFrames. Invalid keys: "
+                + ", ".join(sorted(non_frame_keys))
+                + "."
+            )
+
+    if not result_table_names and "result tables" in failure_reason.lower():
+        guidance.setdefault("analysis.py", []).append(
+            "run_analysis returned no result tables. Add at least one non-empty pandas DataFrame result."
+        )
+
+    if figure_file_names or "create_figures" in failure_reason:
+        guidance.setdefault("figures.py", []).append(
+            "create_figures must use the processed data and analysis results to save at least one PNG and return its path."
+        )
+
+    if not figure_file_names and "figure" in failure_reason.lower():
+        guidance.setdefault("figures.py", []).append(
+            "The current figure logic produced no PNG outputs. Align the expected input keys with preprocess and run_analysis, then save at least one figure."
+        )
+
+    if any(token in diagnostic_text for token in ("nameerror", "importerror", "modulenotfounderror")):
+        target_file = _infer_semantic_failure_file(raw_stderr, traceback_text) or "preprocessing.py"
+        guidance.setdefault(target_file, []).append(
+            f"{target_file} failed during module import or top-level evaluation. Ensure every top-level reference is imported and keep the file import-safe."
+        )
+        guidance.setdefault(target_file, []).append(
+            "Do not rely on function-local imports for names used in module-level annotations or other top-level code."
+        )
+
+    for file_name, entries in guidance.items():
+        guidance[file_name] = list(dict.fromkeys(entries))
+
+    return guidance
+
+
+def _merge_file_guidance(*guidance_maps: dict[str, list[str]]) -> dict[str, list[str]]:
+    """Combine multiple file-guidance maps without duplicating messages."""
+    merged: dict[str, list[str]] = {}
+    for guidance_map in guidance_maps:
+        for file_name, entries in guidance_map.items():
+            target = merged.setdefault(file_name, [])
+            for entry in entries:
+                if entry not in target:
+                    target.append(entry)
+    return merged
+
+
+def _extract_semantic_validation_issues(
+    result: dict[str, Any],
+) -> list[str]:
+    """Summarize semantic smoke-check failures into repairable issue strings."""
+    issues: list[str] = []
+    failure_reason = str(result.get("failure_reason") or "").strip()
+    if failure_reason:
+        issues.append(failure_reason)
+
+    loaded_keys = result.get("loaded_keys", [])
+    processed_keys = result.get("processed_keys", [])
+    result_table_names = result.get("result_table_names", [])
+    figure_file_names = result.get("figure_file_names", [])
+    result_value_types = result.get("result_value_types", {})
+    raw_stderr = str(result.get("raw_stderr") or "")
+
+    if loaded_keys:
+        issues.append(f"load_data returned keys: {loaded_keys}")
+    if processed_keys:
+        issues.append(f"preprocess returned keys: {processed_keys}")
+    if result_table_names:
+        issues.append(f"run_analysis returned result tables: {result_table_names}")
+    if result_value_types:
+        issues.append(f"run_analysis result value types: {result_value_types}")
+    if figure_file_names:
+        issues.append(f"create_figures returned figure files: {figure_file_names}")
+    if raw_stderr:
+        stderr_summary = _summarize_stderr(raw_stderr)
+        if stderr_summary:
+            issues.append(f"Semantic smoke stderr summary: {stderr_summary}")
+
+    if not issues:
+        issues.append("Semantic smoke check failed for an unknown reason.")
+    return issues
+
+
+def _infer_semantic_failure_file(raw_stderr: str, traceback_text: str) -> str | None:
+    """Best-effort mapping from a semantic smoke traceback to one generated file."""
+    combined_text = "\n".join(part for part in [raw_stderr, traceback_text] if part)
+    for file_name in ALLOWED_GENERATED_FILES:
+        if file_name in combined_text:
+            return file_name
+    return None
+
+
+def _collect_missing_artifact_issues(
+    artifacts: dict[str, list[str]],
+) -> list[str]:
+    """Return retryable issues when execution finished without required artifacts."""
+    issues: list[str] = []
+    if not artifacts["results"]:
+        issues.append("Execution completed but produced no result tables.")
+    if not artifacts["figures"]:
+        issues.append("Execution completed but produced no figures.")
+    return issues

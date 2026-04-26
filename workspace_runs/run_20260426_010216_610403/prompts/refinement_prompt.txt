@@ -1,0 +1,59 @@
+SYSTEM:
+You are refining a CSV analysis request into a structured brief for a local code generation pipeline. Be concrete, cautious, and concise. Do not invent columns that are not visible in the manifest. Output markdown with the exact headings: 'Task Objective', 'Input Dataset Summary', 'Assumptions From Schema', 'Required Outputs', and 'Code Constraints'.
+
+USER:
+Turn the raw task and dataset manifest below into the structured brief.
+
+Raw task:
+Analyze the sample sales dataset and produce a clear summary of revenue by region and category. Create at least one figure that helps explain the result.
+
+Dataset manifest JSON:
+{
+  "task_text": "Analyze the sample sales dataset and produce a clear summary of revenue by region and category. Create at least one figure that helps explain the result.",
+  "datasets": [
+    {
+      "file_name": "sample.csv",
+      "rows": 8,
+      "columns": [
+        "region",
+        "category",
+        "units",
+        "revenue"
+      ],
+      "dtypes": {
+        "region": "str",
+        "category": "str",
+        "units": "int64",
+        "revenue": "int64"
+      },
+      "sample_values": {
+        "region": [
+          "North",
+          "South",
+          "West"
+        ],
+        "category": [
+          "Hardware",
+          "Software"
+        ],
+        "units": [
+          "10",
+          "6",
+          "8"
+        ],
+        "revenue": [
+          "1200",
+          "900",
+          "1040"
+        ]
+      }
+    }
+  ]
+}
+
+Code constraints:
+- Generated code may only implement data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use pandas and matplotlib only.
+- No network access.
+- No shell commands.
+- Keep logic explicit and readable.

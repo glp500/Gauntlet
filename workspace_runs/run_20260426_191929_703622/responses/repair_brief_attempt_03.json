@@ -1,0 +1,23 @@
+{
+  "attempt_number": 3,
+  "failure_stage": "semantic_validation",
+  "file_guidance": {},
+  "file_issues": {},
+  "issues": [
+    "Semantic smoke check failed with exit code 1."
+  ],
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ],
+  "semantic_validation_result": {
+    "duration_seconds": 1.776,
+    "failure_reason": "Semantic smoke check failed with exit code 1.",
+    "status": "failed"
+  },
+  "stderr_summary": null,
+  "violation_details": []
+}

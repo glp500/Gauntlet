@@ -1,0 +1,7 @@
+{
+  "backend": "openai",
+  "content": "{\"status\": \"approved\", \"summary\": \"Looks compliant.\", \"issues\": []}",
+  "model": "mock-openai",
+  "raw_response": {},
+  "usage": null
+}

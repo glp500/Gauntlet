@@ -1,0 +1,21 @@
+{
+  "attempt_count": 0,
+  "attempts": [],
+  "failure_reason": "OPENAI_API_KEY is required for OpenAI-backed pipeline steps.",
+  "figures": [],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_225339_973179\\metadata.json",
+  "results": [],
+  "run_id": "run_20260426_225339_973179",
+  "status": "failed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T22:53:41.512656+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_225339_973179\\outputs\\summary.json"
+}

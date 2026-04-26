@@ -1,0 +1,9 @@
+2026-04-26 21:39:51,388 | INFO | gauntlet.execution | Semantic smoke check exit code: 1
+2026-04-26 21:39:51,391 | INFO | gauntlet.execution | Semantic smoke check stderr:
+Traceback (most recent call last):
+  File "<string>", line 11, in <module>
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_193710_215178\sandbox\analysis.py", line 1, in <module>
+    def run_analysis(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
+                                     ^^
+NameError: name 'pd' is not defined. Did you mean: 'id'?
+

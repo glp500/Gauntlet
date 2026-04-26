@@ -1,0 +1,43 @@
+SYSTEM:
+You plan one shared contract for a constrained Python analysis bundle. Return JSON only with exactly these keys: loaded_keys, processed_keys, result_table_names, figure_file_names. Each value must be a non-empty list of short strings. loaded_keys, processed_keys, and result_table_names must use lowercase snake_case names. loaded_keys and processed_keys must name whole pandas tables or datasets, never raw CSV columns. Use result table names without file extensions. Use figure file names that end in .png and use lowercase snake_case stems.
+
+USER:
+Plan a single shared contract for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and inventory dataset to generate a clear summary of the data and visualize a key relationship or trend using at least one figure.
+
+# Input Dataset Summary
+The input is a single CSV file named `Warehouse_and_Retail_Sales.csv`.
+*   **Rows:** 307,645
+*   **Columns:** `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`.
+*   **Data Types:** The dataset contains mixed types, including integer identifiers (`YEAR`, `MONTH`), string identifiers (`SUPPLIER`, `ITEM CODE`, etc.), and float measurements (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`).
+
+# Assumptions From Schema
+1.  **Data Integrity:** The provided columns accurately represent the intended sales and inventory data.
+2.  **Temporal Data:** The `YEAR` and `MONTH` columns are suitable for time-series analysis.
+3.  **Numerical Analysis:** The float columns (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`) are suitable for aggregation and statistical analysis.
+4.  **Grouping:** The data can be grouped and aggregated by categorical variables such as `SUPPLIER`, `ITEM TYPE`, and temporal features.
+
+# Required Outputs
+1.  A clear, narrative summary of the key findings derived from the dataset analysis.
+2.  At least one figure (visualization) created to explain a significant result or trend observed in the data.
+
+# Code Constraints
+1.  **File Structure:** Generated code must strictly reside within the following modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+2.  **Libraries:** Only the `pandas` and `matplotlib` libraries are permitted.
+3.  **Execution Environment:** No network access, no shell commands, and all logic must be explicit and readable.
+4.  **Data Handling:** Focus on Pandas operations for data manipulation and Matplotlib for visualization.
+
+The contract will be reused by data_loader.py, preprocessing.py, analysis.py, and figures.py.
+Rules:
+- loaded_keys are the dictionary keys returned by load_data.
+- processed_keys are the dictionary keys returned by preprocess.
+- result_table_names are the dictionary keys returned by run_analysis.
+- figure_file_names are the .png file names returned by create_figures.
+- Keep the contract small and explicit.
+- loaded_keys and processed_keys must usually contain 1 to 3 whole-table keys such as `sales_data`, `monthly_sales`, or `supplier_summary`.
+- Do not use CSV schema columns such as `YEAR`, `MONTH`, or `RETAIL SALES` as contract keys.
+- Every non-figure contract name must be lowercase snake_case.
+- For this task, include at least one result table name and at least one figure file name.
+- The keys and file names must be internally consistent across the whole bundle.

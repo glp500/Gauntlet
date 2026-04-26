@@ -1,0 +1,58 @@
+## Task Objective
+Analyze the provided teen mental health dataset and produce a clear summary of the main patterns in the data. Include at least one figure that helps explain the findings.
+
+## Input Dataset Summary
+- **File:** `Teen_Mental_Health_Dataset.csv`
+- **Rows:** 1200
+- **Columns:** 13
+
+### Available columns
+- `age` (`int64`)
+- `gender` (`str`)
+- `daily_social_media_hours` (`float64`)
+- `platform_usage` (`str`)
+- `sleep_hours` (`float64`)
+- `screen_time_before_sleep` (`float64`)
+- `academic_performance` (`float64`)
+- `physical_activity` (`float64`)
+- `social_interaction_level` (`str`)
+- `stress_level` (`int64`)
+- `anxiety_level` (`int64`)
+- `addiction_level` (`int64`)
+- `depression_label` (`int64`)
+
+### Notable schema signals from sample values
+- `gender` appears categorical with values such as `male`, `female`.
+- `platform_usage` appears categorical with values such as `Instagram`, `TikTok`, `Both`.
+- `social_interaction_level` appears categorical with values such as `low`, `medium`, `high`.
+- `depression_label` appears binary, with sample values `0` and `1`.
+- Other fields are numeric and likely suitable for descriptive statistics and comparisons.
+
+## Assumptions From Schema
+- `depression_label` should be treated as a binary outcome/indicator unless analysis shows otherwise.
+- Categorical fields should be summarized using counts and proportions, not numeric averaging.
+- Numeric fields should be summarized using descriptive statistics and, where helpful, comparisons by `depression_label` or other categorical groups.
+- No missing-value behavior is specified in the manifest; code should check for and report missing values if present.
+- Do not assume any additional columns beyond those listed.
+
+## Required Outputs
+- A concise written summary of the dataset, including key distributions and notable relationships.
+- Basic descriptive statistics for numeric variables.
+- Frequency summaries for categorical variables.
+- At least one figure that clearly supports the analysis, such as:
+  - distribution of `depression_label`,
+  - comparison of a key numeric variable by `depression_label`,
+  - or a grouped/bar chart for a categorical feature.
+- Save or return figures in a way compatible with a local pipeline.
+
+## Code Constraints
+- Generated code may only implement:
+  - `data_loader.py`
+  - `preprocessing.py`
+  - `analysis.py`
+  - `figures.py`
+- Use **pandas** and **matplotlib** only.
+- No network access.
+- No shell commands.
+- Keep logic explicit and readable.
+- Do not invent or reference columns not present in the manifest.

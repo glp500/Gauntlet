@@ -1,0 +1,15 @@
+{
+  "backend": "ollama",
+  "content": "",
+  "error": "Ollama request failed: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=300)",
+  "model": "gemma4:e2b",
+  "raw_response": {},
+  "request_details": {
+    "duration_seconds": 300.008,
+    "ended_at": "2026-04-26T18:04:31.827579+00:00",
+    "endpoint": "http://localhost:11434/api/generate",
+    "error_type": "ReadTimeout",
+    "started_at": "2026-04-26T17:59:31.819197+00:00"
+  },
+  "usage": null
+}

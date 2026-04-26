@@ -1,0 +1,112 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of data_loader.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `load_data`.
+
+USER:
+Generate only data_loader.py for the sandbox bundle described below.
+
+```markdown
+# Task Objective
+Analyze the provided dataset to produce a clear statistical summary. The output should include key insights, at least one informative figure (e.g., time-series plot of sales or transfers), and an executive-level recommendation based on findings.
+
+# Input Dataset Summary
+- **Task**: Analyze Warehouse and Retail Sales dataset.
+- **File Name**: `Warehouse_and_Retail_Sales.csv`.
+- **Total Rows**: 307,645 entries.
+- **Columns**:
+  - `YEAR`, `MONTH`: Time frames (int64 dtype).
+  - `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`: Categorical data (str dtype).
+  - `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`: Monetary values (float64 dtype).
+
+Sample data:
+- Year: ["2020", "2017", "2018"].
+- Month: [1, 9, 7].
+- Supplier: ["REPUBLIC NATIONAL DISTRIBUTING CO", "PWSWN INC", "RELIABLE CHURCHILL LLLP"].
+- Item Code: ["100009", "100024", "1001"].
+- Item Description: ["BOOTLEG RED - 750ML", "MOMENT DE PLAISIR - 750ML", "S SMITH ORGANIC PEAR CIDER - 18.7OZ"].
+- Item Type: ["WINE", "BEER", "LIQUOR"].
+
+# Assumptions From Schema
+- Data is structured with clear temporal (year/month) and supplier/item dimensions for analysis.
+- Key assumptions include all numerical values are in USD; categorical fields are predefined without missing values or outliers beyond this scope.
+
+# Required Outputs
+1. **Statistical Summary**:
+   - Total rows, distinct suppliers, item counts, sales trends.
+2. **Figure**: Time-series plot comparing monthly retail transfers vs. warehouse sales over the years (e.g., bar chart or line graph).
+3. **Executive Recommendation**: Based on insights from analysis.
+
+# Code Constraints
+- Implement code in Python files: `data_loader.py` (for loading CSV), `preprocessing.py` (data cleaning, scaling if needed), `analysis.py` (statistical models and visualization), `figures.py` (matplotlib for plots).
+- Use pandas for data manipulation; matplotlib for visualization.
+- No external libraries beyond standard ones.
+- Code must remain explicit and handle all dataset features without assumptions on missing data.
+
+```
+
+This structured brief is concise, focusing only on necessary elements visible in the dataset manifest.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Shared bundle contract:
+- These names are bundle-level dictionary keys for whole pandas tables, not raw CSV column names.
+- load_data must return keys: sales_data, monthly_sales.
+- preprocess must return keys: cleaned_data.
+- run_analysis must return result tables: total_sales_summary, sales_trend_plot.
+- create_figures must return figure files: sales_over_time.png.
+
+Role contract for data_loader.py:
+- Required public function: `load_data`.
+- Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- Do not preprocess data, run analysis, or create figures here.
+
+Repair guidance for this file:
+- Prior failure stage: static_validation.
+- Keep working parts of this file stable unless the listed issues require a rewrite.
+- Previous attempt issues:
+  - Generated bundle failed file policy checks: analysis.py: sibling generated module import `figures` is not allowed
+
+Previous version of data_loader.py:
+import pandas as pd
+
+def load_data(input_dir):
+    # Load Sales and Transfers CSV files from the input directory.
+    sales_file = f"{input_dir}/Warehouse_and_Retail_Sales.csv"
+    transfers_file = f"{input_dir}/Warehouse_and_Retail_Transfers.csv"
+
+    # Parse the data into separate DataFrames for clarity in further processing.
+    sales_data = pd.read_csv(sales_file, parse_dates=["YEAR", "MONTH"], index_col="YEAR")
+    monthly_sales = pd.DataFrame()
+    for _, row in sales_data.iterrows():
+        key = f"{row['YEAR']:04}{row['MONTH']:02}"
+        month_data = pd.read_csv(f"{sales_file}_{key}.csv")
+        monthly_sales[key] = month_data['RETAIL SALES']
+    
+    supplier_summary = sales_data.groupby('SUPPLIER').agg({
+        'SUPPLIER': lambda x: set(x['SUPPLIER']), 
+        'ITEM TYPE': lambda x: set(x['ITEM TYPE'])
+    })
+    # Aggregate counts per supplier and item type across all months.
+    return {
+        "sales_data": sales_data,
+        "monthly_sales": monthly_sales,
+        "supplier_summary": supplier_summary
+    }

@@ -1,0 +1,16 @@
+2026-04-26 03:02:33,485 | INFO | gauntlet.pipeline | Starting run run_20260426_010233_476823
+2026-04-26 03:02:33,498 | INFO | gauntlet.pipeline | Loaded manifest with 1 dataset(s)
+2026-04-26 03:02:33,498 | ERROR | gauntlet.pipeline | Run failed: OPENAI_API_KEY is required for OpenAI-backed pipeline steps.
+Traceback (most recent call last):
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\src\gauntlet\orchestrator\pipeline.py", line 63, in run
+    analysis_brief = self._refine_prompt(context, manifest, pipeline_logger)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\src\gauntlet\orchestrator\pipeline.py", line 130, in _refine_prompt
+    response = backend.generate(system_prompt, user_prompt)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\src\gauntlet\llm\openai_client.py", line 35, in generate
+    api_key = self._settings.require_openai_api_key()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\src\gauntlet\config.py", line 79, in require_openai_api_key
+    raise ValueError("OPENAI_API_KEY is required for OpenAI-backed pipeline steps.")
+ValueError: OPENAI_API_KEY is required for OpenAI-backed pipeline steps.

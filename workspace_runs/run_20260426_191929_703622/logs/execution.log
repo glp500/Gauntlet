@@ -1,0 +1,45 @@
+2026-04-26 21:22:18,595 | INFO | gauntlet.execution | Semantic smoke check exit code: 1
+2026-04-26 21:22:18,595 | INFO | gauntlet.execution | Semantic smoke check stderr:
+Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_191929_703622\sandbox\preprocessing.py", line 1, in <module>
+    def preprocess(data: dict) -> dict[str, pd.DataFrame]:
+                                            ^^
+NameError: name 'pd' is not defined. Did you mean: 'id'?
+
+2026-04-26 21:25:24,662 | INFO | gauntlet.execution | Semantic smoke check exit code: 1
+2026-04-26 21:25:24,666 | INFO | gauntlet.execution | Semantic smoke check stderr:
+Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_191929_703622\sandbox\preprocessing.py", line 1, in <module>
+    def preprocess(data: dict) -> dict[str, pd.DataFrame]:
+                                            ^^
+NameError: name 'pd' is not defined. Did you mean: 'id'?
+
+2026-04-26 21:27:32,139 | INFO | gauntlet.execution | Semantic smoke check exit code: 1
+2026-04-26 21:27:32,139 | INFO | gauntlet.execution | Semantic smoke check stderr:
+Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_191929_703622\sandbox\preprocessing.py", line 1, in <module>
+    def preprocess(data: dict) -> dict[str, pd.DataFrame]:
+                                            ^^
+NameError: name 'pd' is not defined. Did you mean: 'id'?
+
+2026-04-26 21:30:05,542 | INFO | gauntlet.execution | Semantic smoke check exit code: 1
+2026-04-26 21:30:05,551 | INFO | gauntlet.execution | Semantic smoke check stderr:
+Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_191929_703622\sandbox\preprocessing.py", line 1, in <module>
+    def preprocess(data: dict) -> dict[str, pd.DataFrame]:
+                                            ^^
+NameError: name 'pd' is not defined. Did you mean: 'id'?
+
+2026-04-26 21:32:36,964 | INFO | gauntlet.execution | Semantic smoke check exit code: 1
+2026-04-26 21:32:36,964 | INFO | gauntlet.execution | Semantic smoke check stderr:
+Traceback (most recent call last):
+  File "<string>", line 14, in <module>
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_191929_703622\sandbox\preprocessing.py", line 1, in <module>
+    def preprocess(data: dict) -> dict[str, pd.DataFrame]:
+                                            ^^
+NameError: name 'pd' is not defined. Did you mean: 'id'?
+

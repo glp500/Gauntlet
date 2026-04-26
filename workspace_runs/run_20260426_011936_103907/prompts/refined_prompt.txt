@@ -1,0 +1,60 @@
+## Task Objective
+Analyze the `Teen_Mental_Health_Dataset.csv` dataset and produce a clear summary of the findings. Include at least one figure that helps explain the result.
+
+## Input Dataset Summary
+- File: `Teen_Mental_Health_Dataset.csv`
+- Rows: `1200`
+- Columns:
+  - `age`
+  - `gender`
+  - `daily_social_media_hours`
+  - `platform_usage`
+  - `sleep_hours`
+  - `screen_time_before_sleep`
+  - `academic_performance`
+  - `physical_activity`
+  - `social_interaction_level`
+  - `stress_level`
+  - `anxiety_level`
+  - `addiction_level`
+  - `depression_label`
+
+### Column types
+- Numeric integers: `age`, `stress_level`, `anxiety_level`, `addiction_level`, `depression_label`
+- Numeric floats: `daily_social_media_hours`, `sleep_hours`, `screen_time_before_sleep`, `academic_performance`, `physical_activity`
+- Categorical strings: `gender`, `platform_usage`, `social_interaction_level`
+
+## Assumptions From Schema
+- `depression_label` appears to be a binary target-like field with values `0` and `1`.
+- `stress_level`, `anxiety_level`, and `addiction_level` are likely ordinal numeric scores.
+- `academic_performance` is numeric and may represent a continuous score rather than a percentage.
+- `platform_usage` likely contains categories such as `Instagram`, `TikTok`, and `Both`.
+- `social_interaction_level` likely contains categories such as `low`, `medium`, and `high`.
+- No missing-value policy is specified; code should check for missing or invalid values before analysis if needed.
+- Do not assume additional columns beyond those listed in the manifest.
+
+## Required Outputs
+- A concise written summary of the dataset and key patterns found.
+- At least one figure that supports the analysis.
+- Suggested analysis components:
+  - basic descriptive statistics for numeric variables
+  - frequency counts for categorical variables
+  - a simple exploration of `depression_label` distribution
+  - one relationship-focused figure, such as:
+    - depression label by social media hours
+    - sleep hours vs depression label
+    - stress/anxiety/addiction summaries by depression label
+- If useful, include grouped comparisons by `gender`, `platform_usage`, or `social_interaction_level`.
+
+## Code Constraints
+- Generated code may only implement:
+  - `data_loader.py`
+  - `preprocessing.py`
+  - `analysis.py`
+  - `figures.py`
+- Use only `pandas` and `matplotlib`.
+- No network access.
+- No shell commands.
+- Keep logic explicit and readable.
+- Do not invent or reference columns not present in the manifest.
+- Figures should be generated with clear labels, titles, and legends where relevant.

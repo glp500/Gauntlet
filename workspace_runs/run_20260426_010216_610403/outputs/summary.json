@@ -1,0 +1,70 @@
+{
+  "failure_reason": null,
+  "figures": [
+    "outputs/figures/revenue_by_region.png"
+  ],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_010216_610403\\metadata.json",
+  "results": [
+    "outputs/results/revenue_by_region.csv"
+  ],
+  "run_id": "run_20260426_010216_610403",
+  "status": "completed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T01:02:16.630580+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": null
+      },
+      "model": "mock-openai",
+      "recorded_at": "2026-04-26T01:02:16.633807+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": null
+      },
+      "model": "mock-openai",
+      "recorded_at": "2026-04-26T01:02:16.633807+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": null
+      },
+      "model": "mock-openai",
+      "recorded_at": "2026-04-26T01:02:16.643660+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_010216_610403\\sandbox"
+      },
+      "recorded_at": "2026-04-26T01:02:16.660614+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "details": {
+        "duration_seconds": 4.372,
+        "exit_code": 0
+      },
+      "recorded_at": "2026-04-26T01:02:21.034698+00:00",
+      "status": "completed",
+      "step": "execute_sandbox"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_010216_610403\\outputs\\summary.json"
+}

@@ -1,0 +1,21 @@
+2026-04-26 21:44:13,975 | INFO | gauntlet.pipeline | Starting run run_20260426_194413_967323
+2026-04-26 21:44:15,428 | INFO | gauntlet.pipeline | Loaded manifest with 1 dataset(s)
+2026-04-26 21:44:50,744 | INFO | gauntlet.pipeline | Refinement step completed with gemma4:e2b
+2026-04-26 21:47:16,946 | INFO | gauntlet.pipeline | Local code generation attempt 1 created 4 files with 4 smaller requests
+2026-04-26 21:47:19,741 | WARNING | gauntlet.pipeline | Attempt 1 failed during semantic_validation: "Label(s) ['Average_Monthly_Sales', 'RETAIL TRANSFERS'] do not exist"; load_data returned keys: ['warehouse_and_retail_sales']; preprocess returned keys: ['monthly_sales_pivot', 'yearly_sales_summary']
+2026-04-26 21:50:02,315 | INFO | gauntlet.pipeline | Local code generation attempt 2 created 4 files with 4 smaller requests
+2026-04-26 21:50:04,961 | WARNING | gauntlet.pipeline | Attempt 2 failed during semantic_validation: "Label(s) ['Average_Monthly_Sales', 'RETAIL TRANSFERS'] do not exist"; load_data returned keys: ['warehouse_and_retail_sales']; preprocess returned keys: ['monthly_sales_pivot', 'yearly_sales_summary']
+2026-04-26 21:53:17,401 | INFO | gauntlet.pipeline | Local code generation attempt 3 created 4 files with 4 smaller requests
+2026-04-26 21:53:20,097 | WARNING | gauntlet.pipeline | Attempt 3 failed during semantic_validation: "Label(s) ['Average_Monthly_Retail_Sales', 'RETAIL TRANSFERS'] do not exist"; load_data returned keys: ['warehouse_and_retail_sales']; preprocess returned keys: ['monthly_sales_pivot', 'yearly_sales_summary']
+2026-04-26 21:56:31,458 | INFO | gauntlet.pipeline | Local code generation attempt 4 created 4 files with 4 smaller requests
+2026-04-26 21:56:34,183 | WARNING | gauntlet.pipeline | Attempt 4 failed during semantic_validation: "Label(s) ['Average_Monthly_Retail_Sales', 'RETAIL TRANSFERS'] do not exist"; load_data returned keys: ['warehouse_and_retail_sales']; preprocess returned keys: ['monthly_sales_pivot', 'yearly_sales_summary']
+2026-04-26 21:59:19,247 | INFO | gauntlet.pipeline | Local code generation attempt 5 created 4 files with 4 smaller requests
+2026-04-26 21:59:21,830 | WARNING | gauntlet.pipeline | Attempt 5 failed during semantic_validation: "Label(s) ['Average_Monthly_Retail_Sales', 'RETAIL SALES', 'RETAIL TRANSFERS'] do not exist"; load_data returned keys: ['warehouse_and_retail_sales']; preprocess returned keys: ['monthly_sales_pivot', 'yearly_sales_summary']
+2026-04-26 21:59:21,830 | ERROR | gauntlet.pipeline | Run failed: Code generation failed after 5 attempts. Last error: "Label(s) ['Average_Monthly_Retail_Sales', 'RETAIL SALES', 'RETAIL TRANSFERS'] do not exist"; load_data returned keys: ['warehouse_and_retail_sales']; preprocess returned keys: ['monthly_sales_pivot', 'yearly_sales_summary']
+Traceback (most recent call last):
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\src\gauntlet\orchestrator\pipeline.py", line 165, in run
+    artifacts = self._run_codegen_loop(
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\src\gauntlet\orchestrator\pipeline.py", line 341, in _run_codegen_loop
+    raise RuntimeError(
+RuntimeError: Code generation failed after 5 attempts. Last error: "Label(s) ['Average_Monthly_Retail_Sales', 'RETAIL SALES', 'RETAIL TRANSFERS'] do not exist"; load_data returned keys: ['warehouse_and_retail_sales']; preprocess returned keys: ['monthly_sales_pivot', 'yearly_sales_summary']

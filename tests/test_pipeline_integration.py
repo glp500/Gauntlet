@@ -118,6 +118,16 @@ def _local_file_response(file_content: str, backend_name: str) -> LLMResponse:
     )
 
 
+def _local_contract() -> dict[str, list[str]]:
+    """Return a coherent shared contract for the local file-by-file path."""
+    return {
+        "loaded_keys": ["sample"],
+        "processed_keys": ["sample"],
+        "result_table_names": ["revenue_by_region"],
+        "figure_file_names": ["revenue_by_region.png"],
+    }
+
+
 def _valid_codegen_response() -> str:
     return json.dumps(_valid_codegen_bundle())
 
@@ -225,6 +235,75 @@ def _invalid_local_analysis_file() -> str:
         "if __name__ == '__main__':\n"
         "    run_analysis({})\n"
     )
+
+
+def _invalid_result_type_codegen_response() -> str:
+    """Return a bundle where run_analysis mixes text into the result dictionary."""
+    bundle = _valid_codegen_bundle()
+    bundle["analysis.py"] = (
+        '"""Broken analysis module."""\n\n'
+        "from __future__ import annotations\n\n"
+        "import pandas as pd\n\n"
+        "def run_analysis(data: dict[str, pd.DataFrame]) -> dict[str, object]:\n"
+        "    frame = data['sample']\n"
+        "    summary = frame.groupby('region', as_index=False)['revenue'].sum()\n"
+        "    return {\n"
+        "        'revenue_by_region': summary,\n"
+        "        'text_summary': 'North and South were present.',\n"
+        "    }\n"
+    )
+    return json.dumps(bundle)
+
+
+def _key_drift_local_bundle() -> dict[str, str]:
+    """Return a valid-but-incoherent local bundle with mismatched cross-file keys."""
+    bundle = _valid_codegen_bundle()
+    bundle["data_loader.py"] = (
+        '"""Load CSV inputs for the sandbox run."""\n\n'
+        "from __future__ import annotations\n\n"
+        "from pathlib import Path\n\n"
+        "import pandas as pd\n\n"
+        "def load_data(input_dir: str) -> dict[str, pd.DataFrame]:\n"
+        "    frame = pd.read_csv(Path(input_dir) / 'sample.csv')\n"
+        "    return {'sales_data': frame}\n"
+    )
+    bundle["preprocessing.py"] = (
+        '"""Preprocess the loaded input data."""\n\n'
+        "from __future__ import annotations\n\n"
+        "import pandas as pd\n\n"
+        "def preprocess(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:\n"
+        "    frame = data['sales_data'].copy()\n"
+        "    return {'monthly_summary': frame}\n"
+    )
+    bundle["analysis.py"] = (
+        '"""Compute analysis outputs for the sandbox run."""\n\n'
+        "from __future__ import annotations\n\n"
+        "import pandas as pd\n\n"
+        "def run_analysis(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:\n"
+        "    if 'sales_data' not in data:\n"
+        "        return {}\n"
+        "    frame = data['sales_data']\n"
+        "    summary = frame.groupby('region', as_index=False)['revenue'].sum()\n"
+        "    return {'revenue_by_region': summary}\n"
+    )
+    bundle["figures.py"] = (
+        '"""Create figures from processed data and analysis outputs."""\n\n'
+        "from __future__ import annotations\n\n"
+        "import matplotlib.pyplot as plt\n"
+        "import pandas as pd\n\n"
+        "def create_figures(\n"
+        "    data: dict[str, pd.DataFrame],\n"
+        "    results: dict[str, pd.DataFrame],\n"
+        "    output_dir: str,\n"
+        ") -> list[str]:\n"
+        "    if 'sales' not in data:\n"
+        "        return []\n"
+        "    frame = results['revenue_by_region']\n"
+        "    fig, ax = plt.subplots(figsize=(6, 4))\n"
+        "    ax.bar(frame['region'], frame['revenue'])\n"
+        "    return []\n"
+    )
+    return bundle
 
 
 def test_pipeline_completes_happy_path_with_mock_backend(tmp_path: Path) -> None:
@@ -351,7 +430,6 @@ def test_pipeline_repairs_after_execution_failure(tmp_path: Path) -> None:
         responses=[
             LLMResponse("brief", "mock-openai", "openai", None, {}),
             LLMResponse(_invalid_runtime_codegen_response(), "mock-openai", "openai", None, {}),
-            _review_response(status="approved", issues=[]),
             LLMResponse(_valid_codegen_response(), "mock-openai", "openai", None, {}),
             _review_response(status="approved", issues=[]),
         ]
@@ -367,14 +445,14 @@ def test_pipeline_repairs_after_execution_failure(tmp_path: Path) -> None:
 
     assert summary["status"] == "completed"
     assert summary["attempt_count"] == 2
-    assert summary["attempts"][0]["stage"] == "execution"
+    assert summary["attempts"][0]["stage"] == "semantic_validation"
 
     repair_brief_path = (
         tmp_path / "workspace_runs" / summary["run_id"] / "responses" / "repair_brief_attempt_02.json"
     )
     repair_brief = json.loads(repair_brief_path.read_text(encoding="utf-8"))
-    assert repair_brief["failure_stage"] == "execution"
-    assert repair_brief["stderr_summary"]
+    assert repair_brief["failure_stage"] == "semantic_validation"
+    assert "semantic_validation_result" in repair_brief
 
 
 def test_pipeline_fails_immediately_without_openai_key(tmp_path: Path) -> None:
@@ -405,6 +483,7 @@ def test_pipeline_runs_without_openai_key_when_all_steps_use_ollama(
     ollama_backend = SequenceBackend(
         responses=[
             LLMResponse("brief", "mock-ollama", "ollama", None, {}),
+            _local_file_response(json.dumps(_local_contract()), "ollama"),
             _local_file_response(bundle["data_loader.py"], "ollama"),
             _local_file_response(bundle["preprocessing.py"], "ollama"),
             _local_file_response(bundle["analysis.py"], "ollama"),
@@ -515,6 +594,7 @@ def test_pipeline_runs_without_openai_key_when_all_steps_use_llama_cpp(
     llama_cpp_backend = SequenceBackend(
         responses=[
             _local_file_response("brief", "llama_cpp"),
+            _local_file_response(json.dumps(_local_contract()), "llama_cpp"),
             _local_file_response(bundle["data_loader.py"], "llama_cpp"),
             _local_file_response(bundle["preprocessing.py"], "llama_cpp"),
             _local_file_response(bundle["analysis.py"], "llama_cpp"),
@@ -585,6 +665,7 @@ def test_pipeline_records_distinct_local_retry_failures(
     backend = SequenceBackend(
         responses=[
             LLMResponse("brief", "mock-ollama", "ollama", None, {}),
+            _local_file_response(json.dumps(_local_contract()), "ollama"),
             _local_file_response(bundle["data_loader.py"], "ollama"),
             _local_file_response(bundle["preprocessing.py"], "ollama"),
             _local_file_response(bundle["analysis.py"], "ollama"),
@@ -629,13 +710,15 @@ def test_pipeline_retries_on_incomplete_local_response(
     backend = SequenceBackend(
         responses=[
             LLMResponse("brief", "mock-ollama", "ollama", None, {}),
+            _local_file_response(json.dumps(_local_contract()), "ollama"),
             LLMResponse(
-                bundle["data_loader.py"],
+                json.dumps(_local_contract()),
                 "mock-ollama",
                 "ollama",
                 None,
                 {"done": False},
             ),
+            _local_file_response(json.dumps(_local_contract()), "ollama"),
             _local_file_response(bundle["data_loader.py"], "ollama"),
             _local_file_response(bundle["preprocessing.py"], "ollama"),
             _local_file_response(bundle["analysis.py"], "ollama"),
@@ -688,10 +771,12 @@ def test_local_repair_brief_targets_analysis_contract_drift(
     ollama_backend = SequenceBackend(
         responses=[
             LLMResponse("brief", "mock-ollama", "ollama", None, {}),
+            _local_file_response(json.dumps(_local_contract()), "ollama"),
             _local_file_response(attempt_one_bundle["data_loader.py"], "ollama"),
             _local_file_response(attempt_one_bundle["preprocessing.py"], "ollama"),
             _local_file_response(attempt_one_bundle["analysis.py"], "ollama"),
             _local_file_response(attempt_one_bundle["figures.py"], "ollama"),
+            _local_file_response(json.dumps(_local_contract()), "ollama"),
             _local_file_response(bundle["data_loader.py"], "ollama"),
             _local_file_response(bundle["preprocessing.py"], "ollama"),
             _local_file_response(bundle["analysis.py"], "ollama"),
@@ -744,8 +829,223 @@ def test_local_repair_brief_targets_analysis_contract_drift(
     prompt_text = prompt_path.read_text(encoding="utf-8")
     assert "Previous bundle JSON" not in prompt_text
     assert "for csv_path in sorted(Path(input_dir).glob(" not in prompt_text
+    assert "run_analysis.py is the only pipeline orchestrator." in prompt_text
+    assert "The runtime imports the generated modules instead of executing them as scripts." in prompt_text
+    assert (
+        "`load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`" in prompt_text
+    )
+    assert "Shared bundle contract:" in prompt_text
+    assert "load_data must return keys: sample." in prompt_text
+    assert "run_analysis must return result tables: revenue_by_region." in prompt_text
     assert "Role contract for analysis.py" in prompt_text
     assert "Do not import data_loader, preprocessing, analysis, or figures." in prompt_text
+    assert "The `data` argument already contains preprocessed in-memory pandas DataFrames." in prompt_text
+    assert "Do not add try/except blocks that orchestrate the pipeline here." in prompt_text
+    assert "Do not print progress updates or pipeline banners here." in prompt_text
+
+
+def test_pipeline_repairs_after_local_key_drift_semantic_failure(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    """A local bundle with cross-file key drift should fail semantic validation and retry."""
+    _seed_project(tmp_path)
+    monkeypatch.setenv("GENERATION_BACKEND", "ollama")
+    monkeypatch.setenv("REVIEW_BACKEND", "ollama")
+    settings = Settings.from_env(project_root=tmp_path)
+    valid_bundle = _valid_codegen_bundle()
+    drifting_bundle = _key_drift_local_bundle()
+
+    ollama_backend = SequenceBackend(
+        responses=[
+            LLMResponse("brief", "mock-ollama", "ollama", None, {}),
+            _local_file_response(
+                json.dumps(
+                    {
+                        "loaded_keys": ["sales_data"],
+                        "processed_keys": ["sales_data"],
+                        "result_table_names": ["revenue_by_region"],
+                        "figure_file_names": ["revenue_by_region.png"],
+                    }
+                ),
+                "ollama",
+            ),
+            _local_file_response(drifting_bundle["data_loader.py"], "ollama"),
+            _local_file_response(drifting_bundle["preprocessing.py"], "ollama"),
+            _local_file_response(drifting_bundle["analysis.py"], "ollama"),
+            _local_file_response(drifting_bundle["figures.py"], "ollama"),
+            _local_file_response(json.dumps(_local_contract()), "ollama"),
+            _local_file_response(valid_bundle["data_loader.py"], "ollama"),
+            _local_file_response(valid_bundle["preprocessing.py"], "ollama"),
+            _local_file_response(valid_bundle["analysis.py"], "ollama"),
+            _local_file_response(valid_bundle["figures.py"], "ollama"),
+            LLMResponse(
+                content=json.dumps(
+                    {
+                        "status": "approved",
+                        "summary": "Review completed.",
+                        "issues": [],
+                    }
+                ),
+                model="mock-ollama",
+                backend="ollama",
+                usage=None,
+                raw_response={},
+            ),
+        ],
+        backend_name="ollama",
+        model="mock-ollama",
+    )
+
+    pipeline = build_pipeline(
+        settings=settings,
+        openai_backend=SequenceBackend(responses=[]),
+        ollama_backend=ollama_backend,
+        llama_cpp_backend=SequenceBackend(responses=[]),
+    )
+    summary = pipeline.run()
+
+    assert summary["status"] == "completed"
+    assert summary["attempt_count"] == 2
+    assert summary["attempts"][0]["stage"] == "semantic_validation"
+
+    repair_brief_path = (
+        tmp_path / "workspace_runs" / summary["run_id"] / "responses" / "repair_brief_attempt_02.json"
+    )
+    repair_brief = json.loads(repair_brief_path.read_text(encoding="utf-8"))
+    assert repair_brief["failure_stage"] == "semantic_validation"
+    assert "semantic_validation_result" in repair_brief
+    assert repair_brief["semantic_validation_result"]["loaded_keys"] == ["sales_data"]
+    assert repair_brief["semantic_validation_result"]["processed_keys"] == ["monthly_summary"]
+    assert any(
+        "preprocess must preserve or intentionally transform dictionary keys" in entry
+        for entry in repair_brief["file_guidance"]["preprocessing.py"]
+    )
+
+
+def test_pipeline_retries_when_local_contract_uses_column_names(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    """A column-style local contract should fail before file generation and retry cleanly."""
+    _seed_project(tmp_path)
+    monkeypatch.setenv("GENERATION_BACKEND", "ollama")
+    monkeypatch.setenv("REVIEW_BACKEND", "ollama")
+    settings = Settings.from_env(project_root=tmp_path)
+    valid_bundle = _valid_codegen_bundle()
+
+    ollama_backend = SequenceBackend(
+        responses=[
+            LLMResponse("brief", "mock-ollama", "ollama", None, {}),
+            _local_file_response(
+                json.dumps(
+                    {
+                        "loaded_keys": ["YEAR", "MONTH", "RETAIL SALES"],
+                        "processed_keys": ["YEAR", "MONTH", "RETAIL SALES"],
+                        "result_table_names": ["sales_summary"],
+                        "figure_file_names": ["sales_summary.png"],
+                    }
+                ),
+                "ollama",
+            ),
+            _local_file_response(json.dumps(_local_contract()), "ollama"),
+            _local_file_response(valid_bundle["data_loader.py"], "ollama"),
+            _local_file_response(valid_bundle["preprocessing.py"], "ollama"),
+            _local_file_response(valid_bundle["analysis.py"], "ollama"),
+            _local_file_response(valid_bundle["figures.py"], "ollama"),
+            LLMResponse(
+                content=json.dumps(
+                    {
+                        "status": "approved",
+                        "summary": "Review completed.",
+                        "issues": [],
+                    }
+                ),
+                model="mock-ollama",
+                backend="ollama",
+                usage=None,
+                raw_response={},
+            ),
+        ],
+        backend_name="ollama",
+        model="mock-ollama",
+    )
+
+    pipeline = build_pipeline(
+        settings=settings,
+        openai_backend=SequenceBackend(responses=[]),
+        ollama_backend=ollama_backend,
+        llama_cpp_backend=SequenceBackend(responses=[]),
+    )
+    summary = pipeline.run()
+
+    assert summary["status"] == "completed"
+    assert summary["attempt_count"] == 2
+    assert summary["attempts"][0]["stage"] == "semantic_validation"
+    assert "lowercase snake_case names" in summary["attempts"][0]["failure_reason"]
+
+
+def test_pipeline_fails_when_analysis_returns_non_dataframe_values(tmp_path: Path) -> None:
+    """Semantic validation should reject mixed-type analysis outputs before execution success."""
+    _seed_project(tmp_path)
+    settings = Settings.from_env(project_root=tmp_path)
+    settings.max_codegen_attempts = 1
+
+    backend = SequenceBackend(
+        responses=[
+            LLMResponse("brief", "mock-openai", "openai", None, {}),
+            LLMResponse(_invalid_result_type_codegen_response(), "mock-openai", "openai", None, {}),
+        ]
+    )
+
+    pipeline = build_pipeline(
+        settings=settings,
+        openai_backend=backend,
+        ollama_backend=backend,
+        llama_cpp_backend=backend,
+    )
+    summary = pipeline.run()
+
+    assert summary["status"] == "failed"
+    assert summary["attempt_count"] == 1
+    assert summary["attempts"][0]["stage"] == "semantic_validation"
+    assert "non-DataFrame values" in (summary["failure_reason"] or "")
+
+
+def test_pipeline_retries_when_execution_finishes_without_required_artifacts(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    """An exit code of zero is not enough when the run writes no results or figures."""
+    _seed_project(tmp_path)
+    settings = Settings.from_env(project_root=tmp_path)
+    settings.max_codegen_attempts = 1
+
+    backend = SequenceBackend(
+        responses=[
+            LLMResponse("brief", "mock-openai", "openai", None, {}),
+            LLMResponse(_valid_codegen_response(), "mock-openai", "openai", None, {}),
+            _review_response(status="approved", issues=[]),
+        ]
+    )
+
+    monkeypatch.setattr(
+        "gauntlet.orchestrator.pipeline.collect_artifacts",
+        lambda context, settings: {"results": [], "figures": []},
+    )
+
+    pipeline = build_pipeline(
+        settings=settings,
+        openai_backend=backend,
+        ollama_backend=backend,
+        llama_cpp_backend=backend,
+    )
+    summary = pipeline.run()
+
+    assert summary["status"] == "failed"
+    assert summary["attempt_count"] == 1
+    assert summary["attempts"][0]["stage"] == "execution"
+    assert "produced no result tables" in (summary["failure_reason"] or "")
 
 
 def test_executor_times_out(tmp_path: Path) -> None:

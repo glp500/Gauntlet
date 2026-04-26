@@ -1,0 +1,141 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of analysis.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `run_analysis`.
+
+USER:
+Generate only analysis.py for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and inventory dataset to derive meaningful insights, produce a clear summary, and visualize the findings with at least one explanatory figure.
+
+# Input Dataset Summary
+The input is a single CSV file named `Warehouse_and_Retail_Sales.csv`.
+*   **Size:** 307,645 rows.
+*   **Columns:** `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`.
+*   **Data Types:** Numerical columns include `RETAIL SALES` (float64), `RETAIL TRANSFERS` (float64), and `WAREHOUSE SALES` (float64).
+
+# Assumptions From Schema
+1.  The analysis will focus on time-series data (based on `YEAR` and `MONTH`).
+2.  The analysis can involve calculating aggregated metrics (sums, averages, trends) across sales, transfers, and warehouse values.
+3.  The data quality is sufficient for standard pandas analysis (no missing values implied, although this should be checked during processing).
+
+# Required Outputs
+1.  A clear textual summary of the dataset's key findings.
+2.  At least one figure (e.g., line plot, bar chart) that visually explains a significant result derived from the analysis.
+
+# Code Constraints
+1.  **File Access:** Code must load the data from the provided CSV file.
+2.  **Libraries:** Only `pandas` and `matplotlib` are permitted for data manipulation and visualization.
+3.  **Execution Environment:** No external network access, shell commands, or external APIs are allowed.
+4.  **Module Structure:** Generated code must implement logic within the following files: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+5.  **Logic:** All analysis and visualization logic must be explicit, readable, and self-contained.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Shared bundle contract:
+- load_data must return keys: YEAR, MONTH, SUPPLIER, ITEM CODE, ITEM DESCRIPTION, ITEM TYPE, RETAIL SALES, RETAIL TRANSFERS, WAREHOUSE SALES.
+- preprocess must return keys: YEAR, MONTH, SUPPLIER, ITEM CODE, ITEM DESCRIPTION, ITEM TYPE, RETAIL SALES, RETAIL TRANSFERS, WAREHOUSE SALES.
+- run_analysis must return result tables: sales_by_item_type, sales_trends_by_month.
+- create_figures must return figure files: sales_trend_by_item_type.png.
+
+Role contract for analysis.py:
+- Required public function: `run_analysis`.
+- Consume the preprocessed `data` dictionary and return `dict[str, pd.DataFrame]` analysis results. Do not load files, do not call plotting, and do not orchestrate the other generated modules.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- The `data` argument already contains preprocessed in-memory pandas DataFrames.
+- Do not accept file paths as the main analysis input.
+- Do not call `load_data`, `preprocess`, or `create_figures` here.
+- Do not reference sibling generated modules here.
+- Do not add try/except blocks that orchestrate the pipeline here.
+- Do not print progress updates or pipeline banners here.
+- Return analysis result tables only.
+
+Files already generated for this attempt:
+
+- data_loader.py: function `load_data`. Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+- preprocessing.py: function `preprocess`. Transform the provided `data` dictionary and return another `dict[str, pd.DataFrame]`. Do not load files, run analysis, or create plots.
+
+Repair guidance for this file:
+- Prior failure stage: semantic_validation.
+- Keep working parts of this file stable unless the listed issues require a rewrite.
+- Previous attempt issues:
+  - preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].
+  - load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']
+
+Previous version of analysis.py:
+import pandas as pd
+
+def run_analysis(data: dict) -> dict[str, pd.DataFrame]:
+    """
+    Analyzes the preprocessed sales and inventory data to derive key performance metrics.
+
+    Args:
+        data: A dictionary where keys correspond to the original column names
+              and values are pandas DataFrames.
+
+    Returns:
+        A dictionary containing the calculated analysis results:
+        - sales_summary: Aggregated sales trends over time (monthly).
+        - item_performance: Performance metrics grouped by item.
+    """
+    
+    # Define the required columns based on the contract assumptions
+    required_cols = ['YEAR', 'MONTH', 'RETAIL SALES', 'WAREHOUSE SALES', 'ITEM CODE', 'ITEM DESCRIPTION']
+    
+    # Check if all necessary dataframes are present
+    if not all(col in data for col in required_cols):
+        return {"sales_summary": pd.DataFrame(), "item_performance": pd.DataFrame()}
+
+    # --- 1. Calculate Sales Summary (Time-Series Trend) ---
+    
+    # Select the relevant time-series data
+    monthly_trend = data[['YEAR', 'MONTH', 'RETAIL SALES', 'WAREHOUSE SALES']].copy()
+    
+    # Aggregate Retail Sales and Warehouse Sales by Year and Month
+    monthly_trend_summary = monthly_trend.groupby(['YEAR', 'MONTH']).agg({
+        'RETAIL SALES': 'sum',
+        'WAREHOUSE SALES': 'sum'
+    }).reset_index()
+    
+    sales_summary = monthly_trend_summary
+    
+    # --- 2. Calculate Item Performance ---
+    
+    # Aggregate performance by Item Code and Description
+    # Use ITEM CODE and ITEM DESCRIPTION as the primary grouping keys
+    item_performance = data.set_index(['ITEM CODE', 'ITEM DESCRIPTION']).groupby(
+        ['ITEM CODE', 'ITEM DESCRIPTION']
+    ).agg({
+        'RETAIL SALES': 'sum',
+        'RETAIL TRANSFERS': 'sum',
+        'WAREHOUSE SALES': 'sum'
+    }).reset_index()
+    
+    # Rename columns for clarity
+    item_performance.rename(columns={
+        'RETAIL SALES': 'Total Retail Sales',
+        'RETAIL TRANSFERS': 'Total Retail Transfers',
+        'WAREHOUSE SALES': 'Total Warehouse Sales'
+    }, inplace=True)
+
+    return {
+        "sales_summary": sales_summary,
+        "item_performance": item_performance
+    }

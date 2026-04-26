@@ -1,0 +1,7 @@
+2026-04-26 03:02:21,033 | INFO | gauntlet.execution | Sandbox exit code: 0
+2026-04-26 03:02:21,034 | INFO | gauntlet.execution | Sandbox stdout:
+Results written:
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_010216_610403\outputs\results\revenue_by_region.csv
+Figures written:
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_010216_610403\outputs\figures\revenue_by_region.png
+

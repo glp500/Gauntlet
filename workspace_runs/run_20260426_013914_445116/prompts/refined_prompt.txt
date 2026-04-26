@@ -1,0 +1,57 @@
+## Task Objective
+Analyze the `Teen_Mental_Health_Dataset.csv` dataset and produce a clear summary of the findings. Include at least one figure that helps explain the result.
+
+## Input Dataset Summary
+- **File:** `Teen_Mental_Health_Dataset.csv`
+- **Rows:** 1200
+- **Columns:** 13
+
+### Available columns
+- `age` (int64)
+- `gender` (str)
+- `daily_social_media_hours` (float64)
+- `platform_usage` (str)
+- `sleep_hours` (float64)
+- `screen_time_before_sleep` (float64)
+- `academic_performance` (float64)
+- `physical_activity` (float64)
+- `social_interaction_level` (str)
+- `stress_level` (int64)
+- `anxiety_level` (int64)
+- `addiction_level` (int64)
+- `depression_label` (int64)
+
+### Notable value examples
+- `gender`: `male`, `female`
+- `platform_usage`: `Instagram`, `TikTok`, `Both`
+- `social_interaction_level`: `low`, `medium`, `high`
+- `depression_label`: binary values `0`, `1`
+
+## Assumptions From Schema
+- `depression_label` is the likely target/outcome variable and should be treated as binary.
+- `stress_level`, `anxiety_level`, and `addiction_level` are numeric ordinal/intensity measures.
+- `gender`, `platform_usage`, and `social_interaction_level` are categorical fields.
+- All other listed numeric fields should be treated as continuous numeric measures.
+- No missing-value policy is provided; code should check for missing data explicitly rather than assume none.
+
+## Required Outputs
+- A concise written summary of the dataset and the main patterns found.
+- Basic descriptive statistics for the numeric fields.
+- Frequency or distribution summaries for categorical fields.
+- At least one figure that supports the analysis, such as:
+  - distribution of `depression_label`,
+  - comparison of key numeric variables by `depression_label`,
+  - or a relationship plot involving social media usage and mental health measures.
+- If useful, include comparisons between `depression_label` groups using available columns.
+
+## Code Constraints
+- Generated code may only implement:
+  - `data_loader.py`
+  - `preprocessing.py`
+  - `analysis.py`
+  - `figures.py`
+- Use **pandas** and **matplotlib** only.
+- No network access.
+- No shell commands.
+- Keep logic explicit and readable.
+- Do not invent additional columns beyond those listed in the manifest.

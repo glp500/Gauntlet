@@ -1,0 +1,30 @@
+SYSTEM:
+You write readable Python analysis code for a constrained local sandbox. Return one JSON object only, with exactly these keys: data_loader.py, preprocessing.py, analysis.py, figures.py. Each value must be the full file contents as a string. Do not include markdown fences, commentary, or extra keys.
+
+USER:
+Generate the sandbox code bundle described by the analysis brief below.
+
+## Task Objective
+Summarize revenue by region.
+
+## Input Dataset Summary
+One CSV.
+
+## Assumptions From Schema
+Revenue is numeric.
+
+## Required Outputs
+A result table and one figure.
+
+## Code Constraints
+Use pandas and matplotlib only.
+
+
+Hard rules:
+- data_loader.py must load CSV files from the provided input directory.
+- preprocessing.py must return transformed DataFrames only.
+- analysis.py must return result DataFrames only.
+- figures.py may save figures only in the provided output directory.
+- Use pandas and matplotlib.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.

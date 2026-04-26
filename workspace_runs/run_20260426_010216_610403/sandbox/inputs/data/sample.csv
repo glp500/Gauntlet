@@ -1,0 +1,9 @@
+region,category,units,revenue
+North,Hardware,10,1200
+North,Software,6,900
+South,Hardware,8,1040
+South,Software,12,1560
+West,Hardware,5,650
+West,Software,9,1350
+East,Hardware,7,910
+East,Software,11,1650

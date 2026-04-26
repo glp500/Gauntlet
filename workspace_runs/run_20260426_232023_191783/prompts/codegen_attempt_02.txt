@@ -1,0 +1,148 @@
+SYSTEM:
+You write readable Python analysis code for a constrained local sandbox. Return one JSON object only, with exactly these keys: data_loader.py, preprocessing.py, analysis.py, figures.py. Each value must be the full file contents as a string. Do not include markdown fences, commentary, or extra keys. Each file must expose the exact required public function name for its role.
+
+USER:
+Generate the sandbox code bundle described by the analysis brief below.
+
+## Task Objective
+Analyze the provided warehouse and retail sales dataset and produce a clear summary of its contents and key patterns. Include at least one figure that helps explain the result.
+
+## Input Dataset Summary
+- **File:** `Warehouse_and_Retail_Sales.csv`
+- **Rows:** 307,645
+- **Columns:** 9
+
+### Available fields
+- `YEAR` (`int64`)
+- `MONTH` (`int64`)
+- `SUPPLIER` (`str`)
+- `ITEM CODE` (`str`)
+- `ITEM DESCRIPTION` (`str`)
+- `ITEM TYPE` (`str`)
+- `RETAIL SALES` (`float64`)
+- `RETAIL TRANSFERS` (`float64`)
+- `WAREHOUSE SALES` (`float64`)
+
+### Sample value signals
+- `YEAR`: 2017, 2018, 2020
+- `MONTH`: 1, 7, 9
+- `SUPPLIER`: REPUTABLE distributor/vendor names appear as text categories
+- `ITEM CODE`: numeric-like string identifiers
+- `ITEM DESCRIPTION`: product names with sizes/packaging
+- `ITEM TYPE`: category labels such as `WINE`, `BEER`, `LIQUOR`
+- Sales-related fields are numeric and may include zero values
+
+## Assumptions From Schema
+- `YEAR` and `MONTH` represent time dimensions and can be used for temporal summaries.
+- `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, and `ITEM TYPE` are categorical/text fields.
+- `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are quantitative measures suitable for aggregation, comparison, and trend analysis.
+- The dataset likely contains repeated observations across time for products and suppliers.
+- No additional columns should be assumed beyond those listed in the manifest.
+
+## Required Outputs
+- A concise written summary of the dataset, including:
+  - overall structure and key column roles
+  - basic descriptive statistics for numeric columns
+  - notable patterns by time, supplier, item type, or product where relevant
+- At least one figure that clearly supports the summary, such as:
+  - a bar chart of total sales by `ITEM TYPE`
+  - a monthly trend plot using `YEAR` and `MONTH`
+  - a comparison of `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES`
+- Code should be organized so the pipeline can implement:
+  - `data_loader.py`
+  - `preprocessing.py`
+  - `analysis.py`
+  - `figures.py`
+
+## Code Constraints
+- Use **pandas** and **matplotlib** only.
+- No network access.
+- No shell commands.
+- Keep logic explicit and readable.
+- Do not invent or reference columns not present in the manifest.
+- Keep plotting simple and directly tied to the available schema.
+
+Hard rules:
+- data_loader.py must define `load_data(input_dir: str) -> dict[str, pd.DataFrame]`.
+- preprocessing.py must define `preprocess(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]`.
+- analysis.py must define `run_analysis(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]`.
+- figures.py must define `create_figures(data: dict[str, pd.DataFrame], results: dict[str, pd.DataFrame], output_dir: str) -> list[str]`.
+- The runtime imports those exact function names, so do not rename them.
+- Use pandas and matplotlib.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+
+Repair mode:
+You are repairing a previously generated bundle. Keep compliant code stable and fix only the concrete issues listed below.
+
+Repair brief JSON:
+{
+  "attempt_number": 2,
+  "failure_stage": "semantic_validation",
+  "issues": [
+    "'value' must be an instance of str or bytes, not a float",
+    "load_data returned keys: ['sales']",
+    "preprocess returned keys: ['sales']",
+    "run_analysis returned result tables: ['item_type_summary', 'monthly_summary', 'numeric_describe', 'structure', 'supplier_summary', 'top_products']",
+    "run_analysis result value types: {'structure': 'DataFrame', 'numeric_describe': 'DataFrame', 'monthly_summary': 'DataFrame', 'item_type_summary': 'DataFrame', 'supplier_summary': 'DataFrame', 'top_products': 'DataFrame'}"
+  ],
+  "file_issues": {},
+  "file_guidance": {
+    "data_loader.py": [
+      "Keep load_data aligned with the shared contract keys and return the dataset dictionary expected by preprocess."
+    ],
+    "preprocessing.py": [
+      "preprocess must preserve or intentionally transform dictionary keys in a way that still matches what run_analysis expects."
+    ],
+    "analysis.py": [
+      "run_analysis must consume the processed dictionary keys from preprocess and return only pandas DataFrames under the contracted result_table_names."
+    ]
+  },
+  "violation_details": [],
+  "semantic_validation_result": {
+    "status": "failed",
+    "loaded_keys": [
+      "sales"
+    ],
+    "processed_keys": [
+      "sales"
+    ],
+    "result_table_names": [
+      "item_type_summary",
+      "monthly_summary",
+      "numeric_describe",
+      "structure",
+      "supplier_summary",
+      "top_products"
+    ],
+    "result_value_types": {
+      "structure": "DataFrame",
+      "numeric_describe": "DataFrame",
+      "monthly_summary": "DataFrame",
+      "item_type_summary": "DataFrame",
+      "supplier_summary": "DataFrame",
+      "top_products": "DataFrame"
+    },
+    "figure_paths": [],
+    "figure_file_names": [],
+    "failure_reason": "'value' must be an instance of str or bytes, not a float",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 120, in <module>\n  File \"C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_232023_191783\\sandbox\\figures.py\", line 23, in create_figures\n    ax.barh(plot_df[\"ITEM TYPE\"].astype(str), plot_df[sales_col])\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\axes\\_axes.py\", line 2834, in barh\n    patches = self.bar(x=left, height=height, width=width, bottom=y,\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\__init__.py\", line 1524, in inner\n    return func(\n           ^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\axes\\_axes.py\", line 2563, in bar\n    self._process_unit_info(\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\axes\\_base.py\", line 2663, in _process_unit_info\n    axis.update_units(data)\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\axis.py\", line 1754, in update_units\n    default = self._converter.default_units(data, self)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\category.py\", line 106, in default_units\n    axis.set_units(UnitData(data))\n                   ^^^^^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\category.py\", line 182, in __init__\n    self.update(data)\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\category.py\", line 217, in update\n    _api.check_isinstance((str, bytes), value=val)\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\_api\\__init__.py\", line 92, in check_isinstance\n    raise TypeError(\nTypeError: 'value' must be an instance of str or bytes, not a float\n",
+    "duration_seconds": 3.876
+  },
+  "stderr_summary": null,
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ]
+}
+
+Previous bundle JSON:
+{
+  "data_loader.py": "from __future__ import annotations\n\nimport os\nfrom pathlib import Path\nfrom typing import Dict\n\nimport pandas as pd\n\n\ndef load_data(input_dir: str) -> dict[str, pd.DataFrame]:\n    \"\"\"Load the warehouse and retail sales CSV into a data dictionary.\n\n    Parameters\n    ----------\n    input_dir:\n        Directory containing `Warehouse_and_Retail_Sales.csv`.\n\n    Returns\n    -------\n    dict[str, pd.DataFrame]\n        Dictionary with a single key, `sales`, holding the raw dataframe.\n    \"\"\"\n    csv_path = Path(input_dir) / \"Warehouse_and_Retail_Sales.csv\"\n    if not csv_path.exists():\n        raise FileNotFoundError(f\"Could not find input file: {csv_path}\")\n\n    dtype_map = {\n        \"YEAR\": \"Int64\",\n        \"MONTH\": \"Int64\",\n        \"SUPPLIER\": \"string\",\n        \"ITEM CODE\": \"string\",\n        \"ITEM DESCRIPTION\": \"string\",\n        \"ITEM TYPE\": \"string\",\n        \"RETAIL SALES\": \"float64\",\n        \"RETAIL TRANSFERS\": \"float64\",\n        \"WAREHOUSE SALES\": \"float64\",\n    }\n\n    df = pd.read_csv(csv_path, dtype=dtype_map)\n    return {\"sales\": df}\n",
+  "preprocessing.py": "from __future__ import annotations\n\nimport pandas as pd\n\n\ndef preprocess(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:\n    \"\"\"Light preprocessing for the warehouse and retail sales dataset.\n\n    The goal is to keep the data close to the source while making it safer for\n    grouping and summarizing.\n    \"\"\"\n    if \"sales\" not in data:\n        raise KeyError(\"Expected key 'sales' in input data dictionary.\")\n\n    df = data[\"sales\"].copy()\n\n    # Normalize column names for text fields and preserve numeric columns.\n    text_cols = [\"SUPPLIER\", \"ITEM CODE\", \"ITEM DESCRIPTION\", \"ITEM TYPE\"]\n    for col in text_cols:\n        if col in df.columns:\n            df[col] = df[col].astype(\"string\").str.strip()\n\n    # Ensure temporal columns are numeric integers where possible.\n    for col in [\"YEAR\", \"MONTH\"]:\n        if col in df.columns:\n            df[col] = pd.to_numeric(df[col], errors=\"coerce\").astype(\"Int64\")\n\n    # Coerce sales columns to numeric.\n    numeric_cols = [\"RETAIL SALES\", \"RETAIL TRANSFERS\", \"WAREHOUSE SALES\"]\n    for col in numeric_cols:\n        if col in df.columns:\n            df[col] = pd.to_numeric(df[col], errors=\"coerce\")\n\n    # Remove fully empty rows if any.\n    df = df.dropna(how=\"all\").reset_index(drop=True)\n\n    return {\"sales\": df}\n",
+  "analysis.py": "from __future__ import annotations\n\nimport pandas as pd\n\n\ndef run_analysis(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:\n    \"\"\"Compute descriptive summaries and key aggregates for the dataset.\"\"\"\n    if \"sales\" not in data:\n        raise KeyError(\"Expected key 'sales' in input data dictionary.\")\n\n    df = data[\"sales\"].copy()\n\n    results: dict[str, pd.DataFrame] = {}\n\n    # Overall structure summary.\n    structure = pd.DataFrame(\n        {\n            \"rows\": [len(df)],\n            \"columns\": [df.shape[1]],\n            \"missing_values_total\": [int(df.isna().sum().sum())],\n            \"duplicate_rows\": [int(df.duplicated().sum())],\n        }\n    )\n    results[\"structure\"] = structure\n\n    # Numeric descriptive statistics.\n    numeric_cols = [\"RETAIL SALES\", \"RETAIL TRANSFERS\", \"WAREHOUSE SALES\"]\n    available_numeric = [c for c in numeric_cols if c in df.columns]\n    desc = df[available_numeric].describe().T if available_numeric else pd.DataFrame()\n    results[\"numeric_describe\"] = desc\n\n    # Temporal aggregation by year-month.\n    if {\"YEAR\", \"MONTH\"}.issubset(df.columns) and available_numeric:\n        monthly = (\n            df.dropna(subset=[\"YEAR\", \"MONTH\"])\n            .groupby([\"YEAR\", \"MONTH\"], dropna=False)[available_numeric]\n            .sum()\n            .reset_index()\n            .sort_values([\"YEAR\", \"MONTH\"])\n        )\n        monthly[\"YEAR_MONTH\"] = monthly[\"YEAR\"].astype(str) + \"-\" + monthly[\"MONTH\"].astype(str).str.zfill(2)\n        results[\"monthly_summary\"] = monthly\n    else:\n        results[\"monthly_summary\"] = pd.DataFrame()\n\n    # Sales totals by item type.\n    if \"ITEM TYPE\" in df.columns and available_numeric:\n        item_type = (\n            df.groupby(\"ITEM TYPE\", dropna=False)[available_numeric]\n            .sum()\n            .sort_values(by=available_numeric[0], ascending=False)\n            .reset_index()\n        )\n        results[\"item_type_summary\"] = item_type\n    else:\n        results[\"item_type_summary\"] = pd.DataFrame()\n\n    # Supplier totals for top suppliers.\n    if \"SUPPLIER\" in df.columns and available_numeric:\n        supplier_summary = (\n            df.groupby(\"SUPPLIER\", dropna=False)[available_numeric]\n            .sum()\n            .sort_values(by=available_numeric[0], ascending=False)\n            .reset_index()\n        )\n        results[\"supplier_summary\"] = supplier_summary.head(10)\n    else:\n        results[\"supplier_summary\"] = pd.DataFrame()\n\n    # Product-level summary for the most active products by retail sales.\n    if \"ITEM DESCRIPTION\" in df.columns and available_numeric:\n        product_summary = (\n            df.groupby(\"ITEM DESCRIPTION\", dropna=False)[available_numeric]\n            .sum()\n            .sort_values(by=available_numeric[0], ascending=False)\n            .reset_index()\n        )\n        results[\"top_products\"] = product_summary.head(10)\n    else:\n        results[\"top_products\"] = pd.DataFrame()\n\n    return results\n",
+  "figures.py": "from __future__ import annotations\n\nfrom pathlib import Path\n\nimport matplotlib.pyplot as plt\nimport pandas as pd\n\n\ndef create_figures(data: dict[str, pd.DataFrame], results: dict[str, pd.DataFrame], output_dir: str) -> list[str]:\n    \"\"\"Create simple figures that support the written summary.\"\"\"\n    output_path = Path(output_dir)\n    output_path.mkdir(parents=True, exist_ok=True)\n\n    saved_files: list[str] = []\n\n    item_type_summary = results.get(\"item_type_summary\", pd.DataFrame())\n    if not item_type_summary.empty and \"ITEM TYPE\" in item_type_summary.columns:\n        sales_col = \"RETAIL SALES\" if \"RETAIL SALES\" in item_type_summary.columns else item_type_summary.columns[1]\n        plot_df = item_type_summary[[\"ITEM TYPE\", sales_col]].copy()\n        plot_df = plot_df.sort_values(by=sales_col, ascending=True)\n\n        fig, ax = plt.subplots(figsize=(10, 6))\n        ax.barh(plot_df[\"ITEM TYPE\"].astype(str), plot_df[sales_col])\n        ax.set_xlabel(\"Total Retail Sales\")\n        ax.set_ylabel(\"Item Type\")\n        ax.set_title(\"Total Retail Sales by Item Type\")\n        plt.tight_layout()\n\n        file_path = output_path / \"sales_by_item_type.png\"\n        fig.savefig(file_path, dpi=150)\n        plt.close(fig)\n        saved_files.append(str(file_path))\n\n    monthly_summary = results.get(\"monthly_summary\", pd.DataFrame())\n    if not monthly_summary.empty and {\"YEAR\", \"MONTH\"}.issubset(monthly_summary.columns):\n        sales_cols = [c for c in [\"RETAIL SALES\", \"RETAIL TRANSFERS\", \"WAREHOUSE SALES\"] if c in monthly_summary.columns]\n        if sales_cols:\n            fig, ax = plt.subplots(figsize=(12, 6))\n            x = monthly_summary[\"YEAR\"].astype(str) + \"-\" + monthly_summary[\"MONTH\"].astype(str).str.zfill(2)\n            for col in sales_cols:\n                ax.plot(x, monthly_summary[col], marker=\"o\", linewidth=1.5, label=col)\n            ax.set_xlabel(\"Year-Month\")\n            ax.set_ylabel(\"Total Amount\")\n            ax.set_title(\"Monthly Sales Trends\")\n            ax.legend()\n            ax.tick_params(axis=\"x\", rotation=45)\n            plt.tight_layout()\n\n            file_path = output_path / \"monthly_trends.png\"\n            fig.savefig(file_path, dpi=150)\n            plt.close(fig)\n            saved_files.append(str(file_path))\n\n    return saved_files\n"
+}

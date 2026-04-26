@@ -1,0 +1,8 @@
+2026-04-27 01:20:23,200 | INFO | gauntlet.pipeline | Starting run run_20260426_232023_191783
+2026-04-27 01:20:24,750 | INFO | gauntlet.pipeline | Loaded manifest with 1 dataset(s)
+2026-04-27 01:20:29,845 | INFO | gauntlet.pipeline | Refinement step completed with gpt-5.4-mini-2026-03-17
+2026-04-27 01:20:42,683 | INFO | gauntlet.pipeline | Code generation attempt 1 created 4 files
+2026-04-27 01:20:46,596 | WARNING | gauntlet.pipeline | Attempt 1 failed during semantic_validation: 'value' must be an instance of str or bytes, not a float; load_data returned keys: ['sales']; preprocess returned keys: ['sales']; run_analysis returned result tables: ['item_type_summary', 'monthly_summary', 'numeric_describe', 'structure', 'supplier_summary', 'top_products']; run_analysis result value types: {'structure': 'DataFrame', 'numeric_describe': 'DataFrame', 'monthly_summary': 'DataFrame', 'item_type_summary': 'DataFrame', 'supplier_summary': 'DataFrame', 'top_products': 'DataFrame'}
+2026-04-27 01:20:57,032 | INFO | gauntlet.pipeline | Code generation attempt 2 created 4 files
+2026-04-27 01:21:02,773 | INFO | gauntlet.pipeline | Review attempt 2 status=approved blocking=0 advisory=0
+2026-04-27 01:21:06,928 | INFO | gauntlet.pipeline | Attempt 2 completed successfully

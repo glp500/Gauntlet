@@ -1,0 +1,63 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of data_loader.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `load_data`.
+
+USER:
+Generate only data_loader.py for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and inventory dataset to generate a clear summary of the data and visualize a key relationship or trend using at least one figure.
+
+# Input Dataset Summary
+The input is a single CSV file named `Warehouse_and_Retail_Sales.csv`.
+*   **Rows:** 307,645
+*   **Columns:** `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`.
+*   **Data Types:** The dataset contains mixed types, including integer identifiers (`YEAR`, `MONTH`), string identifiers (`SUPPLIER`, `ITEM CODE`, etc.), and float measurements (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`).
+
+# Assumptions From Schema
+1.  **Data Integrity:** The provided columns accurately represent the intended sales and inventory data.
+2.  **Temporal Data:** The `YEAR` and `MONTH` columns are suitable for time-series analysis.
+3.  **Numerical Analysis:** The float columns (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`) are suitable for aggregation and statistical analysis.
+4.  **Grouping:** The data can be grouped and aggregated by categorical variables such as `SUPPLIER`, `ITEM TYPE`, and temporal features.
+
+# Required Outputs
+1.  A clear, narrative summary of the key findings derived from the dataset analysis.
+2.  At least one figure (visualization) created to explain a significant result or trend observed in the data.
+
+# Code Constraints
+1.  **File Structure:** Generated code must strictly reside within the following modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+2.  **Libraries:** Only the `pandas` and `matplotlib` libraries are permitted.
+3.  **Execution Environment:** No network access, no shell commands, and all logic must be explicit and readable.
+4.  **Data Handling:** Focus on Pandas operations for data manipulation and Matplotlib for visualization.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Shared bundle contract:
+- These names are bundle-level dictionary keys for whole pandas tables, not raw CSV column names.
+- load_data must return keys: warehouse_and_retail_sales.
+- preprocess must return keys: monthly_sales_summary, supplier_item_summary.
+- run_analysis must return result tables: monthly_sales_summary.
+- create_figures must return figure files: monthly_sales_trend.png.
+
+Role contract for data_loader.py:
+- Required public function: `load_data`.
+- Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- Do not preprocess data, run analysis, or create figures here.

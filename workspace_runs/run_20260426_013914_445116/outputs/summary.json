@@ -1,0 +1,158 @@
+{
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "details": {
+        "produced_figures": [
+          "outputs/figures/depression_label_distribution.png",
+          "outputs/figures/key_measures_by_depression.png"
+        ],
+        "produced_results": [
+          "outputs/results/categorical_by_depression.csv",
+          "outputs/results/categorical_summary.csv",
+          "outputs/results/depression_comparison.csv",
+          "outputs/results/group_differences.csv",
+          "outputs/results/numeric_summary.csv",
+          "outputs/results/overview.csv"
+        ],
+        "review_advisory_issues": [
+          "Required public function load_data exists, but it is placed in a separate role file (data_loader.py) rather than being clearly part of the expected analysis pipeline module set; verify the bundle loader will expose it exactly as required.",
+          "The review requested only the expected file roles; the bundle includes four role files, which is expected, but ensure the orchestrator imports these exact public names from the correct modules.",
+          "analysis.py computes df['depression_label'] counts and mean before checking the column exists; this is explicit but brittle and could raise KeyError if the column is absent.",
+          "analysis.py defines an unused helper _safe_mode and imports CATEGORICAL_COLUMNS/NUMERIC_COLUMNS redundantly across modules; simplifying would improve clarity.",
+          "No prohibited third-party dependencies were detected; imports stay within pandas, matplotlib, and the standard library.",
+          "No network access, shell execution, or hidden writes outside output paths were found in the provided code."
+        ]
+      },
+      "recorded_at": "2026-04-26T01:39:39.103746+00:00",
+      "retryable": false,
+      "stage": "execution",
+      "status": "completed"
+    }
+  ],
+  "failure_reason": null,
+  "figures": [
+    "outputs/figures/depression_label_distribution.png",
+    "outputs/figures/key_measures_by_depression.png"
+  ],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_013914_445116\\metadata.json",
+  "results": [
+    "outputs/results/categorical_by_depression.csv",
+    "outputs/results/categorical_summary.csv",
+    "outputs/results/depression_comparison.csv",
+    "outputs/results/group_differences.csv",
+    "outputs/results/numeric_summary.csv",
+    "outputs/results/overview.csv"
+  ],
+  "run_id": "run_20260426_013914_445116",
+  "status": "completed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T01:39:14.474679+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 740,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 549,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1289
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:39:18.456976+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 794,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 2364,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 3158
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:39:32.223308+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 1,
+      "recorded_at": "2026-04-26T01:39:32.235299+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 2176,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 302,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2478
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:39:35.380603+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "advisory_issue_count": 6,
+        "blocking_issue_count": 0
+      },
+      "recorded_at": "2026-04-26T01:39:35.381604+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_013914_445116\\sandbox"
+      },
+      "recorded_at": "2026-04-26T01:39:35.397912+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "duration_seconds": 3.683,
+        "exit_code": 0
+      },
+      "recorded_at": "2026-04-26T01:39:39.079130+00:00",
+      "status": "completed",
+      "step": "execute_sandbox"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_013914_445116\\outputs\\summary.json"
+}

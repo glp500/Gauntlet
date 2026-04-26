@@ -1,0 +1,73 @@
+SYSTEM:
+You write readable Python analysis code for a constrained local sandbox. Return one JSON object only, with exactly these keys: data_loader.py, preprocessing.py, analysis.py, figures.py. Each value must be the full file contents as a string. Do not include markdown fences, commentary, or extra keys. Each file must expose the exact required public function name for its role.
+
+USER:
+Generate the sandbox code bundle described by the analysis brief below.
+
+## Task Objective
+Analyze the provided warehouse and retail sales dataset and produce a clear summary of its contents and key patterns. Include at least one figure that helps explain the result.
+
+## Input Dataset Summary
+- **File:** `Warehouse_and_Retail_Sales.csv`
+- **Rows:** 307,645
+- **Columns:** 9
+
+### Available fields
+- `YEAR` (`int64`)
+- `MONTH` (`int64`)
+- `SUPPLIER` (`str`)
+- `ITEM CODE` (`str`)
+- `ITEM DESCRIPTION` (`str`)
+- `ITEM TYPE` (`str`)
+- `RETAIL SALES` (`float64`)
+- `RETAIL TRANSFERS` (`float64`)
+- `WAREHOUSE SALES` (`float64`)
+
+### Sample value signals
+- `YEAR`: 2017, 2018, 2020
+- `MONTH`: 1, 7, 9
+- `SUPPLIER`: REPUTABLE distributor/vendor names appear as text categories
+- `ITEM CODE`: numeric-like string identifiers
+- `ITEM DESCRIPTION`: product names with sizes/packaging
+- `ITEM TYPE`: category labels such as `WINE`, `BEER`, `LIQUOR`
+- Sales-related fields are numeric and may include zero values
+
+## Assumptions From Schema
+- `YEAR` and `MONTH` represent time dimensions and can be used for temporal summaries.
+- `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, and `ITEM TYPE` are categorical/text fields.
+- `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are quantitative measures suitable for aggregation, comparison, and trend analysis.
+- The dataset likely contains repeated observations across time for products and suppliers.
+- No additional columns should be assumed beyond those listed in the manifest.
+
+## Required Outputs
+- A concise written summary of the dataset, including:
+  - overall structure and key column roles
+  - basic descriptive statistics for numeric columns
+  - notable patterns by time, supplier, item type, or product where relevant
+- At least one figure that clearly supports the summary, such as:
+  - a bar chart of total sales by `ITEM TYPE`
+  - a monthly trend plot using `YEAR` and `MONTH`
+  - a comparison of `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES`
+- Code should be organized so the pipeline can implement:
+  - `data_loader.py`
+  - `preprocessing.py`
+  - `analysis.py`
+  - `figures.py`
+
+## Code Constraints
+- Use **pandas** and **matplotlib** only.
+- No network access.
+- No shell commands.
+- Keep logic explicit and readable.
+- Do not invent or reference columns not present in the manifest.
+- Keep plotting simple and directly tied to the available schema.
+
+Hard rules:
+- data_loader.py must define `load_data(input_dir: str) -> dict[str, pd.DataFrame]`.
+- preprocessing.py must define `preprocess(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]`.
+- analysis.py must define `run_analysis(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]`.
+- figures.py must define `create_figures(data: dict[str, pd.DataFrame], results: dict[str, pd.DataFrame], output_dir: str) -> list[str]`.
+- The runtime imports those exact function names, so do not rename them.
+- Use pandas and matplotlib.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.

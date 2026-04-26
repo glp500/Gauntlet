@@ -1,0 +1,60 @@
+SYSTEM:
+You write readable Python analysis code for a constrained local sandbox. Return one JSON object only, with exactly these keys: data_loader.py, preprocessing.py, analysis.py, figures.py. Each value must be the full file contents as a string. Do not include markdown fences, commentary, or extra keys. Each file must expose the exact required public function name for its role.
+
+USER:
+Generate the sandbox code bundle described by the analysis brief below.
+
+## Task Objective
+Analyze the warehouse and retail sales dataset and produce a clear summary of the main patterns in the data. Include at least one figure that helps explain the results.
+
+## Input Dataset Summary
+- **File:** `Warehouse_and_Retail_Sales.csv`
+- **Rows:** 307,645
+- **Columns:** 9
+- **Fields available:**
+  - `YEAR` *(int64)*
+  - `MONTH` *(int64)*
+  - `SUPPLIER` *(str)*
+  - `ITEM CODE` *(str)*
+  - `ITEM DESCRIPTION` *(str)*
+  - `ITEM TYPE` *(str)*
+  - `RETAIL SALES` *(float64)*
+  - `RETAIL TRANSFERS` *(float64)*
+  - `WAREHOUSE SALES` *(float64)*
+
+## Assumptions From Schema
+- `YEAR` and `MONTH` represent time dimensions and can be used for grouping and trend analysis.
+- `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, and `ITEM TYPE` are categorical/text fields suitable for counts, rankings, and grouping.
+- `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are numeric measures suitable for totals, averages, comparisons, and trend summaries.
+- The dataset appears to support sales analysis by time period, supplier, item type, and item-level descriptions.
+- No additional columns should be assumed beyond those listed in the manifest.
+
+## Required Outputs
+- A concise written summary of the dataset’s main findings.
+- At least one figure that supports the summary, such as:
+  - a time trend by `YEAR` and/or `MONTH`,
+  - a comparison of totals across `ITEM TYPE`,
+  - a top-suppliers or top-items chart.
+- Code organized into the allowed modules:
+  - `data_loader.py`
+  - `preprocessing.py`
+  - `analysis.py`
+  - `figures.py`
+
+## Code Constraints
+- Use **pandas** and **matplotlib** only.
+- No network access.
+- No shell commands.
+- Keep logic explicit and readable.
+- Generated code may only implement the four specified files.
+- Do not invent columns or derived fields beyond what can be computed from the visible schema.
+
+Hard rules:
+- data_loader.py must define `load_data(input_dir: str) -> dict[str, pd.DataFrame]`.
+- preprocessing.py must define `preprocess(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]`.
+- analysis.py must define `run_analysis(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]`.
+- figures.py must define `create_figures(data: dict[str, pd.DataFrame], results: dict[str, pd.DataFrame], output_dir: str) -> list[str]`.
+- The runtime imports those exact function names, so do not rename them.
+- Use pandas and matplotlib.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.

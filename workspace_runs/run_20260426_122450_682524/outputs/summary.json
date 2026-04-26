@@ -1,0 +1,59 @@
+{
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "failure_reason": "Unterminated string starting at: line 1 column 20 (char 19)",
+      "recorded_at": "2026-04-26T12:35:24.097881+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    }
+  ],
+  "failure_reason": "('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))",
+  "figures": [],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_122450_682524\\metadata.json",
+  "results": [],
+  "run_id": "run_20260426_122450_682524",
+  "status": "failed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T12:24:52.225452+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "ollama",
+      "details": {
+        "usage": {
+          "completion_tokens": 1182,
+          "prompt_tokens": 776,
+          "total_duration": 138060036700
+        }
+      },
+      "model": "gemma4:26b",
+      "recorded_at": "2026-04-26T12:27:10.345170+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "ollama",
+      "details": {
+        "usage": {
+          "completion_tokens": null,
+          "prompt_tokens": null,
+          "total_duration": null
+        }
+      },
+      "model": "gemma4:26b",
+      "recorded_at": "2026-04-26T12:35:24.096296+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_122450_682524\\outputs\\summary.json"
+}

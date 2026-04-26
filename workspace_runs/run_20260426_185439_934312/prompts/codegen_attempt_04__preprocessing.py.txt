@@ -1,0 +1,123 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of preprocessing.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `preprocess`.
+
+USER:
+Generate only preprocessing.py for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and inventory dataset to derive meaningful insights, produce a clear summary, and visualize the findings with at least one explanatory figure.
+
+# Input Dataset Summary
+The input is a single CSV file named `Warehouse_and_Retail_Sales.csv`.
+*   **Size:** 307,645 rows.
+*   **Columns:** `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`.
+*   **Data Types:** Numerical columns include `RETAIL SALES` (float64), `RETAIL TRANSFERS` (float64), and `WAREHOUSE SALES` (float64).
+
+# Assumptions From Schema
+1.  The analysis will focus on time-series data (based on `YEAR` and `MONTH`).
+2.  The analysis can involve calculating aggregated metrics (sums, averages, trends) across sales, transfers, and warehouse values.
+3.  The data quality is sufficient for standard pandas analysis (no missing values implied, although this should be checked during processing).
+
+# Required Outputs
+1.  A clear textual summary of the dataset's key findings.
+2.  At least one figure (e.g., line plot, bar chart) that visually explains a significant result derived from the analysis.
+
+# Code Constraints
+1.  **File Access:** Code must load the data from the provided CSV file.
+2.  **Libraries:** Only `pandas` and `matplotlib` are permitted for data manipulation and visualization.
+3.  **Execution Environment:** No external network access, shell commands, or external APIs are allowed.
+4.  **Module Structure:** Generated code must implement logic within the following files: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+5.  **Logic:** All analysis and visualization logic must be explicit, readable, and self-contained.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Shared bundle contract:
+- load_data must return keys: YEAR, MONTH, SUPPLIER, ITEM CODE, ITEM DESCRIPTION, ITEM TYPE, RETAIL SALES, RETAIL TRANSFERS, WAREHOUSE SALES.
+- preprocess must return keys: YEAR, MONTH, SUPPLIER, ITEM CODE, ITEM DESCRIPTION, ITEM TYPE, RETAIL SALES, RETAIL TRANSFERS, WAREHOUSE SALES.
+- run_analysis must return result tables: sales_summary.
+- create_figures must return figure files: sales_trend.png.
+
+Role contract for preprocessing.py:
+- Required public function: `preprocess`.
+- Transform the provided `data` dictionary and return another `dict[str, pd.DataFrame]`. Do not load files, run analysis, or create plots.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- Do not read from file paths or touch the output directory here.
+
+Files already generated for this attempt:
+
+- data_loader.py: function `load_data`. Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+
+Repair guidance for this file:
+- Prior failure stage: semantic_validation.
+- Keep working parts of this file stable unless the listed issues require a rewrite.
+- Follow this targeted guidance:
+  - preprocess must preserve or intentionally transform dictionary keys in a way that still matches what run_analysis expects.
+- Previous attempt issues:
+  - preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].
+  - load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']
+
+Previous version of preprocessing.py:
+import pandas as pd
+from typing import Dict
+
+def preprocess(data: Dict[str, pd.DataFrame]) -> Dict[str, pd.DataFrame]:
+    """
+    Preprocesses the raw sales and inventory data by extracting and structuring
+    the required columns.
+
+    Args:
+        data: A dictionary where keys correspond to column names (source DF names)
+              and values are pandas DataFrames loaded from the input.
+
+    Returns:
+        A dictionary containing the processed DataFrames, keyed by the required
+        column names: YEAR, MONTH, SUPPLIER, ITEM CODE, ITEM DESCRIPTION, 
+        ITEM TYPE, RETAIL SALES, RETAIL TRANSFERS, WAREHOUSE SALES.
+    """
+    processed_data = {}
+
+    required_columns = [
+        'YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 
+        'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'
+    ]
+
+    for col_name, df in data.items():
+        if not isinstance(df, pd.DataFrame):
+            continue
+            
+        # Check if the DataFrame contains all necessary core columns
+        if all(col in df.columns for col in required_columns):
+            df_copy = df[required_columns].copy()
+            
+            # Store the subset of required columns under their respective names.
+            # If multiple input DFs exist, this structure ensures we capture all relevant fields.
+            for col in required_columns:
+                # We store the entire required column as the processed DataFrame for that key.
+                # Note: Depending on the runtime orchestration, this might overwrite or merge data.
+                # For a safe implementation, we store the unique combination or the full subset.
+                processed_data[col] = df_copy[col]
+                
+            # Additional time-series preparation (optional, keeping it minimal as per contract focus)
+            if 'YEAR' in df_copy.columns and 'MONTH' in df_copy.columns:
+                # Create a combined date column for easier time-series plotting/aggregation
+                df_copy['DATE'] = pd.to_datetime(df_copy['YEAR'].astype(str) + '-' + df_copy['MONTH'].astype(str) + '-01')
+
+    return processed_data

@@ -1,0 +1,15 @@
+2026-04-26 03:43:56,037 | INFO | gauntlet.execution | Sandbox exit code: 0
+2026-04-26 03:43:56,037 | INFO | gauntlet.execution | Sandbox stdout:
+Results written:
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_014334_166098\outputs\results\overall_summary.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_014334_166098\outputs\results\year_summary.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_014334_166098\outputs\results\month_summary.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_014334_166098\outputs\results\item_type_summary.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_014334_166098\outputs\results\supplier_summary.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_014334_166098\outputs\results\top_suppliers.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_014334_166098\outputs\results\top_items.csv
+Figures written:
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_014334_166098\outputs\figures\year_trend.png
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_014334_166098\outputs\figures\item_type_sales.png
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_014334_166098\outputs\figures\top_suppliers.png
+

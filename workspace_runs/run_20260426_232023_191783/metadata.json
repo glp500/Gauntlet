@@ -1,0 +1,353 @@
+{
+  "artifacts": {
+    "figures": [
+      "outputs/figures/monthly_trends.png",
+      "outputs/figures/sales_by_item_type.png"
+    ],
+    "results": [
+      "outputs/results/item_type_summary.csv",
+      "outputs/results/monthly_summary.csv",
+      "outputs/results/numeric_describe.csv",
+      "outputs/results/structure.csv",
+      "outputs/results/supplier_summary.csv",
+      "outputs/results/top_products.csv"
+    ]
+  },
+  "attempt_count": 2,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "failure_reason": "'value' must be an instance of str or bytes, not a float; load_data returned keys: ['sales']; preprocess returned keys: ['sales']; run_analysis returned result tables: ['item_type_summary', 'monthly_summary', 'numeric_describe', 'structure', 'supplier_summary', 'top_products']; run_analysis result value types: {'structure': 'DataFrame', 'numeric_describe': 'DataFrame', 'monthly_summary': 'DataFrame', 'item_type_summary': 'DataFrame', 'supplier_summary': 'DataFrame', 'top_products': 'DataFrame'}",
+      "recorded_at": "2026-04-26T23:20:46.596426+00:00",
+      "retryable": true,
+      "stage": "semantic_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "produced_figures": [
+          "outputs/figures/monthly_trends.png",
+          "outputs/figures/sales_by_item_type.png"
+        ],
+        "produced_results": [
+          "outputs/results/item_type_summary.csv",
+          "outputs/results/monthly_summary.csv",
+          "outputs/results/numeric_describe.csv",
+          "outputs/results/structure.csv",
+          "outputs/results/supplier_summary.csv",
+          "outputs/results/top_products.csv"
+        ],
+        "review_advisory_issues": []
+      },
+      "recorded_at": "2026-04-26T23:21:06.928145+00:00",
+      "retryable": false,
+      "stage": "execution",
+      "status": "completed"
+    }
+  ],
+  "created_at": "2026-04-26T23:20:23.191783+00:00",
+  "input_manifest": {
+    "datasets": [
+      {
+        "columns": [
+          "YEAR",
+          "MONTH",
+          "SUPPLIER",
+          "ITEM CODE",
+          "ITEM DESCRIPTION",
+          "ITEM TYPE",
+          "RETAIL SALES",
+          "RETAIL TRANSFERS",
+          "WAREHOUSE SALES"
+        ],
+        "dtypes": {
+          "ITEM CODE": "str",
+          "ITEM DESCRIPTION": "str",
+          "ITEM TYPE": "str",
+          "MONTH": "int64",
+          "RETAIL SALES": "float64",
+          "RETAIL TRANSFERS": "float64",
+          "SUPPLIER": "str",
+          "WAREHOUSE SALES": "float64",
+          "YEAR": "int64"
+        },
+        "file_name": "Warehouse_and_Retail_Sales.csv",
+        "rows": 307645,
+        "sample_values": {
+          "ITEM CODE": [
+            "100009",
+            "100024",
+            "1001"
+          ],
+          "ITEM DESCRIPTION": [
+            "BOOTLEG RED - 750ML",
+            "MOMENT DE PLAISIR - 750ML",
+            "S SMITH ORGANIC PEAR CIDER - 18.7OZ"
+          ],
+          "ITEM TYPE": [
+            "WINE",
+            "BEER",
+            "LIQUOR"
+          ],
+          "MONTH": [
+            "1",
+            "9",
+            "7"
+          ],
+          "RETAIL SALES": [
+            "0.0",
+            "0.82",
+            "2.76"
+          ],
+          "RETAIL TRANSFERS": [
+            "0.0",
+            "1.0",
+            "4.0"
+          ],
+          "SUPPLIER": [
+            "REPUBLIC NATIONAL DISTRIBUTING CO",
+            "PWSWN INC",
+            "RELIABLE CHURCHILL LLLP"
+          ],
+          "WAREHOUSE SALES": [
+            "2.0",
+            "4.0",
+            "1.0"
+          ],
+          "YEAR": [
+            "2020",
+            "2017",
+            "2018"
+          ]
+        }
+      }
+    ],
+    "task_text": "Analyze the dataset and produce a clear summary. Create at least one figure that helps explain the result."
+  },
+  "run_id": "run_20260426_232023_191783",
+  "status": "completed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T23:20:24.749868+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "request_details": {
+          "duration_seconds": 5.088,
+          "ended_at": "2026-04-26T23:20:29.837397+00:00",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "started_at": "2026-04-26T23:20:24.751870+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "input_tokens": 642,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 588,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1230
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T23:20:29.843335+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "openai",
+      "details": {
+        "request_details": {
+          "duration_seconds": 12.833,
+          "ended_at": "2026-04-26T23:20:42.679335+00:00",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "started_at": "2026-04-26T23:20:29.846345+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "input_tokens": 833,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 2079,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2912
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T23:20:42.682335+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 1,
+      "recorded_at": "2026-04-26T23:20:42.693147+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_232023_191783\\sandbox"
+      },
+      "recorded_at": "2026-04-26T23:20:42.711243+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "duration_seconds": 3.876,
+        "figure_file_names": [],
+        "loaded_keys": [
+          "sales"
+        ],
+        "processed_keys": [
+          "sales"
+        ],
+        "result_table_names": [
+          "item_type_summary",
+          "monthly_summary",
+          "numeric_describe",
+          "structure",
+          "supplier_summary",
+          "top_products"
+        ]
+      },
+      "recorded_at": "2026-04-26T23:20:46.596426+00:00",
+      "status": "failed",
+      "step": "semantic_smoke_check"
+    },
+    {
+      "attempt_number": 2,
+      "backend": "openai",
+      "details": {
+        "request_details": {
+          "duration_seconds": 10.424,
+          "ended_at": "2026-04-26T23:20:57.016522+00:00",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "started_at": "2026-04-26T23:20:46.596426+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "input_tokens": 4111,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 1906,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 6017
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T23:20:57.032188+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 2,
+      "recorded_at": "2026-04-26T23:20:57.039635+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_232023_191783\\sandbox"
+      },
+      "recorded_at": "2026-04-26T23:20:57.063973+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "duration_seconds": 4.087,
+        "figure_file_names": [
+          "monthly_trends.png",
+          "sales_by_item_type.png"
+        ],
+        "loaded_keys": [
+          "sales"
+        ],
+        "processed_keys": [
+          "sales"
+        ],
+        "result_table_names": [
+          "item_type_summary",
+          "monthly_summary",
+          "numeric_describe",
+          "structure",
+          "supplier_summary",
+          "top_products"
+        ]
+      },
+      "recorded_at": "2026-04-26T23:21:01.159962+00:00",
+      "status": "completed",
+      "step": "semantic_smoke_check"
+    },
+    {
+      "attempt_number": 2,
+      "backend": "openai",
+      "details": {
+        "request_details": {
+          "duration_seconds": 1.605,
+          "ended_at": "2026-04-26T23:21:02.767194+00:00",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "started_at": "2026-04-26T23:21:01.159962+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "input_tokens": 1830,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 61,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1891
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T23:21:02.768676+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "advisory_issue_count": 0,
+        "blocking_issue_count": 0
+      },
+      "recorded_at": "2026-04-26T23:21:02.768676+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "duration_seconds": 4.135,
+        "exit_code": 0
+      },
+      "recorded_at": "2026-04-26T23:21:06.909563+00:00",
+      "status": "completed",
+      "step": "execute_sandbox"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_232023_191783\\outputs\\summary.json"
+}

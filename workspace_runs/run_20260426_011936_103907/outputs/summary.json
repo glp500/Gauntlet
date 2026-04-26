@@ -1,0 +1,96 @@
+{
+  "failure_reason": "Sandbox execution failed with exit code 1.",
+  "figures": [],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_011936_103907\\metadata.json",
+  "results": [],
+  "run_id": "run_20260426_011936_103907",
+  "status": "failed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T01:19:36.154747+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 740,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 599,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1339
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:19:42.822766+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 750,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 2110,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2860
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:19:54.357076+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 1862,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 30,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1892
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:19:55.679001+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_011936_103907\\sandbox"
+      },
+      "recorded_at": "2026-04-26T01:19:55.690640+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "details": {
+        "duration_seconds": 1.013,
+        "exit_code": 1
+      },
+      "recorded_at": "2026-04-26T01:19:56.708980+00:00",
+      "status": "failed",
+      "step": "execute_sandbox"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_011936_103907\\outputs\\summary.json"
+}

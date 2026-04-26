@@ -1,0 +1,100 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of data_loader.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `load_data`.
+
+USER:
+Generate only data_loader.py for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and warehouse data to generate a clear summary and visualize key findings through at least one generated figure.
+
+# Input Dataset Summary
+The analysis will be performed on the file `Warehouse_and_Retail_Sales.csv`.
+*   **Rows:** 307,645
+*   **Columns:** `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`.
+*   **Data Types:** Numerical fields (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`) are floats. Temporal and categorical fields are integers or strings.
+
+# Assumptions From Schema
+1.  The dataset contains historical sales and inventory movement data across different years and months.
+2.  `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are quantifiable numeric metrics suitable for aggregation and visualization.
+3.  The temporal fields (`YEAR`, `MONTH`) can be used for time-series analysis.
+4.  The goal of the analysis is to identify meaningful relationships between sales, transfers, and warehouse figures, potentially segmented by supplier or item type.
+
+# Required Outputs
+1.  A clear textual summary of the dataset's key findings.
+2.  At least one generated visualization (figure) that effectively explains a significant relationship or trend found in the data.
+
+# Code Constraints
+1.  **File Structure:** Generated code must be distributed across `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+2.  **Libraries:** Only the `pandas` and `matplotlib` libraries are permitted for computation and visualization.
+3.  **Execution Environment:** No external network access or shell commands are allowed.
+4.  **Logic:** All analytical logic must be explicit and highly readable.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Role contract for data_loader.py:
+- Required public function: `load_data`.
+- Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- Do not preprocess data, run analysis, or create figures here.
+
+Repair guidance for this file:
+- Prior failure stage: execution.
+- Keep working parts of this file stable unless the listed issues require a rewrite.
+- Previous attempt issues:
+  - Generated code returned or consumed an invalid runtime type.
+  - Sandbox stderr summary: File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 23, in _write_results | raise TypeError(f"Analysis result '{table_name}' is not a pandas DataFrame.") | TypeError: Analysis result 'text_summary' is not a pandas DataFrame.
+
+Previous version of data_loader.py:
+import pandas as pd
+import os
+
+def load_data(input_dir: str) -> dict[str, pd.DataFrame]:
+    """
+    Loads sales and warehouse data from the specified input directory.
+
+    Args:
+        input_dir: The path to the directory containing the data files.
+
+    Returns:
+        A dictionary where the key is 'sales_data' and the value is the 
+        Pandas DataFrame loaded from Warehouse_and_Retail_Sales.csv.
+    """
+    dataframes = {}
+    
+    # Assuming the primary file is Warehouse_and_Retail_Sales.csv based on the task description
+    file_name = "Warehouse_and_Retail_Sales.csv"
+    file_path = os.path.join(input_dir, file_name)
+    
+    if not os.path.exists(file_path):
+        # Return empty dictionary if the file is not found
+        return dataframes
+
+    try:
+        df = pd.read_csv(file_path)
+        
+        # Store the loaded DataFrame
+        dataframes['sales_data'] = df
+        
+    except Exception:
+        # Handle potential errors during file reading
+        pass
+        
+    return dataframes

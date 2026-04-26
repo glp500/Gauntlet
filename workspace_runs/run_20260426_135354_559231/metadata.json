@@ -1,0 +1,444 @@
+{
+  "attempt_count": 5,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "failure_reason": "Generated bundle failed file policy checks: preprocessing.py: unsupported dependency `numpy`; preprocessing.py: banned call `__import__`; analysis.py: unsupported dependency `data_loader`; analysis.py: unsupported dependency `preprocessing`; analysis.py: unsupported dependency `figures`; figures.py: syntax error: invalid syntax (figures.py, line 72)",
+      "recorded_at": "2026-04-26T13:57:12.294798+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 2,
+      "failure_reason": "Generated bundle failed file policy checks: analysis.py: unsupported dependency `data_loader`; analysis.py: unsupported dependency `preprocessing`; analysis.py: unsupported dependency `figures`",
+      "recorded_at": "2026-04-26T13:59:24.590491+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 3,
+      "failure_reason": "Generated bundle failed file policy checks: analysis.py: unsupported dependency `data_loader`; analysis.py: unsupported dependency `preprocessing`; analysis.py: unsupported dependency `figures`",
+      "recorded_at": "2026-04-26T14:02:13.208724+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 4,
+      "failure_reason": "Generated bundle failed file policy checks: analysis.py: unsupported dependency `data_loader`; analysis.py: unsupported dependency `preprocessing`; analysis.py: unsupported dependency `figures`",
+      "recorded_at": "2026-04-26T14:04:47.231036+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 5,
+      "failure_reason": "Generated bundle failed file policy checks: analysis.py: unsupported dependency `data_loader`; analysis.py: unsupported dependency `preprocessing`; analysis.py: unsupported dependency `figures`",
+      "recorded_at": "2026-04-26T14:07:09.791914+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    }
+  ],
+  "created_at": "2026-04-26T13:53:54.559231+00:00",
+  "failure_reason": "Code generation failed after 5 attempts. Last error: Generated bundle failed file policy checks: analysis.py: unsupported dependency `data_loader`; analysis.py: unsupported dependency `preprocessing`; analysis.py: unsupported dependency `figures`",
+  "input_manifest": {
+    "datasets": [
+      {
+        "columns": [
+          "YEAR",
+          "MONTH",
+          "SUPPLIER",
+          "ITEM CODE",
+          "ITEM DESCRIPTION",
+          "ITEM TYPE",
+          "RETAIL SALES",
+          "RETAIL TRANSFERS",
+          "WAREHOUSE SALES"
+        ],
+        "dtypes": {
+          "ITEM CODE": "str",
+          "ITEM DESCRIPTION": "str",
+          "ITEM TYPE": "str",
+          "MONTH": "int64",
+          "RETAIL SALES": "float64",
+          "RETAIL TRANSFERS": "float64",
+          "SUPPLIER": "str",
+          "WAREHOUSE SALES": "float64",
+          "YEAR": "int64"
+        },
+        "file_name": "Warehouse_and_Retail_Sales.csv",
+        "rows": 307645,
+        "sample_values": {
+          "ITEM CODE": [
+            "100009",
+            "100024",
+            "1001"
+          ],
+          "ITEM DESCRIPTION": [
+            "BOOTLEG RED - 750ML",
+            "MOMENT DE PLAISIR - 750ML",
+            "S SMITH ORGANIC PEAR CIDER - 18.7OZ"
+          ],
+          "ITEM TYPE": [
+            "WINE",
+            "BEER",
+            "LIQUOR"
+          ],
+          "MONTH": [
+            "1",
+            "9",
+            "7"
+          ],
+          "RETAIL SALES": [
+            "0.0",
+            "0.82",
+            "2.76"
+          ],
+          "RETAIL TRANSFERS": [
+            "0.0",
+            "1.0",
+            "4.0"
+          ],
+          "SUPPLIER": [
+            "REPUBLIC NATIONAL DISTRIBUTING CO",
+            "PWSWN INC",
+            "RELIABLE CHURCHILL LLLP"
+          ],
+          "WAREHOUSE SALES": [
+            "2.0",
+            "4.0",
+            "1.0"
+          ],
+          "YEAR": [
+            "2020",
+            "2017",
+            "2018"
+          ]
+        }
+      }
+    ],
+    "task_text": "Analyze the dataset and produce a clear summary. Create at least one figure that helps explain the result."
+  },
+  "run_id": "run_20260426_135354_559231",
+  "status": "failed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T13:53:56.217864+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "ollama",
+      "details": {
+        "request_details": {
+          "duration_seconds": 37.095,
+          "ended_at": "2026-04-26T13:54:33.331699+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T13:53:56.236899+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 889,
+          "prompt_tokens": 776,
+          "total_duration": 37079316500
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T13:54:33.335033+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 20.561,
+              "ended_at": "2026-04-26T13:54:53.905566+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T13:54:33.344172+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 46.069,
+              "ended_at": "2026-04-26T13:55:39.977298+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T13:54:53.908289+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 45.965,
+              "ended_at": "2026-04-26T13:56:25.947973+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T13:55:39.982656+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 46.327,
+              "ended_at": "2026-04-26T13:57:12.280437+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T13:56:25.953312+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 4925,
+          "prompt_tokens": 5997,
+          "total_duration": 158817887800
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T13:57:12.286666+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "failure_reason": "Generated bundle failed file policy checks: preprocessing.py: unsupported dependency `numpy`; preprocessing.py: banned call `__import__`; analysis.py: unsupported dependency `data_loader`; analysis.py: unsupported dependency `preprocessing`; analysis.py: unsupported dependency `figures`; figures.py: syntax error: invalid syntax (figures.py, line 72)"
+      },
+      "recorded_at": "2026-04-26T13:57:12.293796+00:00",
+      "status": "failed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 2,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 22.72,
+              "ended_at": "2026-04-26T13:57:35.045562+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T13:57:12.325516+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 42.135,
+              "ended_at": "2026-04-26T13:58:17.183429+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T13:57:35.050712+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 38.309,
+              "ended_at": "2026-04-26T13:58:55.499381+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T13:58:17.191394+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 29.072,
+              "ended_at": "2026-04-26T13:59:24.576914+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T13:58:55.503703+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 3824,
+          "prompt_tokens": 21577,
+          "total_duration": 132018667300
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T13:59:24.584480+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "failure_reason": "Generated bundle failed file policy checks: analysis.py: unsupported dependency `data_loader`; analysis.py: unsupported dependency `preprocessing`; analysis.py: unsupported dependency `figures`"
+      },
+      "recorded_at": "2026-04-26T13:59:24.589263+00:00",
+      "status": "failed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 3,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 25.039,
+              "ended_at": "2026-04-26T13:59:49.637287+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T13:59:24.598277+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 30.335,
+              "ended_at": "2026-04-26T14:00:19.977847+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T13:59:49.642644+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 50.914,
+              "ended_at": "2026-04-26T14:01:10.898446+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T14:00:19.983566+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 62.289,
+              "ended_at": "2026-04-26T14:02:13.193127+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T14:01:10.903230+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 4994,
+          "prompt_tokens": 17896,
+          "total_duration": 168347736000
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T14:02:13.198758+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 3,
+      "details": {
+        "failure_reason": "Generated bundle failed file policy checks: analysis.py: unsupported dependency `data_loader`; analysis.py: unsupported dependency `preprocessing`; analysis.py: unsupported dependency `figures`"
+      },
+      "recorded_at": "2026-04-26T14:02:13.206912+00:00",
+      "status": "failed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 4,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 24.191,
+              "ended_at": "2026-04-26T14:02:37.422480+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T14:02:13.232116+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 49.203,
+              "ended_at": "2026-04-26T14:03:26.632780+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T14:02:37.431735+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 41.801,
+              "ended_at": "2026-04-26T14:04:08.436036+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T14:03:26.638513+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 38.772,
+              "ended_at": "2026-04-26T14:04:47.218785+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T14:04:08.448813+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 4462,
+          "prompt_tokens": 19248,
+          "total_duration": 153803092700
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T14:04:47.225454+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 4,
+      "details": {
+        "failure_reason": "Generated bundle failed file policy checks: analysis.py: unsupported dependency `data_loader`; analysis.py: unsupported dependency `preprocessing`; analysis.py: unsupported dependency `figures`"
+      },
+      "recorded_at": "2026-04-26T14:04:47.231036+00:00",
+      "status": "failed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 5,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 24.531,
+              "ended_at": "2026-04-26T14:05:11.773421+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T14:04:47.241571+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 30.878,
+              "ended_at": "2026-04-26T14:05:42.655833+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T14:05:11.777747+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 49.334,
+              "ended_at": "2026-04-26T14:06:31.996050+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T14:05:42.659919+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 37.774,
+              "ended_at": "2026-04-26T14:07:09.775950+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T14:06:32.002146+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 4164,
+          "prompt_tokens": 19230,
+          "total_duration": 142293012400
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T14:07:09.784721+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 5,
+      "details": {
+        "failure_reason": "Generated bundle failed file policy checks: analysis.py: unsupported dependency `data_loader`; analysis.py: unsupported dependency `preprocessing`; analysis.py: unsupported dependency `figures`"
+      },
+      "recorded_at": "2026-04-26T14:07:09.790928+00:00",
+      "status": "failed",
+      "step": "validate_code_bundle"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_135354_559231\\outputs\\summary.json"
+}

@@ -1,0 +1,10 @@
+2026-04-26 03:19:36,118 | INFO | gauntlet.pipeline | Starting run run_20260426_011936_103907
+2026-04-26 03:19:36,155 | INFO | gauntlet.pipeline | Loaded manifest with 1 dataset(s)
+2026-04-26 03:19:42,824 | INFO | gauntlet.pipeline | Refinement step completed with gpt-5.4-mini-2026-03-17
+2026-04-26 03:19:54,358 | INFO | gauntlet.pipeline | Code generation created 4 files
+2026-04-26 03:19:55,679 | INFO | gauntlet.pipeline | Review status: approved
+2026-04-26 03:19:56,708 | ERROR | gauntlet.pipeline | Run failed: Sandbox execution failed with exit code 1.
+Traceback (most recent call last):
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\src\gauntlet\orchestrator\pipeline.py", line 76, in run
+    raise RuntimeError(execution_result["failure_reason"])
+RuntimeError: Sandbox execution failed with exit code 1.

@@ -1,0 +1,194 @@
+{
+  "created_at": "2026-04-26T01:23:32.711706+00:00",
+  "failure_reason": "Generated bundle failed review: Missing required public function load_data in the expected module layout for the bundle review; Missing required public function preprocess in the expected module layout for the bundle review; Missing required public function run_analysis in the expected module layout for the bundle review; Missing required public function create_figures in the expected module layout for the bundle review; Unexpected file roles/names present relative to the requested bundle contract (multiple separate modules instead of a clearly expected single role layout); Possible hidden write concern: create_figures writes output files, which is acceptable only if the provided output path is the sole destination; this should be confirmed by contract; Minor readability issue: unused imports (Dict, List)",
+  "input_manifest": {
+    "datasets": [
+      {
+        "columns": [
+          "age",
+          "gender",
+          "daily_social_media_hours",
+          "platform_usage",
+          "sleep_hours",
+          "screen_time_before_sleep",
+          "academic_performance",
+          "physical_activity",
+          "social_interaction_level",
+          "stress_level",
+          "anxiety_level",
+          "addiction_level",
+          "depression_label"
+        ],
+        "dtypes": {
+          "academic_performance": "float64",
+          "addiction_level": "int64",
+          "age": "int64",
+          "anxiety_level": "int64",
+          "daily_social_media_hours": "float64",
+          "depression_label": "int64",
+          "gender": "str",
+          "physical_activity": "float64",
+          "platform_usage": "str",
+          "screen_time_before_sleep": "float64",
+          "sleep_hours": "float64",
+          "social_interaction_level": "str",
+          "stress_level": "int64"
+        },
+        "file_name": "Teen_Mental_Health_Dataset.csv",
+        "rows": 1200,
+        "sample_values": {
+          "academic_performance": [
+            "3.01",
+            "3.22",
+            "3.92"
+          ],
+          "addiction_level": [
+            "1",
+            "10",
+            "2"
+          ],
+          "age": [
+            "14",
+            "19",
+            "17"
+          ],
+          "anxiety_level": [
+            "2",
+            "1",
+            "4"
+          ],
+          "daily_social_media_hours": [
+            "7.9",
+            "1.9",
+            "1.3"
+          ],
+          "depression_label": [
+            "0",
+            "1"
+          ],
+          "gender": [
+            "male",
+            "female"
+          ],
+          "physical_activity": [
+            "1.5",
+            "0.8",
+            "0.0"
+          ],
+          "platform_usage": [
+            "Instagram",
+            "TikTok",
+            "Both"
+          ],
+          "screen_time_before_sleep": [
+            "2.9",
+            "0.5",
+            "1.6"
+          ],
+          "sleep_hours": [
+            "7.4",
+            "8.0",
+            "7.6"
+          ],
+          "social_interaction_level": [
+            "low",
+            "high",
+            "medium"
+          ],
+          "stress_level": [
+            "2",
+            "8",
+            "1"
+          ]
+        }
+      }
+    ],
+    "task_text": "Analyze the s dataset and produce a clear summary. Create at least one figure that helps explain the result."
+  },
+  "review_result": {
+    "issues": [
+      "Missing required public function load_data in the expected module layout for the bundle review",
+      "Missing required public function preprocess in the expected module layout for the bundle review",
+      "Missing required public function run_analysis in the expected module layout for the bundle review",
+      "Missing required public function create_figures in the expected module layout for the bundle review",
+      "Unexpected file roles/names present relative to the requested bundle contract (multiple separate modules instead of a clearly expected single role layout)",
+      "Possible hidden write concern: create_figures writes output files, which is acceptable only if the provided output path is the sole destination; this should be confirmed by contract",
+      "Minor readability issue: unused imports (Dict, List)"
+    ],
+    "status": "blocked",
+    "summary": "The bundle is mostly explicit and stays within allowed libraries, but it does not satisfy the required public API and file-role constraints."
+  },
+  "run_id": "run_20260426_012332_711706",
+  "status": "failed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T01:23:32.753193+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 740,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 582,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1322
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:23:36.909182+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 827,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 2083,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2910
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:23:47.440216+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 1897,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 174,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2071
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:23:50.185987+00:00",
+      "status": "completed",
+      "step": "review_code"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_012332_711706\\outputs\\summary.json"
+}

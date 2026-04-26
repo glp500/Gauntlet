@@ -1,0 +1,70 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of figures.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `create_figures`.
+
+USER:
+Generate only figures.py for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and inventory dataset to produce a clear summary and generate at least one visualization (figure) that explains the key findings of the analysis.
+
+# Input Dataset Summary
+The analysis will be performed on a single CSV file named `Warehouse_and_Retail_Sales.csv`.
+*   **Rows:** 307,645
+*   **Columns:** YEAR, MONTH, SUPPLIER, ITEM CODE, ITEM DESCRIPTION, ITEM TYPE, RETAIL SALES, RETAIL TRANSFERS, WAREHOUSE SALES.
+*   **Data Types:** Numerical fields (RETAIL SALES, RETAIL TRANSFERS, WAREHOUSE SALES) are float64. Date fields (YEAR, MONTH) are int64. Categorical fields (SUPPLIER, ITEM DESCRIPTION, ITEM TYPE) are string.
+
+# Assumptions From Schema
+1.  The analysis should focus on aggregating and summarizing the sales, transfers, and warehouse data across the provided dimensions (Year, Month, Supplier, Item Type).
+2.  'RETAIL SALES', 'RETAIL TRANSFERS', and 'WAREHOUSE SALES' are the primary numerical metrics for aggregation.
+3.  The analysis should consider relationships between sales, transfers, and warehouse stock.
+
+# Required Outputs
+1.  A clear, descriptive summary of the dataset's key findings.
+2.  At least one figure (visualization) created using pandas and matplotlib to visually explain a significant result derived from the analysis.
+
+# Code Constraints
+1.  The generated code must implement functions only within the following files: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+2.  Only the pandas and matplotlib libraries are permitted.
+3.  No external network access is allowed.
+4.  No shell commands are allowed.
+5.  The logic must be explicit and highly readable.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Shared bundle contract:
+- These names are bundle-level dictionary keys for whole pandas tables, not raw CSV column names.
+- load_data must return keys: warehouse_and_retail_sales.
+- preprocess must return keys: monthly_sales_summary, supplier_performance.
+- run_analysis must return result tables: monthly_sales_summary, supplier_performance.
+- create_figures must return figure files: monthly_sales_trend.png.
+
+Role contract for figures.py:
+- Required public function: `create_figures`.
+- Consume `data`, `results`, and `output_dir`, save figure files into the provided output directory, and return `list[str]` paths. Do not load files or run the pipeline.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- Do not call `run_analysis` or orchestrate the pipeline here.
+- Close figures after saving them.
+
+Files already generated for this attempt:
+
+- data_loader.py: function `load_data`. Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+- preprocessing.py: function `preprocess`. Transform the provided `data` dictionary and return another `dict[str, pd.DataFrame]`. Do not load files, run analysis, or create plots.
+- analysis.py: function `run_analysis`. Consume the preprocessed `data` dictionary and return `dict[str, pd.DataFrame]` analysis results. Do not load files, do not call plotting, and do not orchestrate the other generated modules.

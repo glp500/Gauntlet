@@ -1,0 +1,123 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of figures.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `create_figures`.
+
+USER:
+Generate only figures.py for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and inventory dataset to derive meaningful insights, produce a clear summary, and visualize the findings with at least one explanatory figure.
+
+# Input Dataset Summary
+The input is a single CSV file named `Warehouse_and_Retail_Sales.csv`.
+*   **Size:** 307,645 rows.
+*   **Columns:** `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`.
+*   **Data Types:** Numerical columns include `RETAIL SALES` (float64), `RETAIL TRANSFERS` (float64), and `WAREHOUSE SALES` (float64).
+
+# Assumptions From Schema
+1.  The analysis will focus on time-series data (based on `YEAR` and `MONTH`).
+2.  The analysis can involve calculating aggregated metrics (sums, averages, trends) across sales, transfers, and warehouse values.
+3.  The data quality is sufficient for standard pandas analysis (no missing values implied, although this should be checked during processing).
+
+# Required Outputs
+1.  A clear textual summary of the dataset's key findings.
+2.  At least one figure (e.g., line plot, bar chart) that visually explains a significant result derived from the analysis.
+
+# Code Constraints
+1.  **File Access:** Code must load the data from the provided CSV file.
+2.  **Libraries:** Only `pandas` and `matplotlib` are permitted for data manipulation and visualization.
+3.  **Execution Environment:** No external network access, shell commands, or external APIs are allowed.
+4.  **Module Structure:** Generated code must implement logic within the following files: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+5.  **Logic:** All analysis and visualization logic must be explicit, readable, and self-contained.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Shared bundle contract:
+- load_data must return keys: YEAR, MONTH, SUPPLIER, ITEM CODE, ITEM DESCRIPTION, ITEM TYPE, RETAIL SALES, RETAIL TRANSFERS, WAREHOUSE SALES.
+- preprocess must return keys: YEAR, MONTH, SUPPLIER, ITEM CODE, ITEM DESCRIPTION, ITEM TYPE, RETAIL SALES, RETAIL TRANSFERS, WAREHOUSE SALES.
+- run_analysis must return result tables: yearly_sales_summary, item_performance_summary.
+- create_figures must return figure files: yearly_sales_trend.png.
+
+Role contract for figures.py:
+- Required public function: `create_figures`.
+- Consume `data`, `results`, and `output_dir`, save figure files into the provided output directory, and return `list[str]` paths. Do not load files or run the pipeline.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- Do not call `run_analysis` or orchestrate the pipeline here.
+- Close figures after saving them.
+
+Files already generated for this attempt:
+
+- data_loader.py: function `load_data`. Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+- preprocessing.py: function `preprocess`. Transform the provided `data` dictionary and return another `dict[str, pd.DataFrame]`. Do not load files, run analysis, or create plots.
+- analysis.py: function `run_analysis`. Consume the preprocessed `data` dictionary and return `dict[str, pd.DataFrame]` analysis results. Do not load files, do not call plotting, and do not orchestrate the other generated modules.
+
+Repair guidance for this file:
+- Prior failure stage: semantic_validation.
+- Keep working parts of this file stable unless the listed issues require a rewrite.
+- Previous attempt issues:
+  - preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].
+  - load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']
+
+Previous version of figures.py:
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+def create_figures(data: dict, results: dict, output_dir: str) -> list[str]:
+    """
+    Generates required figures based on the provided data and analysis results.
+
+    Args:
+        data (dict): Dictionary containing preprocessed DataFrame(s) from preprocessing.py.
+        results (dict): Dictionary containing analysis results from analysis.py.
+        output_dir (str): The directory where figures will be saved.
+
+    Returns:
+        list[str]: A list of paths to the generated figure files.
+    """
+    figure_paths = []
+    
+    # --- Figure 1: Sales Trend Over Time ---
+    
+    # Check if necessary data exists for plotting
+    if 'data' in data and 'RETAIL SALES' in data['data'].columns:
+        df = data['data'].copy()
+        
+        # Aggregate sales by Year to get the trend over time
+        yearly_sales = df.groupby('YEAR')['RETAIL SALES'].sum().reset_index()
+        
+        if not yearly_sales.empty:
+            plt.figure(figsize=(12, 6))
+            plt.plot(yearly_sales['YEAR'], yearly_sales['RETAIL SALES'], marker='o', linestyle='-', label='Total Retail Sales')
+            plt.title('Trend of Total Retail Sales Over Years')
+            plt.xlabel('Year')
+            plt.ylabel('Total Retail Sales')
+            plt.grid(True)
+            plt.xticks(yearly_sales['YEAR'])
+            plt.legend()
+            
+            # Define output path
+            figure_name = 'sales_trend.png'
+            output_path = os.path.join(output_dir, figure_name)
+            plt.savefig(output_path)
+            plt.close()
+            figure_paths.append(output_path)
+
+    return figure_paths

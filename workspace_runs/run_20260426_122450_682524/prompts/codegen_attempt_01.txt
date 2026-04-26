@@ -1,0 +1,42 @@
+SYSTEM:
+You write readable Python analysis code for a constrained local sandbox. Return one JSON object only, with exactly these keys: data_loader.py, preprocessing.py, analysis.py, figures.py. Each value must be the full file contents as a string. Do not include markdown fences, commentary, or extra keys. Each file must expose the exact required public function name for its role.
+
+USER:
+Generate the sandbox code bundle described by the analysis brief below.
+
+### Task Objective
+Perform a descriptive analysis of the warehouse and retail sales dataset to identify key trends and patterns. The analysis must include a statistical summary of the sales metrics and at least one visualization that clarifies the relationship between variables (e.g., temporal trends or categorical distributions).
+
+### Input Dataset Summary
+* **File Name:** `Warehouse_and_Retail_Sales.csv`
+* **Size:** 307,645 rows.
+* **Features:**
+    * **Temporal:** `YEAR`, `MONTH`.
+    * **Categorical:** `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`.
+    * **Quantitative:** `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`.
+
+### Assumptions From Schema
+* Time-series analysis can be performed by aggregating sales metrics by `YEAR` and `MONTH`.
+* `ITEM TYPE` and `SUPPLIER` serve as the primary dimensions for categorical grouping and comparative analysis.
+* The columns `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are the primary targets for numerical aggregation (e.g., sum, mean).
+* `ITEM CODE` and `ITEM DESCRIPTION` are unique identifiers for products within the dataset.
+
+### Required Outputs
+* **Data Summary:** A clear textual or tabular summary of the dataset (e.g., aggregated sales totals by year or item type).
+* **Visualization:** At least one `matplotlib` figure (e.g., a line chart showing sales trends over time or a bar chart comparing sales across item types).
+
+### Code Constraints
+* **Structure:** The implementation must be partitioned into exactly four modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+* **Libraries:** Use `pandas` and `matplotlib` only.
+* **Environment:** No network access or execution of shell commands is permitted.
+* **Logic:** Code must be explicit, highly readable, and avoid complex one-liners.
+
+Hard rules:
+- data_loader.py must define `load_data(input_dir: str) -> dict[str, pd.DataFrame]`.
+- preprocessing.py must define `preprocess(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]`.
+- analysis.py must define `run_analysis(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]`.
+- figures.py must define `create_figures(data: dict[str, pd.DataFrame], results: dict[str, pd.DataFrame], output_dir: str) -> list[str]`.
+- The runtime imports those exact function names, so do not rename them.
+- Use pandas and matplotlib.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.

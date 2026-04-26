@@ -1,0 +1,98 @@
+SYSTEM:
+You plan one shared contract for a constrained Python analysis bundle. Return JSON only with exactly these keys: loaded_keys, processed_keys, result_table_names, figure_file_names. Each value must be a non-empty list of short strings. loaded_keys, processed_keys, and result_table_names must use lowercase snake_case names. loaded_keys and processed_keys must name whole pandas tables or datasets, never raw CSV columns. Use result table names without file extensions. Use figure file names that end in .png and use lowercase snake_case stems.
+
+USER:
+Plan a single shared contract for the sandbox bundle described below.
+
+```markdown
+# Task Objective
+Analyze the provided dataset to produce a clear statistical summary. The output should include key insights, at least one informative figure (e.g., time-series plot of sales or transfers), and an executive-level recommendation based on findings.
+
+# Input Dataset Summary
+- **Task**: Analyze Warehouse and Retail Sales dataset.
+- **File Name**: `Warehouse_and_Retail_Sales.csv`.
+- **Total Rows**: 307,645 entries.
+- **Columns**:
+  - `YEAR`, `MONTH`: Time frames (int64 dtype).
+  - `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`: Categorical data (str dtype).
+  - `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`: Monetary values (float64 dtype).
+
+Sample data:
+- Year: ["2020", "2017", "2018"].
+- Month: [1, 9, 7].
+- Supplier: ["REPUBLIC NATIONAL DISTRIBUTING CO", "PWSWN INC", "RELIABLE CHURCHILL LLLP"].
+- Item Code: ["100009", "100024", "1001"].
+- Item Description: ["BOOTLEG RED - 750ML", "MOMENT DE PLAISIR - 750ML", "S SMITH ORGANIC PEAR CIDER - 18.7OZ"].
+- Item Type: ["WINE", "BEER", "LIQUOR"].
+
+# Assumptions From Schema
+- Data is structured with clear temporal (year/month) and supplier/item dimensions for analysis.
+- Key assumptions include all numerical values are in USD; categorical fields are predefined without missing values or outliers beyond this scope.
+
+# Required Outputs
+1. **Statistical Summary**:
+   - Total rows, distinct suppliers, item counts, sales trends.
+2. **Figure**: Time-series plot comparing monthly retail transfers vs. warehouse sales over the years (e.g., bar chart or line graph).
+3. **Executive Recommendation**: Based on insights from analysis.
+
+# Code Constraints
+- Implement code in Python files: `data_loader.py` (for loading CSV), `preprocessing.py` (data cleaning, scaling if needed), `analysis.py` (statistical models and visualization), `figures.py` (matplotlib for plots).
+- Use pandas for data manipulation; matplotlib for visualization.
+- No external libraries beyond standard ones.
+- Code must remain explicit and handle all dataset features without assumptions on missing data.
+
+```
+
+This structured brief is concise, focusing only on necessary elements visible in the dataset manifest.
+
+The contract will be reused by data_loader.py, preprocessing.py, analysis.py, and figures.py.
+Rules:
+- loaded_keys are the dictionary keys returned by load_data.
+- processed_keys are the dictionary keys returned by preprocess.
+- result_table_names are the dictionary keys returned by run_analysis.
+- figure_file_names are the .png file names returned by create_figures.
+- Keep the contract small and explicit.
+- loaded_keys and processed_keys must usually contain 1 to 3 whole-table keys such as `sales_data`, `monthly_sales`, or `supplier_summary`.
+- Do not use CSV schema columns such as `YEAR`, `MONTH`, or `RETAIL SALES` as contract keys.
+- Every non-figure contract name must be lowercase snake_case.
+- For this task, include at least one result table name and at least one figure file name.
+- The keys and file names must be internally consistent across the whole bundle.
+
+Repair guidance:
+Use the previous attempt issues below to keep all four generated files aligned.
+
+Repair brief JSON:
+{
+  "attempt_number": 3,
+  "failure_stage": "static_validation",
+  "issues": [
+    "Generated bundle failed file policy checks: analysis.py: analysis.py must consume the provided data dictionary and not reference file paths"
+  ],
+  "file_issues": {
+    "analysis.py": [
+      "analysis.py: analysis.py must consume the provided data dictionary and not reference file paths"
+    ]
+  },
+  "file_guidance": {
+    "analysis.py": [
+      "analysis.py must not reference input file paths, CSV names, or filesystem locations.",
+      "Use only the provided `data` argument inside run_analysis. Do not hard-code dataset names, directories, or CSV filenames."
+    ]
+  },
+  "violation_details": [
+    {
+      "file": "analysis.py",
+      "rule": "analysis_file_path_reference",
+      "message": "analysis.py: analysis.py must consume the provided data dictionary and not reference file paths"
+    }
+  ],
+  "semantic_validation_result": null,
+  "stderr_summary": null,
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ]
+}

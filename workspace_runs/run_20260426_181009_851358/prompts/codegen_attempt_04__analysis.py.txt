@@ -1,0 +1,211 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of analysis.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `run_analysis`.
+
+USER:
+Generate only analysis.py for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and warehouse data to generate a clear summary and visualize key findings through at least one generated figure.
+
+# Input Dataset Summary
+The analysis will be performed on the file `Warehouse_and_Retail_Sales.csv`.
+*   **Rows:** 307,645
+*   **Columns:** `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`.
+*   **Data Types:** Numerical fields (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`) are floats. Temporal and categorical fields are integers or strings.
+
+# Assumptions From Schema
+1.  The dataset contains historical sales and inventory movement data across different years and months.
+2.  `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are quantifiable numeric metrics suitable for aggregation and visualization.
+3.  The temporal fields (`YEAR`, `MONTH`) can be used for time-series analysis.
+4.  The goal of the analysis is to identify meaningful relationships between sales, transfers, and warehouse figures, potentially segmented by supplier or item type.
+
+# Required Outputs
+1.  A clear textual summary of the dataset's key findings.
+2.  At least one generated visualization (figure) that effectively explains a significant relationship or trend found in the data.
+
+# Code Constraints
+1.  **File Structure:** Generated code must be distributed across `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+2.  **Libraries:** Only the `pandas` and `matplotlib` libraries are permitted for computation and visualization.
+3.  **Execution Environment:** No external network access or shell commands are allowed.
+4.  **Logic:** All analytical logic must be explicit and highly readable.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Role contract for analysis.py:
+- Required public function: `run_analysis`.
+- Consume the preprocessed `data` dictionary and return `dict[str, pd.DataFrame]` analysis results. Do not load files, do not call plotting, and do not orchestrate the other generated modules.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- The `data` argument already contains preprocessed in-memory pandas DataFrames.
+- Do not accept file paths as the main analysis input.
+- Do not call `load_data`, `preprocess`, or `create_figures` here.
+- Do not reference sibling generated modules here.
+- Do not add try/except blocks that orchestrate the pipeline here.
+- Do not print progress updates or pipeline banners here.
+- Return analysis result tables only.
+
+Files already generated for this attempt:
+
+- data_loader.py: function `load_data`. Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+- preprocessing.py: function `preprocess`. Transform the provided `data` dictionary and return another `dict[str, pd.DataFrame]`. Do not load files, run analysis, or create plots.
+
+Repair guidance for this file:
+- Prior failure stage: execution.
+- Keep working parts of this file stable unless the listed issues require a rewrite.
+- Previous attempt issues:
+  - Generated code returned or consumed an invalid runtime type.
+  - Sandbox stderr summary: File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 23, in _write_results | raise TypeError(f"Analysis result '{table_name}' is not a pandas DataFrame.") | TypeError: Analysis result 'text_summary' is not a pandas DataFrame.
+
+Previous version of analysis.py:
+import pandas as pd
+
+def run_analysis(data: dict) -> dict:
+    """
+    Analyzes the preprocessed sales and warehouse data to generate key findings.
+
+    Args:
+        data: A dictionary containing preprocessed pandas DataFrames.
+              Expected keys include names of the DataFrames derived from
+              the input file (e.g., 'sales_data').
+
+    Returns:
+        A dictionary containing the textual summary and calculated analysis results
+        as DataFrames.
+    """
+    analysis_results = {}
+
+    # --- 1. Aggregate Overall Metrics ---
+    
+    if 'sales_data' in data:
+        df = data['sales_data'].copy()
+        
+        total_retail_sales = df['RETAIL SALES'].sum()
+        total_retail_transfers = df['RETAIL TRANSFERS'].sum()
+        total_warehouse_sales = df['WAREHOUSE SALES'].sum()
+        
+        analysis_results['overall_summary'] = {
+            "Total Retail Sales": total_retail_sales,
+            "Total Retail Transfers": total_retail_transfers,
+            "Total Warehouse Sales": total_warehouse_sales
+        }
+
+    # --- 2. Segment Analysis by Supplier ---
+    
+    if 'sales_data' in data:
+        df = data['sales_data'].copy()
+        
+        # Aggregate sales metrics by supplier
+        supplier_summary = df.groupby('SUPPLIER').agg(
+            Total_Sales=('RETAIL SALES', 'sum'),
+            Total_Transfers=('RETAIL TRANSFERS', 'sum'),
+            Total_Warehouse_Sales=('WAREHOUSE SALES', 'sum'),
+            Transaction_Count=('ITEM CODE', 'count')
+        ).reset_index()
+        
+        # Calculate average metrics for supplier insight
+        supplier_summary['Avg_Retail_Sales'] = supplier_summary['Total_Sales'] / supplier_summary['Transaction_Count']
+        supplier_summary['Avg_Warehouse_Sales'] = supplier_summary['Total_Warehouse_Sales'] / supplier_summary['Transaction_Count']
+
+        analysis_results['supplier_performance'] = supplier_summary
+        
+    # --- 3. Segment Analysis by Item Type ---
+    
+    if 'sales_data' in data:
+        df = data['sales_data'].copy()
+        
+        # Aggregate sales metrics by item type
+        item_type_summary = df.groupby('ITEM TYPE').agg(
+            Total_Sales=('RETAIL SALES', 'sum'),
+            Total_Warehouse_Sales=('WAREHOUSE SALES'),
+            Total_Transfers=('RETAIL TRANSFERS', 'sum')
+        ).reset_index()
+        
+        # Calculate average transfer rate: (Total Transfers / Total Retail Sales) for each item type group
+        # Use .loc to avoid potential issues with division by zero explicitly.
+        item_type_summary['Avg_Transfer_Rate'] = 0.0
+        
+        # Only calculate rate where Total_Sales is non-zero
+        mask = item_type_summary['Total_Sales'] > 0
+        item_type_summary.loc[mask, 'Avg_Transfer_Rate'] = (
+            item_type_summary.loc[mask, 'Total_Transfers'] / item_type_summary.loc[mask, 'Total_Sales']
+        )
+
+        analysis_results['item_type_performance'] = item_type_summary
+
+    # --- 4. Identify Key Relationships (Correlation Example) ---
+    
+    if 'sales_data' in data and 'RETAIL SALES' in data['sales_data'].columns and 'WAREHOUSE SALES' in data['sales_data'].columns:
+        df = data['sales_data'].copy()
+        
+        # Calculate correlation between retail sales and warehouse sales across all transactions
+        # Ensure the columns are numeric before calculating correlation
+        if pd.api.types.is_numeric_dtype(df['RETAIL SALES']) and pd.api.types.is_numeric_dtype(df['WAREHOUSE SALES']):
+            correlation = df['RETAIL SALES'].corr(df['WAREHOUSE SALES'])
+            analysis_results['sales_warehouse_correlation'] = {
+                "Correlation (Retail vs Warehouse Sales)": correlation
+            }
+        else:
+             analysis_results['sales_warehouse_correlation'] = {
+                "Correlation (Retail vs Warehouse Sales)": None
+            }
+        
+    # --- 5. Generate Textual Summary ---
+    
+    summary_lines = []
+    
+    # Overall Summary
+    if 'overall_summary' in analysis_results:
+        summary_lines.append("\n--- Overall Data Summary ---")
+        summary_lines.append(f"Total Retail Sales across all records: {analysis_results['overall_summary']['Total Retail Sales']:,.2f}")
+        summary_lines.append(f"Total Warehouse Sales across all records: {analysis_results['overall_summary']['Total Warehouse Sales']:,.2f}")
+        if 'sales_warehouse_correlation' in analysis_results and analysis_results['sales_warehouse_correlation'].get("Correlation (Retail vs Warehouse Sales)") is not None:
+            corr_value = analysis_results['sales_warehouse_correlation']['Correlation (Retail vs Warehouse Sales)']
+            summary_lines.append(f"The correlation between Retail Sales and Warehouse Sales is: {corr_value:.4f}.")
+        else:
+             summary_lines.append("Correlation analysis was not performed.")
+
+
+    # Supplier Summary
+    if 'supplier_performance' in analysis_results:
+        summary_lines.append("\n--- Supplier Performance Insights ---")
+        if not analysis_results['supplier_performance'].empty:
+            # Find the top performing supplier by total sales
+            top_supplier = analysis_results['supplier_performance'].sort_values(by='Total_Sales', ascending=False).iloc[0]
+            summary_lines.append(f"The supplier with the highest total sales is {top_supplier['SUPPLIER']}, generating {top_supplier['Total_Sales']:,.2f} in sales.")
+            summary_lines.append(f"The average retail sales per transaction for {top_supplier['SUPPLIER']} is {top_supplier['Avg_Retail_Sales']:,.2f}.")
+        else:
+            summary_lines.append("Supplier performance data could not be summarized.")
+
+    # Item Type Summary
+    if 'item_type_performance' in analysis_results:
+        summary_lines.append("\n--- Item Type Performance Insights ---")
+        if not analysis_results['item_type_performance'].empty:
+            # Find the item type with the highest sales volume
+            top_item_type = analysis_results['item_type_performance'].sort_values(by='Total_Sales', ascending=False).iloc[0]
+            summary_lines.append(f"The item type with the highest total sales is {top_item_type['ITEM TYPE']}, contributing {top_item_type['Total_Sales']:,.2f} in sales.")
+        else:
+            summary_lines.append("Item type performance data could not be summarized.")
+        
+    if not summary_lines:
+        analysis_results['text_summary'] = "No significant analysis could be performed due to missing or improperly structured data."
+    else:
+        analysis_results['text_summary'] = "\n".join(summary_lines)
+
+    return analysis_results

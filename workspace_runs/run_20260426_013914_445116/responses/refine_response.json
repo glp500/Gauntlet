@@ -1,0 +1,89 @@
+{
+  "backend": "openai",
+  "content": "## Task Objective\nAnalyze the `Teen_Mental_Health_Dataset.csv` dataset and produce a clear summary of the findings. Include at least one figure that helps explain the result.\n\n## Input Dataset Summary\n- **File:** `Teen_Mental_Health_Dataset.csv`\n- **Rows:** 1200\n- **Columns:** 13\n\n### Available columns\n- `age` (int64)\n- `gender` (str)\n- `daily_social_media_hours` (float64)\n- `platform_usage` (str)\n- `sleep_hours` (float64)\n- `screen_time_before_sleep` (float64)\n- `academic_performance` (float64)\n- `physical_activity` (float64)\n- `social_interaction_level` (str)\n- `stress_level` (int64)\n- `anxiety_level` (int64)\n- `addiction_level` (int64)\n- `depression_label` (int64)\n\n### Notable value examples\n- `gender`: `male`, `female`\n- `platform_usage`: `Instagram`, `TikTok`, `Both`\n- `social_interaction_level`: `low`, `medium`, `high`\n- `depression_label`: binary values `0`, `1`\n\n## Assumptions From Schema\n- `depression_label` is the likely target/outcome variable and should be treated as binary.\n- `stress_level`, `anxiety_level`, and `addiction_level` are numeric ordinal/intensity measures.\n- `gender`, `platform_usage`, and `social_interaction_level` are categorical fields.\n- All other listed numeric fields should be treated as continuous numeric measures.\n- No missing-value policy is provided; code should check for missing data explicitly rather than assume none.\n\n## Required Outputs\n- A concise written summary of the dataset and the main patterns found.\n- Basic descriptive statistics for the numeric fields.\n- Frequency or distribution summaries for categorical fields.\n- At least one figure that supports the analysis, such as:\n  - distribution of `depression_label`,\n  - comparison of key numeric variables by `depression_label`,\n  - or a relationship plot involving social media usage and mental health measures.\n- If useful, include comparisons between `depression_label` groups using available columns.\n\n## Code Constraints\n- Generated code may only implement:\n  - `data_loader.py`\n  - `preprocessing.py`\n  - `analysis.py`\n  - `figures.py`\n- Use **pandas** and **matplotlib** only.\n- No network access.\n- No shell commands.\n- Keep logic explicit and readable.\n- Do not invent additional columns beyond those listed in the manifest.",
+  "model": "gpt-5.4-mini-2026-03-17",
+  "raw_response": {
+    "background": false,
+    "billing": {
+      "payer": "developer"
+    },
+    "completed_at": 1777167558,
+    "created_at": 1777167555,
+    "error": null,
+    "frequency_penalty": 0.0,
+    "id": "resp_02171f4efa6c8f890069ed6cc3364c819e977cc91479cf6768",
+    "incomplete_details": null,
+    "instructions": "You are refining a CSV analysis request into a structured brief for a local code generation pipeline. Be concrete, cautious, and concise. Do not invent columns that are not visible in the manifest. Output markdown with the exact headings: 'Task Objective', 'Input Dataset Summary', 'Assumptions From Schema', 'Required Outputs', and 'Code Constraints'.",
+    "max_output_tokens": null,
+    "max_tool_calls": null,
+    "metadata": {},
+    "model": "gpt-5.4-mini-2026-03-17",
+    "moderation": null,
+    "object": "response",
+    "output": [
+      {
+        "content": [
+          {
+            "annotations": [],
+            "logprobs": [],
+            "text": "## Task Objective\nAnalyze the `Teen_Mental_Health_Dataset.csv` dataset and produce a clear summary of the findings. Include at least one figure that helps explain the result.\n\n## Input Dataset Summary\n- **File:** `Teen_Mental_Health_Dataset.csv`\n- **Rows:** 1200\n- **Columns:** 13\n\n### Available columns\n- `age` (int64)\n- `gender` (str)\n- `daily_social_media_hours` (float64)\n- `platform_usage` (str)\n- `sleep_hours` (float64)\n- `screen_time_before_sleep` (float64)\n- `academic_performance` (float64)\n- `physical_activity` (float64)\n- `social_interaction_level` (str)\n- `stress_level` (int64)\n- `anxiety_level` (int64)\n- `addiction_level` (int64)\n- `depression_label` (int64)\n\n### Notable value examples\n- `gender`: `male`, `female`\n- `platform_usage`: `Instagram`, `TikTok`, `Both`\n- `social_interaction_level`: `low`, `medium`, `high`\n- `depression_label`: binary values `0`, `1`\n\n## Assumptions From Schema\n- `depression_label` is the likely target/outcome variable and should be treated as binary.\n- `stress_level`, `anxiety_level`, and `addiction_level` are numeric ordinal/intensity measures.\n- `gender`, `platform_usage`, and `social_interaction_level` are categorical fields.\n- All other listed numeric fields should be treated as continuous numeric measures.\n- No missing-value policy is provided; code should check for missing data explicitly rather than assume none.\n\n## Required Outputs\n- A concise written summary of the dataset and the main patterns found.\n- Basic descriptive statistics for the numeric fields.\n- Frequency or distribution summaries for categorical fields.\n- At least one figure that supports the analysis, such as:\n  - distribution of `depression_label`,\n  - comparison of key numeric variables by `depression_label`,\n  - or a relationship plot involving social media usage and mental health measures.\n- If useful, include comparisons between `depression_label` groups using available columns.\n\n## Code Constraints\n- Generated code may only implement:\n  - `data_loader.py`\n  - `preprocessing.py`\n  - `analysis.py`\n  - `figures.py`\n- Use **pandas** and **matplotlib** only.\n- No network access.\n- No shell commands.\n- Keep logic explicit and readable.\n- Do not invent additional columns beyond those listed in the manifest.",
+            "type": "output_text"
+          }
+        ],
+        "id": "msg_02171f4efa6c8f890069ed6cc3aaa4819e8ff7c361e80808d8",
+        "phase": "final_answer",
+        "role": "assistant",
+        "status": "completed",
+        "type": "message"
+      }
+    ],
+    "parallel_tool_calls": true,
+    "presence_penalty": 0.0,
+    "previous_response_id": null,
+    "prompt_cache_key": null,
+    "prompt_cache_retention": "in_memory",
+    "reasoning": {
+      "effort": "none",
+      "summary": null
+    },
+    "safety_identifier": null,
+    "service_tier": "default",
+    "status": "completed",
+    "store": true,
+    "temperature": 1.0,
+    "text": {
+      "format": {
+        "type": "text"
+      },
+      "verbosity": "medium"
+    },
+    "tool_choice": "auto",
+    "tools": [],
+    "top_logprobs": 0,
+    "top_p": 0.98,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 740,
+      "input_tokens_details": {
+        "cached_tokens": 0
+      },
+      "output_tokens": 549,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 1289
+    },
+    "user": null
+  },
+  "usage": {
+    "input_tokens": 740,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 549,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 1289
+  }
+}

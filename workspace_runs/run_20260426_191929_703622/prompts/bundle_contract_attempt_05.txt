@@ -1,0 +1,71 @@
+SYSTEM:
+You plan one shared contract for a constrained Python analysis bundle. Return JSON only with exactly these keys: loaded_keys, processed_keys, result_table_names, figure_file_names. Each value must be a non-empty list of short strings. loaded_keys, processed_keys, and result_table_names must use lowercase snake_case names. loaded_keys and processed_keys must name whole pandas tables or datasets, never raw CSV columns. Use result table names without file extensions. Use figure file names that end in .png and use lowercase snake_case stems.
+
+USER:
+Plan a single shared contract for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and inventory dataset to produce a clear summary and generate at least one visualization (figure) that explains the key findings of the analysis.
+
+# Input Dataset Summary
+The analysis will be performed on a single CSV file named `Warehouse_and_Retail_Sales.csv`.
+*   **Rows:** 307,645
+*   **Columns:** YEAR, MONTH, SUPPLIER, ITEM CODE, ITEM DESCRIPTION, ITEM TYPE, RETAIL SALES, RETAIL TRANSFERS, WAREHOUSE SALES.
+*   **Data Types:** Numerical fields (RETAIL SALES, RETAIL TRANSFERS, WAREHOUSE SALES) are float64. Date fields (YEAR, MONTH) are int64. Categorical fields (SUPPLIER, ITEM DESCRIPTION, ITEM TYPE) are string.
+
+# Assumptions From Schema
+1.  The analysis should focus on aggregating and summarizing the sales, transfers, and warehouse data across the provided dimensions (Year, Month, Supplier, Item Type).
+2.  'RETAIL SALES', 'RETAIL TRANSFERS', and 'WAREHOUSE SALES' are the primary numerical metrics for aggregation.
+3.  The analysis should consider relationships between sales, transfers, and warehouse stock.
+
+# Required Outputs
+1.  A clear, descriptive summary of the dataset's key findings.
+2.  At least one figure (visualization) created using pandas and matplotlib to visually explain a significant result derived from the analysis.
+
+# Code Constraints
+1.  The generated code must implement functions only within the following files: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+2.  Only the pandas and matplotlib libraries are permitted.
+3.  No external network access is allowed.
+4.  No shell commands are allowed.
+5.  The logic must be explicit and highly readable.
+
+The contract will be reused by data_loader.py, preprocessing.py, analysis.py, and figures.py.
+Rules:
+- loaded_keys are the dictionary keys returned by load_data.
+- processed_keys are the dictionary keys returned by preprocess.
+- result_table_names are the dictionary keys returned by run_analysis.
+- figure_file_names are the .png file names returned by create_figures.
+- Keep the contract small and explicit.
+- loaded_keys and processed_keys must usually contain 1 to 3 whole-table keys such as `sales_data`, `monthly_sales`, or `supplier_summary`.
+- Do not use CSV schema columns such as `YEAR`, `MONTH`, or `RETAIL SALES` as contract keys.
+- Every non-figure contract name must be lowercase snake_case.
+- For this task, include at least one result table name and at least one figure file name.
+- The keys and file names must be internally consistent across the whole bundle.
+
+Repair guidance:
+Use the previous attempt issues below to keep all four generated files aligned.
+
+Repair brief JSON:
+{
+  "attempt_number": 5,
+  "failure_stage": "semantic_validation",
+  "issues": [
+    "Semantic smoke check failed with exit code 1."
+  ],
+  "file_issues": {},
+  "file_guidance": {},
+  "violation_details": [],
+  "semantic_validation_result": {
+    "status": "failed",
+    "failure_reason": "Semantic smoke check failed with exit code 1.",
+    "duration_seconds": 1.765
+  },
+  "stderr_summary": null,
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ]
+}

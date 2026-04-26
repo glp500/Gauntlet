@@ -1,0 +1,164 @@
+{
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "failure_reason": "Semantic smoke check failed with exit code 1. NameError: name 'pd' is not defined. Did you mean: 'id'?; Semantic smoke stderr summary: def run_analysis(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]: | ^^ | NameError: name 'pd' is not defined. Did you mean: 'id'?",
+      "recorded_at": "2026-04-26T19:39:51.391739+00:00",
+      "retryable": true,
+      "stage": "semantic_validation",
+      "status": "failed"
+    }
+  ],
+  "failure_reason": "Code generation failed after 1 attempts. Last error: Semantic smoke check failed with exit code 1. NameError: name 'pd' is not defined. Did you mean: 'id'?; Semantic smoke stderr summary: def run_analysis(data: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]: | ^^ | NameError: name 'pd' is not defined. Did you mean: 'id'?",
+  "figures": [],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_193710_215178\\metadata.json",
+  "results": [],
+  "run_id": "run_20260426_193710_215178",
+  "status": "failed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T19:37:11.728527+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "ollama",
+      "details": {
+        "request_details": {
+          "duration_seconds": 32.273,
+          "ended_at": "2026-04-26T19:37:44.022910+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T19:37:11.749649+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 997,
+          "prompt_tokens": 776,
+          "total_duration": 32235233700
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:37:44.028082+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "monthly_sales_trend.png"
+          ],
+          "loaded_keys": [
+            "warehouse_and_retail_sales"
+          ],
+          "processed_keys": [
+            "monthly_sales_summary",
+            "supplier_item_summary"
+          ],
+          "result_table_names": [
+            "monthly_sales_summary"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 4.08,
+          "ended_at": "2026-04-26T19:37:48.120113+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T19:37:44.038989+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 101,
+          "prompt_tokens": 823,
+          "total_duration": 4072679000
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:37:48.123144+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 21.301,
+              "ended_at": "2026-04-26T19:38:09.427043+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:37:48.125153+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 31.977,
+              "ended_at": "2026-04-26T19:38:41.409494+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:38:09.433073+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 37.92,
+              "ended_at": "2026-04-26T19:39:19.333935+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:38:41.412773+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 30.925,
+              "ended_at": "2026-04-26T19:39:50.262555+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:39:19.336740+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 3854,
+          "prompt_tokens": 4209,
+          "total_duration": 122025501400
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:39:50.264631+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 1,
+      "recorded_at": "2026-04-26T19:39:50.273892+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_193710_215178\\sandbox"
+      },
+      "recorded_at": "2026-04-26T19:39:50.303591+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "duration_seconds": 1.085,
+        "figure_file_names": [],
+        "loaded_keys": [],
+        "processed_keys": [],
+        "result_table_names": []
+      },
+      "recorded_at": "2026-04-26T19:39:51.391739+00:00",
+      "status": "failed",
+      "step": "semantic_smoke_check"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_193710_215178\\outputs\\summary.json"
+}

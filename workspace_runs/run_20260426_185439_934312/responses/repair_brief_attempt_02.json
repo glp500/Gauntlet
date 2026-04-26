@@ -1,0 +1,45 @@
+{
+  "attempt_number": 2,
+  "failure_stage": "semantic_validation",
+  "file_guidance": {
+    "data_loader.py": [
+      "Keep load_data aligned with the shared contract keys and return the dataset dictionary expected by preprocess."
+    ]
+  },
+  "file_issues": {},
+  "issues": [
+    "'Series' object has no attribute 'columns'",
+    "load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']"
+  ],
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ],
+  "semantic_validation_result": {
+    "duration_seconds": 2.322,
+    "failure_reason": "'Series' object has no attribute 'columns'",
+    "figure_file_names": [],
+    "figure_paths": [],
+    "loaded_keys": [
+      "ITEM CODE",
+      "ITEM DESCRIPTION",
+      "ITEM TYPE",
+      "MONTH",
+      "RETAIL SALES",
+      "RETAIL TRANSFERS",
+      "SUPPLIER",
+      "WAREHOUSE SALES",
+      "YEAR"
+    ],
+    "processed_keys": [],
+    "result_table_names": [],
+    "result_value_types": {},
+    "status": "failed",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 81, in <module>\n  File \"C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_185439_934312\\sandbox\\preprocessing.py\", line 30, in preprocess\n    if 'YEAR' in df.columns and 'MONTH' in df.columns:\n                 ^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\pandas\\core\\generic.py\", line 6206, in __getattr__\n    return object.__getattribute__(self, name)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'Series' object has no attribute 'columns'\n"
+  },
+  "stderr_summary": null,
+  "violation_details": []
+}

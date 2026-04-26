@@ -1,0 +1,161 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of figures.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `create_figures`.
+
+USER:
+Generate only figures.py for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and warehouse data to generate a clear summary and visualize key findings through at least one generated figure.
+
+# Input Dataset Summary
+The analysis will be performed on the file `Warehouse_and_Retail_Sales.csv`.
+*   **Rows:** 307,645
+*   **Columns:** `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`.
+*   **Data Types:** Numerical fields (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`) are floats. Temporal and categorical fields are integers or strings.
+
+# Assumptions From Schema
+1.  The dataset contains historical sales and inventory movement data across different years and months.
+2.  `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are quantifiable numeric metrics suitable for aggregation and visualization.
+3.  The temporal fields (`YEAR`, `MONTH`) can be used for time-series analysis.
+4.  The goal of the analysis is to identify meaningful relationships between sales, transfers, and warehouse figures, potentially segmented by supplier or item type.
+
+# Required Outputs
+1.  A clear textual summary of the dataset's key findings.
+2.  At least one generated visualization (figure) that effectively explains a significant relationship or trend found in the data.
+
+# Code Constraints
+1.  **File Structure:** Generated code must be distributed across `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+2.  **Libraries:** Only the `pandas` and `matplotlib` libraries are permitted for computation and visualization.
+3.  **Execution Environment:** No external network access or shell commands are allowed.
+4.  **Logic:** All analytical logic must be explicit and highly readable.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Role contract for figures.py:
+- Required public function: `create_figures`.
+- Consume `data`, `results`, and `output_dir`, save figure files into the provided output directory, and return `list[str]` paths. Do not load files or run the pipeline.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- Do not call `run_analysis` or orchestrate the pipeline here.
+- Close figures after saving them.
+
+Files already generated for this attempt:
+
+- data_loader.py: function `load_data`. Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+- preprocessing.py: function `preprocess`. Transform the provided `data` dictionary and return another `dict[str, pd.DataFrame]`. Do not load files, run analysis, or create plots.
+- analysis.py: function `run_analysis`. Consume the preprocessed `data` dictionary and return `dict[str, pd.DataFrame]` analysis results. Do not load files, do not call plotting, and do not orchestrate the other generated modules.
+
+Repair guidance for this file:
+- Prior failure stage: execution.
+- Keep working parts of this file stable unless the listed issues require a rewrite.
+- Previous attempt issues:
+  - Generated code returned or consumed an invalid runtime type.
+  - Sandbox stderr summary: File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 23, in _write_results | raise TypeError(f"Analysis result '{table_name}' is not a pandas DataFrame.") | TypeError: Analysis result 'text_summary' is not a pandas DataFrame.
+
+Previous version of figures.py:
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+def create_figures(data: dict[str, pd.DataFrame], results: dict[str, pd.DataFrame], output_dir: str) -> list[str]:
+    """
+    Generates visualizations based on the provided data and analysis results.
+
+    Args:
+        data: Dictionary containing processed DataFrames (e.g., 'sales', 'warehouse').
+        results: Dictionary containing analysis results (e.g., aggregated metrics).
+        output_dir: The directory where figures will be saved.
+
+    Returns:
+        A list of file paths where the generated figures were saved.
+    """
+    figure_paths = []
+    
+    # --- Figure 1: Monthly Retail Sales Trend ---
+    # This figure analyzes the time series trend of retail sales from the 'sales' data.
+    if 'sales' in data and 'RETAIL SALES' in data['sales'].columns:
+        df_sales = data['sales'].copy()
+        
+        try:
+            # Create a combined datetime column for proper time series plotting
+            # Assuming YEAR and MONTH are present and convertible
+            df_sales['YearMonth'] = pd.to_datetime(df_sales['YEAR'].astype(str) + '-' + df_sales['MONTH'].astype(str) + '-01')
+        except Exception:
+            # If date conversion fails, skip this figure
+            pass
+        else:
+            # Aggregate total retail sales by month for a time series view
+            monthly_sales = df_sales.groupby('YearMonth')['RETAIL SALES'].sum().reset_index()
+            
+            if not monthly_sales.empty:
+                plt.figure(figsize=(12, 6))
+                plt.plot(monthly_sales['YearMonth'], monthly_sales['RETAIL SALES'], marker='o', linestyle='-', markersize=3, label='Monthly Retail Sales')
+                plt.title('Monthly Retail Sales Trend')
+                plt.xlabel('Date')
+                plt.ylabel('Total Retail Sales')
+                plt.grid(True)
+                plt.xticks(rotation=45)
+                plt.tight_layout()
+                
+                filename = os.path.join(output_dir, 'monthly_retail_sales_trend.png')
+                plt.savefig(filename)
+                plt.close()
+                figure_paths.append(filename)
+
+    # --- Figure 2: Annual Warehouse Sales vs. Retail Sales Comparison ---
+    # This figure compares the average annual performance of retail vs. warehouse sales.
+    if 'sales' in data and 'warehouse' in data and not data['sales'].empty and not data['warehouse'].empty:
+        
+        # Ensure necessary columns exist for aggregation
+        if not all(col in data['sales'].columns for col in ['YEAR', 'RETAIL SALES']):
+             pass # Skip if required columns are missing
+        else:
+            df_retail = data['sales'][['YEAR', 'RETAIL SALES']].copy()
+            df_warehouse = data['warehouse'][['YEAR', 'WAREHOUSE SALES']].copy()
+
+            # Calculate average retail sales by year
+            avg_retail = df_retail.groupby('YEAR')['RETAIL SALES'].mean().reset_index()
+            # Calculate average warehouse sales by year
+            avg_warehouse = df_warehouse.groupby('YEAR')['WAREHOUSE SALES'].mean().reset_index()
+            
+            # Merge annual averages for plotting
+            annual_comparison = pd.merge(avg_retail, avg_warehouse, on='YEAR', how='inner')
+            
+            if not annual_comparison.empty:
+                plt.figure(figsize=(10, 6))
+                
+                # Plotting the annual comparison
+                plt.plot(annual_comparison['YEAR'], annual_comparison['RETAIL SALES'], label='Average Retail Sales', marker='o', color='blue')
+                plt.plot(annual_comparison['YEAR'], annual_comparison['WAREHOUSE SALES'], label='Average Warehouse Sales', marker='x', color='red')
+                
+                plt.title('Annual Comparison of Average Retail Sales vs. Warehouse Sales')
+                plt.xlabel('Year')
+                plt.ylabel('Sales Amount')
+                plt.legend()
+                plt.grid(True)
+                plt.xticks(annual_comparison['YEAR'])
+                plt.tight_layout()
+
+                filename = os.path.join(output_dir, 'annual_sales_comparison.png')
+                plt.savefig(filename)
+                plt.close()
+                figure_paths.append(filename)
+
+    return figure_paths

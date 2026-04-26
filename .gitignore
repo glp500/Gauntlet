@@ -4,6 +4,3 @@ __pycache__/
 *.py[cod]
 
 # Local execution artifacts.
-workspace_runs/
-outputs/
-sandbox/

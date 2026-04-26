@@ -1,0 +1,1 @@
+Analyze the sample sales dataset and produce a clear summary of revenue by region and category. Create at least one figure that helps explain the result.

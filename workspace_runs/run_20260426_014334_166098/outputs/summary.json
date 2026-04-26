@@ -1,0 +1,159 @@
+{
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "details": {
+        "produced_figures": [
+          "outputs/figures/item_type_sales.png",
+          "outputs/figures/top_suppliers.png",
+          "outputs/figures/year_trend.png"
+        ],
+        "produced_results": [
+          "outputs/results/item_type_summary.csv",
+          "outputs/results/month_summary.csv",
+          "outputs/results/overall_summary.csv",
+          "outputs/results/supplier_summary.csv",
+          "outputs/results/top_items.csv",
+          "outputs/results/top_suppliers.csv",
+          "outputs/results/year_summary.csv"
+        ],
+        "review_advisory_issues": [
+          "Required public function load_data exists, but it is placed in data_loader.py rather than being clearly exposed as part of the expected bundle interface; verify the orchestrator imports the exact required function names from the intended modules.",
+          "Expected file roles appear to be four analysis modules, and the bundle includes those roles, but there is no explicit top-level entrypoint file shown; confirm this matches the bundle contract.",
+          "Unused imports are present in data_loader.py and preprocessing.py (Dict is imported but not used), which reduces explicitness slightly."
+        ]
+      },
+      "recorded_at": "2026-04-26T01:43:56.056866+00:00",
+      "retryable": false,
+      "stage": "execution",
+      "status": "completed"
+    }
+  ],
+  "failure_reason": null,
+  "figures": [
+    "outputs/figures/item_type_sales.png",
+    "outputs/figures/top_suppliers.png",
+    "outputs/figures/year_trend.png"
+  ],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_014334_166098\\metadata.json",
+  "results": [
+    "outputs/results/item_type_summary.csv",
+    "outputs/results/month_summary.csv",
+    "outputs/results/overall_summary.csv",
+    "outputs/results/supplier_summary.csv",
+    "outputs/results/top_items.csv",
+    "outputs/results/top_suppliers.csv",
+    "outputs/results/year_summary.csv"
+  ],
+  "run_id": "run_20260426_014334_166098",
+  "status": "completed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T01:43:35.738641+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 642,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 472,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1114
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:43:39.958017+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 717,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 1860,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2577
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:43:48.874499+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 1,
+      "recorded_at": "2026-04-26T01:43:48.892503+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 1699,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 205,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1904
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:43:51.729741+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "advisory_issue_count": 3,
+        "blocking_issue_count": 0
+      },
+      "recorded_at": "2026-04-26T01:43:51.731699+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_014334_166098\\sandbox"
+      },
+      "recorded_at": "2026-04-26T01:43:51.760322+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "duration_seconds": 4.273,
+        "exit_code": 0
+      },
+      "recorded_at": "2026-04-26T01:43:56.038442+00:00",
+      "status": "completed",
+      "step": "execute_sandbox"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_014334_166098\\outputs\\summary.json"
+}

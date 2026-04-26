@@ -1,0 +1,121 @@
+SYSTEM:
+You are refining a CSV analysis request into a structured brief for a local code generation pipeline. Be concrete, cautious, and concise. Do not invent columns that are not visible in the manifest. Output markdown with the exact headings: 'Task Objective', 'Input Dataset Summary', 'Assumptions From Schema', 'Required Outputs', and 'Code Constraints'.
+
+USER:
+Turn the raw task and dataset manifest below into the structured brief.
+
+Raw task:
+Analyze the s dataset and produce a clear summary. Create at least one figure that helps explain the result.
+
+Dataset manifest JSON:
+{
+  "task_text": "Analyze the s dataset and produce a clear summary. Create at least one figure that helps explain the result.",
+  "datasets": [
+    {
+      "file_name": "Teen_Mental_Health_Dataset.csv",
+      "rows": 1200,
+      "columns": [
+        "age",
+        "gender",
+        "daily_social_media_hours",
+        "platform_usage",
+        "sleep_hours",
+        "screen_time_before_sleep",
+        "academic_performance",
+        "physical_activity",
+        "social_interaction_level",
+        "stress_level",
+        "anxiety_level",
+        "addiction_level",
+        "depression_label"
+      ],
+      "dtypes": {
+        "age": "int64",
+        "gender": "str",
+        "daily_social_media_hours": "float64",
+        "platform_usage": "str",
+        "sleep_hours": "float64",
+        "screen_time_before_sleep": "float64",
+        "academic_performance": "float64",
+        "physical_activity": "float64",
+        "social_interaction_level": "str",
+        "stress_level": "int64",
+        "anxiety_level": "int64",
+        "addiction_level": "int64",
+        "depression_label": "int64"
+      },
+      "sample_values": {
+        "age": [
+          "14",
+          "19",
+          "17"
+        ],
+        "gender": [
+          "male",
+          "female"
+        ],
+        "daily_social_media_hours": [
+          "7.9",
+          "1.9",
+          "1.3"
+        ],
+        "platform_usage": [
+          "Instagram",
+          "TikTok",
+          "Both"
+        ],
+        "sleep_hours": [
+          "7.4",
+          "8.0",
+          "7.6"
+        ],
+        "screen_time_before_sleep": [
+          "2.9",
+          "0.5",
+          "1.6"
+        ],
+        "academic_performance": [
+          "3.01",
+          "3.22",
+          "3.92"
+        ],
+        "physical_activity": [
+          "1.5",
+          "0.8",
+          "0.0"
+        ],
+        "social_interaction_level": [
+          "low",
+          "high",
+          "medium"
+        ],
+        "stress_level": [
+          "2",
+          "8",
+          "1"
+        ],
+        "anxiety_level": [
+          "2",
+          "1",
+          "4"
+        ],
+        "addiction_level": [
+          "1",
+          "10",
+          "2"
+        ],
+        "depression_label": [
+          "0",
+          "1"
+        ]
+      }
+    }
+  ]
+}
+
+Code constraints:
+- Generated code may only implement data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use pandas and matplotlib only.
+- No network access.
+- No shell commands.
+- Keep logic explicit and readable.

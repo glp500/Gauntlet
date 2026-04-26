@@ -1,0 +1,47 @@
+2026-04-26 20:16:57,755 | INFO | gauntlet.execution | Sandbox exit code: 1
+2026-04-26 20:16:57,755 | INFO | gauntlet.execution | Sandbox stderr:
+Traceback (most recent call last):
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 58, in <module>
+    main()
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 44, in main
+    written_results = _write_results(analysis_results, results_dir)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 23, in _write_results
+    raise TypeError(f"Analysis result '{table_name}' is not a pandas DataFrame.")
+TypeError: Analysis result 'text_summary' is not a pandas DataFrame.
+Traceback (most recent call last):
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 58, in <module>
+    main()
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 44, in main
+    written_results = _write_results(analysis_results, results_dir)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 23, in _write_results
+    raise TypeError(f"Analysis result '{table_name}' is not a pandas DataFrame.")
+TypeError: Analysis result 'text_summary' is not a pandas DataFrame.
+
+2026-04-26 20:20:14,396 | INFO | gauntlet.execution | Sandbox exit code: 1
+2026-04-26 20:20:14,396 | INFO | gauntlet.execution | Sandbox stderr:
+Traceback (most recent call last):
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 58, in <module>
+    main()
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 44, in main
+    written_results = _write_results(analysis_results, results_dir)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 23, in _write_results
+    raise TypeError(f"Analysis result '{table_name}' is not a pandas DataFrame.")
+TypeError: Analysis result 'text_summary' is not a pandas DataFrame.
+Traceback (most recent call last):
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 58, in <module>
+    main()
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 44, in main
+    written_results = _write_results(analysis_results, results_dir)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_181009_851358\sandbox\run_analysis.py", line 23, in _write_results
+    raise TypeError(f"Analysis result '{table_name}' is not a pandas DataFrame.")
+TypeError: Analysis result 'text_summary' is not a pandas DataFrame.
+
+2026-04-26 20:23:19,247 | INFO | gauntlet.execution | Sandbox exit code: 0
+2026-04-26 20:23:19,247 | INFO | gauntlet.execution | Sandbox stdout:
+Results written:
+Figures written:
+

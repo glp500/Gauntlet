@@ -1,0 +1,93 @@
+SYSTEM:
+You plan one shared contract for a constrained Python analysis bundle. Return JSON only with exactly these keys: loaded_keys, processed_keys, result_table_names, figure_file_names. Each value must be a non-empty list of short strings. Use result table names without file extensions. Use figure file names that end in .png.
+
+USER:
+Plan a single shared contract for the sandbox bundle described below.
+
+# Task Objective
+Analyze the provided sales and inventory dataset to derive meaningful insights, produce a clear summary, and visualize the findings with at least one explanatory figure.
+
+# Input Dataset Summary
+The input is a single CSV file named `Warehouse_and_Retail_Sales.csv`.
+*   **Size:** 307,645 rows.
+*   **Columns:** `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`.
+*   **Data Types:** Numerical columns include `RETAIL SALES` (float64), `RETAIL TRANSFERS` (float64), and `WAREHOUSE SALES` (float64).
+
+# Assumptions From Schema
+1.  The analysis will focus on time-series data (based on `YEAR` and `MONTH`).
+2.  The analysis can involve calculating aggregated metrics (sums, averages, trends) across sales, transfers, and warehouse values.
+3.  The data quality is sufficient for standard pandas analysis (no missing values implied, although this should be checked during processing).
+
+# Required Outputs
+1.  A clear textual summary of the dataset's key findings.
+2.  At least one figure (e.g., line plot, bar chart) that visually explains a significant result derived from the analysis.
+
+# Code Constraints
+1.  **File Access:** Code must load the data from the provided CSV file.
+2.  **Libraries:** Only `pandas` and `matplotlib` are permitted for data manipulation and visualization.
+3.  **Execution Environment:** No external network access, shell commands, or external APIs are allowed.
+4.  **Module Structure:** Generated code must implement logic within the following files: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+5.  **Logic:** All analysis and visualization logic must be explicit, readable, and self-contained.
+
+The contract will be reused by data_loader.py, preprocessing.py, analysis.py, and figures.py.
+Rules:
+- loaded_keys are the dictionary keys returned by load_data.
+- processed_keys are the dictionary keys returned by preprocess.
+- result_table_names are the dictionary keys returned by run_analysis.
+- figure_file_names are the .png file names returned by create_figures.
+- Keep the contract small and explicit.
+- For this task, include at least one result table name and at least one figure file name.
+- The keys and file names must be internally consistent across the whole bundle.
+
+Repair guidance:
+Use the previous attempt issues below to keep all four generated files aligned.
+
+Repair brief JSON:
+{
+  "attempt_number": 3,
+  "failure_stage": "semantic_validation",
+  "issues": [
+    "preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].",
+    "load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']"
+  ],
+  "file_issues": {},
+  "file_guidance": {
+    "data_loader.py": [
+      "Keep load_data aligned with the shared contract keys and return the dataset dictionary expected by preprocess."
+    ],
+    "preprocessing.py": [
+      "preprocess must preserve or intentionally transform dictionary keys in a way that still matches what run_analysis expects."
+    ]
+  },
+  "violation_details": [],
+  "semantic_validation_result": {
+    "status": "failed",
+    "loaded_keys": [
+      "ITEM CODE",
+      "ITEM DESCRIPTION",
+      "ITEM TYPE",
+      "MONTH",
+      "RETAIL SALES",
+      "RETAIL TRANSFERS",
+      "SUPPLIER",
+      "WAREHOUSE SALES",
+      "YEAR"
+    ],
+    "processed_keys": [],
+    "result_table_names": [],
+    "result_value_types": {},
+    "figure_paths": [],
+    "figure_file_names": [],
+    "failure_reason": "preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 87, in <module>\n  File \"<string>\", line 43, in _assert_expected_keys\nValueError: preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].\n",
+    "duration_seconds": 2.241
+  },
+  "stderr_summary": null,
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ]
+}

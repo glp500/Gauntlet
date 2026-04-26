@@ -1,0 +1,95 @@
+SYSTEM:
+You are refining a CSV analysis request into a structured brief for a local code generation pipeline. Be concrete, cautious, and concise. Do not invent columns that are not visible in the manifest. Output markdown with the exact headings: 'Task Objective', 'Input Dataset Summary', 'Assumptions From Schema', 'Required Outputs', and 'Code Constraints'.
+
+USER:
+Turn the raw task and dataset manifest below into the structured brief.
+
+Raw task:
+Analyze the dataset and produce a clear summary. Create at least one figure that helps explain the result.
+
+Dataset manifest JSON:
+{
+  "task_text": "Analyze the dataset and produce a clear summary. Create at least one figure that helps explain the result.",
+  "datasets": [
+    {
+      "file_name": "Warehouse_and_Retail_Sales.csv",
+      "rows": 307645,
+      "columns": [
+        "YEAR",
+        "MONTH",
+        "SUPPLIER",
+        "ITEM CODE",
+        "ITEM DESCRIPTION",
+        "ITEM TYPE",
+        "RETAIL SALES",
+        "RETAIL TRANSFERS",
+        "WAREHOUSE SALES"
+      ],
+      "dtypes": {
+        "YEAR": "int64",
+        "MONTH": "int64",
+        "SUPPLIER": "str",
+        "ITEM CODE": "str",
+        "ITEM DESCRIPTION": "str",
+        "ITEM TYPE": "str",
+        "RETAIL SALES": "float64",
+        "RETAIL TRANSFERS": "float64",
+        "WAREHOUSE SALES": "float64"
+      },
+      "sample_values": {
+        "YEAR": [
+          "2020",
+          "2017",
+          "2018"
+        ],
+        "MONTH": [
+          "1",
+          "9",
+          "7"
+        ],
+        "SUPPLIER": [
+          "REPUBLIC NATIONAL DISTRIBUTING CO",
+          "PWSWN INC",
+          "RELIABLE CHURCHILL LLLP"
+        ],
+        "ITEM CODE": [
+          "100009",
+          "100024",
+          "1001"
+        ],
+        "ITEM DESCRIPTION": [
+          "BOOTLEG RED - 750ML",
+          "MOMENT DE PLAISIR - 750ML",
+          "S SMITH ORGANIC PEAR CIDER - 18.7OZ"
+        ],
+        "ITEM TYPE": [
+          "WINE",
+          "BEER",
+          "LIQUOR"
+        ],
+        "RETAIL SALES": [
+          "0.0",
+          "0.82",
+          "2.76"
+        ],
+        "RETAIL TRANSFERS": [
+          "0.0",
+          "1.0",
+          "4.0"
+        ],
+        "WAREHOUSE SALES": [
+          "2.0",
+          "4.0",
+          "1.0"
+        ]
+      }
+    }
+  ]
+}
+
+Code constraints:
+- Generated code may only implement data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use pandas and matplotlib only.
+- No network access.
+- No shell commands.
+- Keep logic explicit and readable.

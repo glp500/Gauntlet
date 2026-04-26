@@ -1,0 +1,62 @@
+{
+  "attempt_number": 2,
+  "failure_stage": "semantic_validation",
+  "file_guidance": {
+    "analysis.py": [
+      "run_analysis must consume the processed dictionary keys from preprocess and return only pandas DataFrames under the contracted result_table_names."
+    ],
+    "data_loader.py": [
+      "Keep load_data aligned with the shared contract keys and return the dataset dictionary expected by preprocess."
+    ],
+    "preprocessing.py": [
+      "preprocess must preserve or intentionally transform dictionary keys in a way that still matches what run_analysis expects."
+    ]
+  },
+  "file_issues": {},
+  "issues": [
+    "'value' must be an instance of str or bytes, not a float",
+    "load_data returned keys: ['sales']",
+    "preprocess returned keys: ['sales']",
+    "run_analysis returned result tables: ['item_type_summary', 'monthly_summary', 'numeric_describe', 'structure', 'supplier_summary', 'top_products']",
+    "run_analysis result value types: {'structure': 'DataFrame', 'numeric_describe': 'DataFrame', 'monthly_summary': 'DataFrame', 'item_type_summary': 'DataFrame', 'supplier_summary': 'DataFrame', 'top_products': 'DataFrame'}"
+  ],
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ],
+  "semantic_validation_result": {
+    "duration_seconds": 3.876,
+    "failure_reason": "'value' must be an instance of str or bytes, not a float",
+    "figure_file_names": [],
+    "figure_paths": [],
+    "loaded_keys": [
+      "sales"
+    ],
+    "processed_keys": [
+      "sales"
+    ],
+    "result_table_names": [
+      "item_type_summary",
+      "monthly_summary",
+      "numeric_describe",
+      "structure",
+      "supplier_summary",
+      "top_products"
+    ],
+    "result_value_types": {
+      "item_type_summary": "DataFrame",
+      "monthly_summary": "DataFrame",
+      "numeric_describe": "DataFrame",
+      "structure": "DataFrame",
+      "supplier_summary": "DataFrame",
+      "top_products": "DataFrame"
+    },
+    "status": "failed",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 120, in <module>\n  File \"C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_232023_191783\\sandbox\\figures.py\", line 23, in create_figures\n    ax.barh(plot_df[\"ITEM TYPE\"].astype(str), plot_df[sales_col])\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\axes\\_axes.py\", line 2834, in barh\n    patches = self.bar(x=left, height=height, width=width, bottom=y,\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\__init__.py\", line 1524, in inner\n    return func(\n           ^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\axes\\_axes.py\", line 2563, in bar\n    self._process_unit_info(\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\axes\\_base.py\", line 2663, in _process_unit_info\n    axis.update_units(data)\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\axis.py\", line 1754, in update_units\n    default = self._converter.default_units(data, self)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\category.py\", line 106, in default_units\n    axis.set_units(UnitData(data))\n                   ^^^^^^^^^^^^^^\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\category.py\", line 182, in __init__\n    self.update(data)\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\category.py\", line 217, in update\n    _api.check_isinstance((str, bytes), value=val)\n  File \"C:\\Users\\xeleo\\miniforge3\\Lib\\site-packages\\matplotlib\\_api\\__init__.py\", line 92, in check_isinstance\n    raise TypeError(\nTypeError: 'value' must be an instance of str or bytes, not a float\n"
+  },
+  "stderr_summary": null,
+  "violation_details": []
+}

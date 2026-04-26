@@ -1,0 +1,13 @@
+2026-04-26 03:39:39,079 | INFO | gauntlet.execution | Sandbox exit code: 0
+2026-04-26 03:39:39,079 | INFO | gauntlet.execution | Sandbox stdout:
+Results written:
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_013914_445116\outputs\results\overview.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_013914_445116\outputs\results\numeric_summary.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_013914_445116\outputs\results\categorical_summary.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_013914_445116\outputs\results\depression_comparison.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_013914_445116\outputs\results\categorical_by_depression.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_013914_445116\outputs\results\group_differences.csv
+Figures written:
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_013914_445116\outputs\figures\depression_label_distribution.png
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260426_013914_445116\outputs\figures\key_measures_by_depression.png
+

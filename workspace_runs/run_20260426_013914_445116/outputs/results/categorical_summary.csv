@@ -1,0 +1,9 @@
+variable,category,count,percent
+gender,male,615,0.5125
+gender,female,585,0.4875
+platform_usage,instagram,411,0.3425
+platform_usage,tiktok,398,0.33166666666666667
+platform_usage,both,391,0.3258333333333333
+social_interaction_level,medium,416,0.3466666666666667
+social_interaction_level,low,415,0.3458333333333333
+social_interaction_level,high,369,0.3075

@@ -1,0 +1,82 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of preprocessing.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `preprocess`.
+
+USER:
+Generate only preprocessing.py for the sandbox bundle described below.
+
+# Structured Code Generation Brief
+
+## Task Objective
+Analyze the provided sales dataset to generate a clear summary and create at least one visualization (figure) that effectively explains the key findings of the analysis.
+
+## Input Dataset Summary
+| Field | Value |
+| :--- | :--- |
+| **File Name** | `Warehouse_and_Retail_Sales.csv` |
+| **Rows** | 307,645 |
+| **Columns** | `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES` |
+| **Data Types** | Mixed (Years/Months as int64, Sales/Transfers as float64, Names/Codes as str) |
+
+## Assumptions From Schema
+1.  **Analysis Focus:** The analysis should primarily focus on the numerical columns (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`) and categorical columns (`SUPPLIER`, `ITEM TYPE`).
+2.  **Time Series:** The `YEAR` and `MONTH` columns suggest that temporal analysis (e.g., trend analysis over time) is a valid analytical approach.
+3.  **Measurability:** Numerical columns are suitable for aggregation, grouping, and statistical measures.
+
+## Required Outputs
+1.  A clear textual summary of the dataset's key trends and observations.
+2.  At least one generated figure (visualization) that visually explains a significant finding derived from the analysis.
+
+## Code Constraints
+*   **File Structure:** Generated code must be distributed across the following modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+*   **Libraries:** Only the `pandas` and `matplotlib` libraries are permitted.
+*   **Execution Environment:** No network access, shell commands, or external dependencies are allowed.
+*   **Logic:** The analytical logic must be explicit and highly readable. Data loading, cleaning, aggregation, and plotting steps must be clearly separated by the designated module structure.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use pandas and matplotlib only.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Files already generated for this attempt:
+
+File: data_loader.py
+import pandas as pd
+import os
+
+def load_data(file_path: str) -> pd.DataFrame:
+    """
+    Loads the warehouse and retail sales data from a specified CSV file.
+
+    Args:
+        file_path: The full path to the CSV file.
+
+    Returns:
+        A pandas DataFrame containing the loaded sales data.
+    """
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Error: File not found at path: {file_path}")
+
+    try:
+        df = pd.read_csv(file_path)
+        return df
+    except Exception as e:
+        print(f"An error occurred during file loading: {e}")
+        raise
+
+if __name__ == '__main__':
+    # This block is for local testing and is typically omitted in final module submissions
+    # Assuming the file exists in the execution environment for demonstration purposes
+    # Since this is a sandbox, we simulate loading the expected file name.
+    # In a real execution, this path must be accessible.
+    try:
+        data = load_data('Warehouse_and_Retail_Sales.csv')
+        print("Data loaded successfully. Head of the DataFrame:")
+        print(data.head())
+    except FileNotFoundError:
+        print("Could not run the example: Warehouse_and_Retail_Sales.csv not found.")
+    except Exception as e:
+        print(f"An error occurred during the example execution: {e}")

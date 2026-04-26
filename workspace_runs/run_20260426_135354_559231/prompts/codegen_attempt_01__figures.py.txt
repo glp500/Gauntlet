@@ -1,0 +1,244 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of figures.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `create_figures`.
+
+USER:
+Generate only figures.py for the sandbox bundle described below.
+
+# Structured Code Generation Brief
+
+## Task Objective
+Analyze the provided sales dataset to generate a clear summary and create at least one visualization (figure) that effectively explains the key findings of the analysis.
+
+## Input Dataset Summary
+| Field | Value |
+| :--- | :--- |
+| **File Name** | `Warehouse_and_Retail_Sales.csv` |
+| **Rows** | 307,645 |
+| **Columns** | `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES` |
+| **Data Types** | Mixed (Years/Months as int64, Sales/Transfers as float64, Names/Codes as str) |
+
+## Assumptions From Schema
+1.  **Analysis Focus:** The analysis should primarily focus on the numerical columns (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`) and categorical columns (`SUPPLIER`, `ITEM TYPE`).
+2.  **Time Series:** The `YEAR` and `MONTH` columns suggest that temporal analysis (e.g., trend analysis over time) is a valid analytical approach.
+3.  **Measurability:** Numerical columns are suitable for aggregation, grouping, and statistical measures.
+
+## Required Outputs
+1.  A clear textual summary of the dataset's key trends and observations.
+2.  At least one generated figure (visualization) that visually explains a significant finding derived from the analysis.
+
+## Code Constraints
+*   **File Structure:** Generated code must be distributed across the following modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+*   **Libraries:** Only the `pandas` and `matplotlib` libraries are permitted.
+*   **Execution Environment:** No network access, shell commands, or external dependencies are allowed.
+*   **Logic:** The analytical logic must be explicit and highly readable. Data loading, cleaning, aggregation, and plotting steps must be clearly separated by the designated module structure.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use pandas and matplotlib only.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Files already generated for this attempt:
+
+File: data_loader.py
+import pandas as pd
+import os
+
+def load_data(file_path: str) -> pd.DataFrame:
+    """
+    Loads the warehouse and retail sales data from a specified CSV file.
+
+    Args:
+        file_path: The full path to the CSV file.
+
+    Returns:
+        A pandas DataFrame containing the loaded sales data.
+    """
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"Error: File not found at path: {file_path}")
+
+    try:
+        df = pd.read_csv(file_path)
+        return df
+    except Exception as e:
+        print(f"An error occurred during file loading: {e}")
+        raise
+
+if __name__ == '__main__':
+    # This block is for local testing and is typically omitted in final module submissions
+    # Assuming the file exists in the execution environment for demonstration purposes
+    # Since this is a sandbox, we simulate loading the expected file name.
+    # In a real execution, this path must be accessible.
+    try:
+        data = load_data('Warehouse_and_Retail_Sales.csv')
+        print("Data loaded successfully. Head of the DataFrame:")
+        print(data.head())
+    except FileNotFoundError:
+        print("Could not run the example: Warehouse_and_Retail_Sales.csv not found.")
+    except Exception as e:
+        print(f"An error occurred during the example execution: {e}")
+
+File: preprocessing.py
+import pandas as pd
+import numpy as np
+
+def preprocess(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Preprocesses the raw sales data.
+
+    This function performs data cleaning, feature engineering, and aggregation
+    to prepare the data for analysis and visualization.
+
+    Args:
+        df: The input DataFrame loaded from the CSV.
+
+    Returns:
+        A tuple containing:
+        1. aggregated_sales_by_year: DataFrame aggregated by year showing total sales/transfers.
+        2. aggregated_sales_by_item_type: DataFrame aggregated by item type showing total sales/transfers.
+    """
+    print("Starting data preprocessing...")
+
+    # 1. Data Type Conversion and Cleaning
+    # Ensure temporal data is in a proper format (though often read correctly, this is a safety step)
+    df['YEAR'] = df['YEAR'].astype(int)
+    df['MONTH'] = df['MONTH'].astype(int)
+
+    # Check for NaNs in key numerical columns and handle potential zero/negative values if necessary
+    numeric_cols = ['RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES']
+    df[numeric_cols] = df[numeric_cols].fillna(0) # Fill missing sales/transfer data with 0
+
+    # 2. Time Series Aggregation (Focus on Year Trend)
+    # Aggregate total sales and transfers by year
+    sales_trends = df.groupby('YEAR').agg({
+        'RETAIL SALES': 'sum',
+        'RETAIL TRANSFERS': 'sum',
+        'WAREHOUSE SALES': 'sum'
+    }).reset_index()
+    sales_trends.rename(columns={
+        'RETAIL SALES': 'Total Retail Sales',
+        'RETAIL TRANSFERS': 'Total Retail Transfers',
+        'WAREHOUSE SALES': 'Total Warehouse Sales'
+    }, inplace=True)
+
+    # 3. Categorical Aggregation (Focus on Item Type)
+    # Aggregate sales and transfers by Item Type
+    item_type_summary = df.groupby('ITEM TYPE').agg({
+        'RETAIL SALES': 'sum',
+        'RETAIL TRANSFERS': 'sum',
+        'WAREHOUSE SALES': 'sum'
+    }).reset_index()
+    item_type_summary.rename(columns={
+        'RETAIL SALES': 'Total Sales',
+        'RETAIL TRANSFERS': 'Total Transfers',
+        'WAREHOUSE SALES': 'Total Warehouse Sales'
+    }, inplace=True)
+
+    print("Preprocessing complete. Aggregated data prepared.")
+    return sales_trends, item_type_summary
+
+if __name__ == '__main__':
+    # This block is for local testing purposes only, assuming 'Warehouse_and_Retail_Sales.csv' exists
+    print("Running preprocessing module test...")
+    try:
+        # Simulate loading the data (assuming data_loader.py provides a way to get data)
+        # In a real environment, this mock loading relies on the external file existing.
+        data_loader = __import__('data_loader')
+        df = data_loader.load_data('Warehouse_and_Retail_Sales.csv')
+        
+        trends, item_summary = preprocess(df)
+
+        print("\n--- Sales Trends by Year (First 5 rows) ---")
+        print(trends.head())
+        print("\n--- Sales Summary by Item Type (First 5 rows) ---")
+        print(item_summary.head())
+
+    except FileNotFoundError:
+        print("\nCould not run the example: Warehouse_and_Retail_Sales.csv not found. Skipping test execution.")
+    except ImportError:
+        print("\nCould not import data_loader. Skipping test execution.")
+    except Exception as e:
+        print(f"\nAn unexpected error occurred during test execution: {e}")
+        
+# Note: This file is designed to be imported by analysis.py and figures.py.
+# It exposes the required public function preprocess.
+
+File: analysis.py
+import pandas as pd
+import matplotlib.pyplot as plt
+import data_loader
+import preprocessing
+import figures
+
+def run_analysis(file_path: str):
+    """
+    Runs the complete analysis pipeline: loading, preprocessing, analysis, and visualization.
+
+    Args:
+        file_path: The path to the sales data file.
+    """
+    print("--- Starting Data Analysis Pipeline ---")
+
+    # 1. Data Loading
+    try:
+        df = data_loader.load_data(file_path)
+        print(f"Data loaded successfully. Shape: {df.shape}")
+    except FileNotFoundError:
+        print(f"Error: File not found at {file_path}. Analysis stopped.")
+        return
+    except Exception as e:
+        print(f"Error during data loading: {e}. Analysis stopped.")
+        return
+
+    # 2. Preprocessing
+    try:
+        sales_trends, item_type_summary = preprocessing.preprocess(df)
+        print("Preprocessing successful.")
+    except Exception as e:
+        print(f"Error during preprocessing: {e}. Analysis stopped.")
+        return
+
+    # 3. Analysis and Summary Generation
+    print("\n=========================================")
+    print("         ANALYSIS SUMMARY")
+    print("=========================================")
+
+    # Textual Summary: Year-over-Year Trend Analysis
+    if not sales_trends.empty:
+        print("\nKey Finding: Total Sales Trend Over Years")
+        print(sales_trends.sort_values(by='YEAR').to_string(index=False, float_format="%.2f"))
+        
+        # Observation based on the trend
+        if len(sales_trends) > 1:
+            start_sales = sales_trends.iloc[0]['Total Retail Sales']
+            end_sales = sales_trends.iloc[-1]['Total Retail Sales']
+            growth = ((end_sales - start_sales) / start_sales) * 100
+            print(f"\nObservation: Retail Sales showed a growth of {growth:.2f}% from the first recorded year to the last recorded year.")
+    else:
+        print("No time series data available for trend analysis.")
+
+    # Summary based on Item Type
+    print("\nSales Summary by Item Type (Total Sales):")
+    print(item_type_summary.sort_values(by='Total Sales', ascending=False).to_string(index=False, float_format="%.2f"))
+
+
+    # 4. Visualization
+    print("\nGenerating Visualization...")
+    try:
+        # Generate a time series plot of total sales
+        figures.plot_sales_trend(sales_trends, title="Total Sales Trend Over Time (Years)")
+        print("Visualization successfully generated.")
+    except Exception as e:
+        print(f"Error during figure generation: {e}")
+
+    print("\n--- Analysis Complete ---")
+
+
+if __name__ == '__main__':
+    # Execution entry point, assuming the file is run locally with the required CSV present.
+    # Note: For execution in a true sandbox environment, file path handling must be precise.
+    INPUT_FILE = 'Warehouse_and_Retail_Sales.csv'
+    run_analysis(INPUT_FILE)

@@ -1,0 +1,31 @@
+# Task Objective
+Analyze the provided sales and inventory dataset to generate a clear summary of the data trends, and visualize these trends using at least one appropriate figure to explain the findings.
+
+# Input Dataset Summary
+The analysis will be performed on the file `Warehouse_and_Retail_Sales.csv`.
+The dataset contains 307,645 rows and 9 columns:
+*   `YEAR` (int64)
+*   `MONTH` (int64)
+*   `SUPPLIER` (str)
+*   `ITEM CODE` (str)
+*   `ITEM DESCRIPTION` (str)
+*   `ITEM TYPE` (str)
+*   `RETAIL SALES` (float64)
+*   `RETAIL TRANSFERS` (float64)
+*   `WAREHOUSE SALES` (float64)
+
+# Assumptions From Schema
+1. The data is time-series oriented, allowing for yearly and monthly trend analysis.
+2. Numerical columns (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`) represent quantifiable financial or inventory metrics.
+3. The analysis should focus on identifying relationships between sales, transfers, and warehouse activity across different years, suppliers, and item types.
+
+# Required Outputs
+1. A clear textual summary derived from the analysis of the dataset.
+2. At least one figure (visualization) generated using pandas and matplotlib that effectively explains the key results of the analysis.
+
+# Code Constraints
+1. **File Scope:** Generated code must be implemented across the modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+2. **Libraries:** Only `pandas` and `matplotlib` are permitted for data manipulation and visualization.
+3. **Execution Environment:** No network access, shell commands, or external dependencies are allowed.
+4. **Logic:** All analytical logic must be explicit, step-by-step, and highly readable.
+5. **Data Integrity:** The code must handle the specified `float64` and `int64` data types correctly during processing.

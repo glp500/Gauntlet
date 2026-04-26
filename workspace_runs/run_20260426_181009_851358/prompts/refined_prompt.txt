@@ -1,0 +1,24 @@
+# Task Objective
+Analyze the provided sales and warehouse data to generate a clear summary and visualize key findings through at least one generated figure.
+
+# Input Dataset Summary
+The analysis will be performed on the file `Warehouse_and_Retail_Sales.csv`.
+*   **Rows:** 307,645
+*   **Columns:** `YEAR`, `MONTH`, `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, `ITEM TYPE`, `RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`.
+*   **Data Types:** Numerical fields (`RETAIL SALES`, `RETAIL TRANSFERS`, `WAREHOUSE SALES`) are floats. Temporal and categorical fields are integers or strings.
+
+# Assumptions From Schema
+1.  The dataset contains historical sales and inventory movement data across different years and months.
+2.  `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are quantifiable numeric metrics suitable for aggregation and visualization.
+3.  The temporal fields (`YEAR`, `MONTH`) can be used for time-series analysis.
+4.  The goal of the analysis is to identify meaningful relationships between sales, transfers, and warehouse figures, potentially segmented by supplier or item type.
+
+# Required Outputs
+1.  A clear textual summary of the dataset's key findings.
+2.  At least one generated visualization (figure) that effectively explains a significant relationship or trend found in the data.
+
+# Code Constraints
+1.  **File Structure:** Generated code must be distributed across `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+2.  **Libraries:** Only the `pandas` and `matplotlib` libraries are permitted for computation and visualization.
+3.  **Execution Environment:** No external network access or shell commands are allowed.
+4.  **Logic:** All analytical logic must be explicit and highly readable.

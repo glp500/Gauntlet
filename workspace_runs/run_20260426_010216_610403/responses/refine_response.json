@@ -1,0 +1,7 @@
+{
+  "backend": "openai",
+  "content": "## Task Objective\nSummarize revenue by region.\n\n## Input Dataset Summary\nOne CSV.\n\n## Assumptions From Schema\nRevenue is numeric.\n\n## Required Outputs\nA result table and one figure.\n\n## Code Constraints\nUse pandas and matplotlib only.\n",
+  "model": "mock-openai",
+  "raw_response": {},
+  "usage": null
+}

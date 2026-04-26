@@ -1,0 +1,79 @@
+{
+  "failure_reason": "Generated bundle failed review: Missing required public function load_data in the expected module layout for the bundle review; Missing required public function preprocess in the expected module layout for the bundle review; Missing required public function run_analysis in the expected module layout for the bundle review; Missing required public function create_figures in the expected module layout for the bundle review; Unexpected file roles/names present relative to the requested bundle contract (multiple separate modules instead of a clearly expected single role layout); Possible hidden write concern: create_figures writes output files, which is acceptable only if the provided output path is the sole destination; this should be confirmed by contract; Minor readability issue: unused imports (Dict, List)",
+  "figures": [],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_012332_711706\\metadata.json",
+  "results": [],
+  "run_id": "run_20260426_012332_711706",
+  "status": "failed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T01:23:32.753193+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 740,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 582,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1322
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:23:36.909182+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 827,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 2083,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2910
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:23:47.440216+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "usage": {
+          "input_tokens": 1897,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 174,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2071
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-26T01:23:50.185987+00:00",
+      "status": "completed",
+      "step": "review_code"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_012332_711706\\outputs\\summary.json"
+}

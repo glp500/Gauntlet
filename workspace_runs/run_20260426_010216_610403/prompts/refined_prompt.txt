@@ -1,0 +1,14 @@
+## Task Objective
+Summarize revenue by region.
+
+## Input Dataset Summary
+One CSV.
+
+## Assumptions From Schema
+Revenue is numeric.
+
+## Required Outputs
+A result table and one figure.
+
+## Code Constraints
+Use pandas and matplotlib only.

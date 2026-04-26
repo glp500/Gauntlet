@@ -1,0 +1,48 @@
+{
+  "attempt_number": 5,
+  "failure_stage": "semantic_validation",
+  "file_guidance": {
+    "data_loader.py": [
+      "Keep load_data aligned with the shared contract keys and return the dataset dictionary expected by preprocess."
+    ],
+    "preprocessing.py": [
+      "preprocess must preserve or intentionally transform dictionary keys in a way that still matches what run_analysis expects."
+    ]
+  },
+  "file_issues": {},
+  "issues": [
+    "preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].",
+    "load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']"
+  ],
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ],
+  "semantic_validation_result": {
+    "duration_seconds": 2.177,
+    "failure_reason": "preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].",
+    "figure_file_names": [],
+    "figure_paths": [],
+    "loaded_keys": [
+      "ITEM CODE",
+      "ITEM DESCRIPTION",
+      "ITEM TYPE",
+      "MONTH",
+      "RETAIL SALES",
+      "RETAIL TRANSFERS",
+      "SUPPLIER",
+      "WAREHOUSE SALES",
+      "YEAR"
+    ],
+    "processed_keys": [],
+    "result_table_names": [],
+    "result_value_types": {},
+    "status": "failed",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 87, in <module>\n  File \"<string>\", line 43, in _assert_expected_keys\nValueError: preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].\n"
+  },
+  "stderr_summary": null,
+  "violation_details": []
+}

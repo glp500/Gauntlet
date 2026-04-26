@@ -1,0 +1,463 @@
+{
+  "attempt_count": 4,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "failure_reason": "Generated bundle failed file policy checks: analysis.py: unsupported dependency `numpy`; analysis.py: generated files must not contain `if __name__ == \"__main__\"` blocks",
+      "recorded_at": "2026-04-26T18:13:48.323582+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 2,
+      "failure_reason": "Generated code returned or consumed an invalid runtime type.; Sandbox stderr summary: File \"C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_181009_851358\\sandbox\\run_analysis.py\", line 23, in _write_results | raise TypeError(f\"Analysis result '{table_name}' is not a pandas DataFrame.\") | TypeError: Analysis result 'text_summary' is not a pandas DataFrame.",
+      "recorded_at": "2026-04-26T18:16:57.755364+00:00",
+      "retryable": true,
+      "stage": "execution",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 3,
+      "failure_reason": "Generated code returned or consumed an invalid runtime type.; Sandbox stderr summary: File \"C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_181009_851358\\sandbox\\run_analysis.py\", line 23, in _write_results | raise TypeError(f\"Analysis result '{table_name}' is not a pandas DataFrame.\") | TypeError: Analysis result 'text_summary' is not a pandas DataFrame.",
+      "recorded_at": "2026-04-26T18:20:14.397805+00:00",
+      "retryable": true,
+      "stage": "execution",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 4,
+      "details": {
+        "produced_figures": [],
+        "produced_results": [],
+        "review_advisory_issues": []
+      },
+      "recorded_at": "2026-04-26T18:23:19.254305+00:00",
+      "retryable": false,
+      "stage": "execution",
+      "status": "completed"
+    }
+  ],
+  "failure_reason": null,
+  "figures": [],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_181009_851358\\metadata.json",
+  "results": [],
+  "run_id": "run_20260426_181009_851358",
+  "status": "completed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T18:10:11.304295+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "ollama",
+      "details": {
+        "request_details": {
+          "duration_seconds": 40.102,
+          "ended_at": "2026-04-26T18:10:51.441984+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T18:10:11.340422+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 915,
+          "prompt_tokens": 776,
+          "total_duration": 40086511900
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T18:10:51.445025+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 22.54,
+              "ended_at": "2026-04-26T18:11:14.006137+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:10:51.465634+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 45.594,
+              "ended_at": "2026-04-26T18:11:59.603074+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:11:14.007376+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 61.584,
+              "ended_at": "2026-04-26T18:13:01.192684+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:11:59.608618+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 47.109,
+              "ended_at": "2026-04-26T18:13:48.305885+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:13:01.196722+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 5766,
+          "prompt_tokens": 3649,
+          "total_duration": 176730963200
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T18:13:48.309009+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "failure_reason": "Generated bundle failed file policy checks: analysis.py: unsupported dependency `numpy`; analysis.py: generated files must not contain `if __name__ == \"__main__\"` blocks",
+        "violations": [
+          {
+            "file": "analysis.py",
+            "message": "analysis.py: unsupported dependency `numpy`",
+            "rule": "unsupported_dependency"
+          },
+          {
+            "file": "analysis.py",
+            "message": "analysis.py: generated files must not contain `if __name__ == \"__main__\"` blocks",
+            "rule": "main_block"
+          }
+        ]
+      },
+      "recorded_at": "2026-04-26T18:13:48.323582+00:00",
+      "status": "failed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 2,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 27.181,
+              "ended_at": "2026-04-26T18:14:15.515014+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:13:48.333784+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 44.131,
+              "ended_at": "2026-04-26T18:14:59.651605+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:14:15.521017+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 64.595,
+              "ended_at": "2026-04-26T18:16:04.250924+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:14:59.657520+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 45.782,
+              "ended_at": "2026-04-26T18:16:50.039093+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:16:04.257268+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 5857,
+          "prompt_tokens": 7365,
+          "total_duration": 181535188400
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T18:16:50.042994+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 2,
+      "recorded_at": "2026-04-26T18:16:50.053970+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 2,
+      "backend": "ollama",
+      "details": {
+        "request_details": {
+          "duration_seconds": 5.23,
+          "ended_at": "2026-04-26T18:16:55.302005+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T18:16:50.071960+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 121,
+          "prompt_tokens": 3751,
+          "total_duration": 5195593800
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T18:16:55.302965+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "advisory_issue_count": 0,
+        "blocking_issue_count": 0
+      },
+      "recorded_at": "2026-04-26T18:16:55.302965+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_181009_851358\\sandbox"
+      },
+      "recorded_at": "2026-04-26T18:16:55.334073+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "duration_seconds": 2.421,
+        "exit_code": 1
+      },
+      "recorded_at": "2026-04-26T18:16:57.755364+00:00",
+      "status": "failed",
+      "step": "execute_sandbox"
+    },
+    {
+      "attempt_number": 3,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 26.401,
+              "ended_at": "2026-04-26T18:17:24.188966+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:16:57.787789+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 44.491,
+              "ended_at": "2026-04-26T18:18:08.683663+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:17:24.190022+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 74.774,
+              "ended_at": "2026-04-26T18:19:23.462230+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:18:08.684723+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 43.808,
+              "ended_at": "2026-04-26T18:20:07.275272+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:19:23.467054+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 5913,
+          "prompt_tokens": 7887,
+          "total_duration": 189335248800
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T18:20:07.280368+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 3,
+      "recorded_at": "2026-04-26T18:20:07.294758+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 3,
+      "backend": "ollama",
+      "details": {
+        "request_details": {
+          "duration_seconds": 4.724,
+          "ended_at": "2026-04-26T18:20:12.041158+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T18:20:07.317307+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 97,
+          "prompt_tokens": 3856,
+          "total_duration": 4687559000
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T18:20:12.042752+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 3,
+      "details": {
+        "advisory_issue_count": 0,
+        "blocking_issue_count": 0
+      },
+      "recorded_at": "2026-04-26T18:20:12.042752+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 3,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_181009_851358\\sandbox"
+      },
+      "recorded_at": "2026-04-26T18:20:12.067888+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 3,
+      "details": {
+        "duration_seconds": 2.323,
+        "exit_code": 1
+      },
+      "recorded_at": "2026-04-26T18:20:14.396300+00:00",
+      "status": "failed",
+      "step": "execute_sandbox"
+    },
+    {
+      "attempt_number": 4,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 28.815,
+              "ended_at": "2026-04-26T18:20:43.223759+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:20:14.408574+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 36.213,
+              "ended_at": "2026-04-26T18:21:19.442712+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:20:43.229721+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 63.082,
+              "ended_at": "2026-04-26T18:22:22.531765+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:21:19.449808+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 50.519,
+              "ended_at": "2026-04-26T18:23:13.056302+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T18:22:22.537274+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 5525,
+          "prompt_tokens": 7992,
+          "total_duration": 178464787800
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T18:23:13.061261+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 4,
+      "recorded_at": "2026-04-26T18:23:13.072461+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 4,
+      "backend": "ollama",
+      "details": {
+        "request_details": {
+          "duration_seconds": 3.822,
+          "ended_at": "2026-04-26T18:23:16.901478+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T18:23:13.080281+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 71,
+          "prompt_tokens": 3208,
+          "total_duration": 3794068000
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T18:23:16.904745+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 4,
+      "details": {
+        "advisory_issue_count": 0,
+        "blocking_issue_count": 0
+      },
+      "recorded_at": "2026-04-26T18:23:16.908032+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 4,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_181009_851358\\sandbox"
+      },
+      "recorded_at": "2026-04-26T18:23:16.937104+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 4,
+      "details": {
+        "duration_seconds": 2.307,
+        "exit_code": 0
+      },
+      "recorded_at": "2026-04-26T18:23:19.247758+00:00",
+      "status": "completed",
+      "step": "execute_sandbox"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_181009_851358\\outputs\\summary.json"
+}

@@ -1,0 +1,599 @@
+{
+  "attempt_count": 5,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "failure_reason": "Generated bundle failed file policy checks: analysis.py: sibling generated module import `figures` is not allowed",
+      "recorded_at": "2026-04-26T23:11:33.474097+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 2,
+      "failure_reason": "Generated bundle failed file policy checks: analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+      "recorded_at": "2026-04-26T23:12:58.886464+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 3,
+      "failure_reason": "Generated bundle failed file policy checks: analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+      "recorded_at": "2026-04-26T23:14:25.764727+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 4,
+      "failure_reason": "Generated bundle failed file policy checks: analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+      "recorded_at": "2026-04-26T23:15:50.929878+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 5,
+      "failure_reason": "Generated bundle failed file policy checks: analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+      "recorded_at": "2026-04-26T23:17:17.538043+00:00",
+      "retryable": true,
+      "stage": "static_validation",
+      "status": "failed"
+    }
+  ],
+  "failure_reason": "Code generation failed after 5 attempts. Last error: Generated bundle failed file policy checks: analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+  "figures": [],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_231001_352780\\metadata.json",
+  "results": [],
+  "run_id": "run_20260426_231001_352780",
+  "status": "failed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T23:10:02.901945+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "ollama",
+      "details": {
+        "request_details": {
+          "duration_seconds": 22.175,
+          "ended_at": "2026-04-26T23:10:25.095758+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T23:10:02.920820+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 534,
+          "prompt_tokens": 650,
+          "total_duration": 22150347900
+        }
+      },
+      "model": "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M",
+      "recorded_at": "2026-04-26T23:10:25.097041+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "retail_transfer_vs_warehouse_sales_line_chart.png"
+          ],
+          "loaded_keys": [
+            "sales_data",
+            "monthly_sales",
+            "supplier_summary"
+          ],
+          "processed_keys": [
+            "preprocessed_sales_data",
+            "cleaned_monthly_sales",
+            "filtered_supplier_items"
+          ],
+          "result_table_names": [
+            "total_sales_summary",
+            "key_insights_report"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 5.957,
+          "ended_at": "2026-04-26T23:10:31.066089+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T23:10:25.108500+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 72,
+          "prompt_tokens": 850,
+          "total_duration": 5951146900
+        }
+      },
+      "model": "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M",
+      "recorded_at": "2026-04-26T23:10:31.066562+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 11.635,
+              "ended_at": "2026-04-26T23:10:42.704705+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:10:31.069026+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 19.689,
+              "ended_at": "2026-04-26T23:11:02.399702+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:10:42.708771+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 15.145,
+              "ended_at": "2026-04-26T23:11:17.548302+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:11:02.403936+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 15.91,
+              "ended_at": "2026-04-26T23:11:33.461137+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:11:17.551569+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 1346,
+          "prompt_tokens": 4301,
+          "total_duration": 62291811000
+        }
+      },
+      "model": "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M",
+      "recorded_at": "2026-04-26T23:11:33.462640+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "failure_reason": "Generated bundle failed file policy checks: analysis.py: sibling generated module import `figures` is not allowed",
+        "violations": [
+          {
+            "file": "analysis.py",
+            "message": "analysis.py: sibling generated module import `figures` is not allowed",
+            "rule": "sibling_module_import"
+          }
+        ]
+      },
+      "recorded_at": "2026-04-26T23:11:33.472573+00:00",
+      "status": "failed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 2,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "sales_over_time.png"
+          ],
+          "loaded_keys": [
+            "sales_data",
+            "monthly_sales"
+          ],
+          "processed_keys": [
+            "cleaned_data"
+          ],
+          "result_table_names": [
+            "total_sales_summary",
+            "sales_trend_plot"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 4.715,
+          "ended_at": "2026-04-26T23:11:38.203573+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T23:11:33.488578+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 49,
+          "prompt_tokens": 1212,
+          "total_duration": 4706662500
+        }
+      },
+      "model": "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M",
+      "recorded_at": "2026-04-26T23:11:38.206098+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 2,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 12.385,
+              "ended_at": "2026-04-26T23:11:50.593672+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:11:38.206098+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 22.042,
+              "ended_at": "2026-04-26T23:12:12.639168+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:11:50.596808+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 29.085,
+              "ended_at": "2026-04-26T23:12:41.729022+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:12:12.642704+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 17.15,
+              "ended_at": "2026-04-26T23:12:58.882432+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:12:41.730386+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 1552,
+          "prompt_tokens": 5893,
+          "total_duration": 80588625000
+        }
+      },
+      "model": "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M",
+      "recorded_at": "2026-04-26T23:12:58.883777+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "failure_reason": "Generated bundle failed file policy checks: analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+        "violations": [
+          {
+            "file": "analysis.py",
+            "message": "analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+            "rule": "analysis_file_path_reference"
+          }
+        ]
+      },
+      "recorded_at": "2026-04-26T23:12:58.886464+00:00",
+      "status": "failed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 3,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "sales_trend_plot.png",
+            "category_distribution_bar.png"
+          ],
+          "loaded_keys": [
+            "sales_data",
+            "monthly_sales"
+          ],
+          "processed_keys": [
+            "cleaned_sales_data",
+            "normalized_sales_table"
+          ],
+          "result_table_names": [
+            "weekly_sales_summary",
+            "item_category_breakdown"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 5.644,
+          "ended_at": "2026-04-26T23:13:04.553177+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T23:12:58.909100+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 62,
+          "prompt_tokens": 1185,
+          "total_duration": 5614090600
+        }
+      },
+      "model": "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M",
+      "recorded_at": "2026-04-26T23:13:04.555016+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 3,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 12.403,
+              "ended_at": "2026-04-26T23:13:16.961410+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:13:04.555016+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 21.902,
+              "ended_at": "2026-04-26T23:13:38.865719+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:13:16.961738+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 30.061,
+              "ended_at": "2026-04-26T23:14:08.931485+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:13:38.870320+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 16.819,
+              "ended_at": "2026-04-26T23:14:25.753668+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:14:08.932629+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 1552,
+          "prompt_tokens": 6119,
+          "total_duration": 81127735500
+        }
+      },
+      "model": "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M",
+      "recorded_at": "2026-04-26T23:14:25.757016+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 3,
+      "details": {
+        "failure_reason": "Generated bundle failed file policy checks: analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+        "violations": [
+          {
+            "file": "analysis.py",
+            "message": "analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+            "rule": "analysis_file_path_reference"
+          }
+        ]
+      },
+      "recorded_at": "2026-04-26T23:14:25.762735+00:00",
+      "status": "failed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 4,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "revenue_trend_plot.png"
+          ],
+          "loaded_keys": [
+            "sales_data",
+            "monthly_sales"
+          ],
+          "processed_keys": [
+            "cleaned_monthly_sales"
+          ],
+          "result_table_names": [
+            "sales_summary"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 4.176,
+          "ended_at": "2026-04-26T23:14:29.950723+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T23:14:25.773750+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 46,
+          "prompt_tokens": 1185,
+          "total_duration": 4169542900
+        }
+      },
+      "model": "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M",
+      "recorded_at": "2026-04-26T23:14:29.951695+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 4,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 12.437,
+              "ended_at": "2026-04-26T23:14:42.391632+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:14:29.954838+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 21.997,
+              "ended_at": "2026-04-26T23:15:04.392197+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:14:42.393047+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 29.59,
+              "ended_at": "2026-04-26T23:15:33.985697+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:15:04.393257+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 16.924,
+              "ended_at": "2026-04-26T23:15:50.913565+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:15:33.986894+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 1556,
+          "prompt_tokens": 6063,
+          "total_duration": 80880768600
+        }
+      },
+      "model": "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M",
+      "recorded_at": "2026-04-26T23:15:50.916899+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 4,
+      "details": {
+        "failure_reason": "Generated bundle failed file policy checks: analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+        "violations": [
+          {
+            "file": "analysis.py",
+            "message": "analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+            "rule": "analysis_file_path_reference"
+          }
+        ]
+      },
+      "recorded_at": "2026-04-26T23:15:50.916899+00:00",
+      "status": "failed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 5,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "sales_trend_plot.png",
+            "item_distribution_bar_chart.png"
+          ],
+          "loaded_keys": [
+            "sales_data",
+            "supplier_summary"
+          ],
+          "processed_keys": [
+            "preprocessed_sales",
+            "yearly_insights"
+          ],
+          "result_table_names": [
+            "monthly_sales_trend",
+            "distribution_of_items"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 5.339,
+          "ended_at": "2026-04-26T23:15:56.281721+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T23:15:50.941637+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 63,
+          "prompt_tokens": 1185,
+          "total_duration": 5331946600
+        }
+      },
+      "model": "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M",
+      "recorded_at": "2026-04-26T23:15:56.282635+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 5,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 12.513,
+              "ended_at": "2026-04-26T23:16:08.799633+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:15:56.285916+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 22.495,
+              "ended_at": "2026-04-26T23:16:31.297134+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:16:08.800385+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 29.77,
+              "ended_at": "2026-04-26T23:17:01.070352+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:16:31.299026+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 16.457,
+              "ended_at": "2026-04-26T23:17:17.533787+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T23:17:01.074966+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 1552,
+          "prompt_tokens": 6127,
+          "total_duration": 81172545300
+        }
+      },
+      "model": "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M",
+      "recorded_at": "2026-04-26T23:17:17.534998+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 5,
+      "details": {
+        "failure_reason": "Generated bundle failed file policy checks: analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+        "violations": [
+          {
+            "file": "analysis.py",
+            "message": "analysis.py: analysis.py must consume the provided data dictionary and not reference file paths",
+            "rule": "analysis_file_path_reference"
+          }
+        ]
+      },
+      "recorded_at": "2026-04-26T23:17:17.538043+00:00",
+      "status": "failed",
+      "step": "validate_code_bundle"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_231001_352780\\outputs\\summary.json"
+}

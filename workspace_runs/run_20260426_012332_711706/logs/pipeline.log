@@ -1,0 +1,12 @@
+2026-04-26 03:23:32,727 | INFO | gauntlet.pipeline | Starting run run_20260426_012332_711706
+2026-04-26 03:23:32,754 | INFO | gauntlet.pipeline | Loaded manifest with 1 dataset(s)
+2026-04-26 03:23:36,910 | INFO | gauntlet.pipeline | Refinement step completed with gpt-5.4-mini-2026-03-17
+2026-04-26 03:23:47,441 | INFO | gauntlet.pipeline | Code generation created 4 files
+2026-04-26 03:23:50,186 | INFO | gauntlet.pipeline | Review status: blocked
+2026-04-26 03:23:50,188 | ERROR | gauntlet.pipeline | Run failed: Generated bundle failed review: Missing required public function load_data in the expected module layout for the bundle review; Missing required public function preprocess in the expected module layout for the bundle review; Missing required public function run_analysis in the expected module layout for the bundle review; Missing required public function create_figures in the expected module layout for the bundle review; Unexpected file roles/names present relative to the requested bundle contract (multiple separate modules instead of a clearly expected single role layout); Possible hidden write concern: create_figures writes output files, which is acceptable only if the provided output path is the sole destination; this should be confirmed by contract; Minor readability issue: unused imports (Dict, List)
+Traceback (most recent call last):
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\src\gauntlet\orchestrator\pipeline.py", line 65, in run
+    self._review_code(context, code_bundle, pipeline_logger)
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\src\gauntlet\orchestrator\pipeline.py", line 188, in _review_code
+    raise RuntimeError(f"Generated bundle failed review: {issues}")
+RuntimeError: Generated bundle failed review: Missing required public function load_data in the expected module layout for the bundle review; Missing required public function preprocess in the expected module layout for the bundle review; Missing required public function run_analysis in the expected module layout for the bundle review; Missing required public function create_figures in the expected module layout for the bundle review; Unexpected file roles/names present relative to the requested bundle contract (multiple separate modules instead of a clearly expected single role layout); Possible hidden write concern: create_figures writes output files, which is acceptable only if the provided output path is the sole destination; this should be confirmed by contract; Minor readability issue: unused imports (Dict, List)

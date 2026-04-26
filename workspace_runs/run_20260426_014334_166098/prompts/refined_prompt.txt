@@ -1,0 +1,44 @@
+## Task Objective
+Analyze the warehouse and retail sales dataset and produce a clear summary of the main patterns in the data. Include at least one figure that helps explain the results.
+
+## Input Dataset Summary
+- **File:** `Warehouse_and_Retail_Sales.csv`
+- **Rows:** 307,645
+- **Columns:** 9
+- **Fields available:**
+  - `YEAR` *(int64)*
+  - `MONTH` *(int64)*
+  - `SUPPLIER` *(str)*
+  - `ITEM CODE` *(str)*
+  - `ITEM DESCRIPTION` *(str)*
+  - `ITEM TYPE` *(str)*
+  - `RETAIL SALES` *(float64)*
+  - `RETAIL TRANSFERS` *(float64)*
+  - `WAREHOUSE SALES` *(float64)*
+
+## Assumptions From Schema
+- `YEAR` and `MONTH` represent time dimensions and can be used for grouping and trend analysis.
+- `SUPPLIER`, `ITEM CODE`, `ITEM DESCRIPTION`, and `ITEM TYPE` are categorical/text fields suitable for counts, rankings, and grouping.
+- `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are numeric measures suitable for totals, averages, comparisons, and trend summaries.
+- The dataset appears to support sales analysis by time period, supplier, item type, and item-level descriptions.
+- No additional columns should be assumed beyond those listed in the manifest.
+
+## Required Outputs
+- A concise written summary of the dataset’s main findings.
+- At least one figure that supports the summary, such as:
+  - a time trend by `YEAR` and/or `MONTH`,
+  - a comparison of totals across `ITEM TYPE`,
+  - a top-suppliers or top-items chart.
+- Code organized into the allowed modules:
+  - `data_loader.py`
+  - `preprocessing.py`
+  - `analysis.py`
+  - `figures.py`
+
+## Code Constraints
+- Use **pandas** and **matplotlib** only.
+- No network access.
+- No shell commands.
+- Keep logic explicit and readable.
+- Generated code may only implement the four specified files.
+- Do not invent columns or derived fields beyond what can be computed from the visible schema.

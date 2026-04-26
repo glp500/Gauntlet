@@ -1,0 +1,17 @@
+depression_label,variable,gender,count,percent_within_label,platform_usage,social_interaction_level
+0,gender,female,568,0.48588537211291705,,
+0,gender,male,601,0.514114627887083,,
+1,gender,female,17,0.5483870967741935,,
+1,gender,male,14,0.45161290322580644,,
+0,platform_usage,,382,0.32677502138579984,both,
+0,platform_usage,,401,0.34302822925577414,instagram,
+0,platform_usage,,386,0.330196749358426,tiktok,
+1,platform_usage,,9,0.2903225806451613,both,
+1,platform_usage,,10,0.3225806451612903,instagram,
+1,platform_usage,,12,0.3870967741935484,tiktok,
+0,social_interaction_level,,359,0.30710008554319934,,high
+0,social_interaction_level,,406,0.3473053892215569,,low
+0,social_interaction_level,,404,0.3455945252352438,,medium
+1,social_interaction_level,,10,0.3225806451612903,,high
+1,social_interaction_level,,9,0.2903225806451613,,low
+1,social_interaction_level,,12,0.3870967741935484,,medium

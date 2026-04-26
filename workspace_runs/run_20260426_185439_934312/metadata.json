@@ -1,0 +1,852 @@
+{
+  "attempt_count": 5,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "failure_reason": "'Series' object has no attribute 'columns'; load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']",
+      "recorded_at": "2026-04-26T19:02:27.366119+00:00",
+      "retryable": true,
+      "stage": "semantic_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 2,
+      "failure_reason": "preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].; load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']",
+      "recorded_at": "2026-04-26T19:05:16.791486+00:00",
+      "retryable": true,
+      "stage": "semantic_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 3,
+      "failure_reason": "preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].; load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']",
+      "recorded_at": "2026-04-26T19:08:06.794311+00:00",
+      "retryable": true,
+      "stage": "semantic_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 4,
+      "failure_reason": "preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].; load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']",
+      "recorded_at": "2026-04-26T19:10:56.652368+00:00",
+      "retryable": true,
+      "stage": "semantic_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 5,
+      "failure_reason": "preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].; load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']",
+      "recorded_at": "2026-04-26T19:13:45.827079+00:00",
+      "retryable": true,
+      "stage": "semantic_validation",
+      "status": "failed"
+    }
+  ],
+  "created_at": "2026-04-26T18:54:39.934312+00:00",
+  "failure_reason": "Code generation failed after 5 attempts. Last error: preprocess keys did not match the shared contract. Expected=['YEAR', 'MONTH', 'SUPPLIER', 'ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES'], actual=[].; load_data returned keys: ['ITEM CODE', 'ITEM DESCRIPTION', 'ITEM TYPE', 'MONTH', 'RETAIL SALES', 'RETAIL TRANSFERS', 'SUPPLIER', 'WAREHOUSE SALES', 'YEAR']",
+  "input_manifest": {
+    "datasets": [
+      {
+        "columns": [
+          "YEAR",
+          "MONTH",
+          "SUPPLIER",
+          "ITEM CODE",
+          "ITEM DESCRIPTION",
+          "ITEM TYPE",
+          "RETAIL SALES",
+          "RETAIL TRANSFERS",
+          "WAREHOUSE SALES"
+        ],
+        "dtypes": {
+          "ITEM CODE": "str",
+          "ITEM DESCRIPTION": "str",
+          "ITEM TYPE": "str",
+          "MONTH": "int64",
+          "RETAIL SALES": "float64",
+          "RETAIL TRANSFERS": "float64",
+          "SUPPLIER": "str",
+          "WAREHOUSE SALES": "float64",
+          "YEAR": "int64"
+        },
+        "file_name": "Warehouse_and_Retail_Sales.csv",
+        "rows": 307645,
+        "sample_values": {
+          "ITEM CODE": [
+            "100009",
+            "100024",
+            "1001"
+          ],
+          "ITEM DESCRIPTION": [
+            "BOOTLEG RED - 750ML",
+            "MOMENT DE PLAISIR - 750ML",
+            "S SMITH ORGANIC PEAR CIDER - 18.7OZ"
+          ],
+          "ITEM TYPE": [
+            "WINE",
+            "BEER",
+            "LIQUOR"
+          ],
+          "MONTH": [
+            "1",
+            "9",
+            "7"
+          ],
+          "RETAIL SALES": [
+            "0.0",
+            "0.82",
+            "2.76"
+          ],
+          "RETAIL TRANSFERS": [
+            "0.0",
+            "1.0",
+            "4.0"
+          ],
+          "SUPPLIER": [
+            "REPUBLIC NATIONAL DISTRIBUTING CO",
+            "PWSWN INC",
+            "RELIABLE CHURCHILL LLLP"
+          ],
+          "WAREHOUSE SALES": [
+            "2.0",
+            "4.0",
+            "1.0"
+          ],
+          "YEAR": [
+            "2020",
+            "2017",
+            "2018"
+          ]
+        }
+      }
+    ],
+    "task_text": "Analyze the dataset and produce a clear summary. Create at least one figure that helps explain the result."
+  },
+  "run_id": "run_20260426_185439_934312",
+  "status": "failed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-26T18:54:41.407554+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "ollama",
+      "details": {
+        "request_details": {
+          "duration_seconds": 40.493,
+          "ended_at": "2026-04-26T18:55:21.923324+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T18:54:41.429601+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 934,
+          "prompt_tokens": 776,
+          "total_duration": 40473559800
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T18:55:21.926046+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "sales_trend.png"
+          ],
+          "loaded_keys": [
+            "YEAR",
+            "MONTH",
+            "SUPPLIER",
+            "ITEM CODE",
+            "ITEM DESCRIPTION",
+            "ITEM TYPE",
+            "RETAIL SALES",
+            "RETAIL TRANSFERS",
+            "WAREHOUSE SALES"
+          ],
+          "processed_keys": [
+            "YEAR",
+            "MONTH",
+            "SUPPLIER",
+            "ITEM CODE",
+            "ITEM DESCRIPTION",
+            "ITEM TYPE",
+            "RETAIL SALES",
+            "RETAIL TRANSFERS",
+            "WAREHOUSE SALES"
+          ],
+          "result_table_names": [
+            "sales_summary",
+            "item_performance"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 281.631,
+          "ended_at": "2026-04-26T19:00:03.590381+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T18:55:21.955639+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 195,
+          "prompt_tokens": 669,
+          "total_duration": 281619637700
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:00:03.593146+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 30.374,
+              "ended_at": "2026-04-26T19:00:33.969454+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:00:03.593146+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 32.958,
+              "ended_at": "2026-04-26T19:01:06.934465+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:00:33.977239+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 45.135,
+              "ended_at": "2026-04-26T19:01:52.075331+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:01:06.940090+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 32.919,
+              "ended_at": "2026-04-26T19:02:24.995166+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:01:52.079415+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 4495,
+          "prompt_tokens": 4213,
+          "total_duration": 141300248200
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:02:24.999623+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 1,
+      "recorded_at": "2026-04-26T19:02:25.007638+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_185439_934312\\sandbox"
+      },
+      "recorded_at": "2026-04-26T19:02:25.039336+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "duration_seconds": 2.322,
+        "figure_file_names": [],
+        "loaded_keys": [
+          "ITEM CODE",
+          "ITEM DESCRIPTION",
+          "ITEM TYPE",
+          "MONTH",
+          "RETAIL SALES",
+          "RETAIL TRANSFERS",
+          "SUPPLIER",
+          "WAREHOUSE SALES",
+          "YEAR"
+        ],
+        "processed_keys": [],
+        "result_table_names": []
+      },
+      "recorded_at": "2026-04-26T19:02:27.365118+00:00",
+      "status": "failed",
+      "step": "semantic_smoke_check"
+    },
+    {
+      "attempt_number": 2,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "sales_trend.png"
+          ],
+          "loaded_keys": [
+            "YEAR",
+            "MONTH",
+            "SUPPLIER",
+            "ITEM CODE",
+            "ITEM DESCRIPTION",
+            "ITEM TYPE",
+            "RETAIL SALES",
+            "RETAIL TRANSFERS",
+            "WAREHOUSE SALES"
+          ],
+          "processed_keys": [
+            "YEAR",
+            "MONTH",
+            "SUPPLIER",
+            "ITEM CODE",
+            "ITEM DESCRIPTION",
+            "ITEM TYPE",
+            "RETAIL SALES",
+            "RETAIL TRANSFERS",
+            "WAREHOUSE SALES"
+          ],
+          "result_table_names": [
+            "sales_summary"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 7.109,
+          "ended_at": "2026-04-26T19:02:34.504922+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T19:02:27.395360+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 188,
+          "prompt_tokens": 1358,
+          "total_duration": 7090341100
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:02:34.507217+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 2,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 34.014,
+              "ended_at": "2026-04-26T19:03:08.523509+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:02:34.509354+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 44.259,
+              "ended_at": "2026-04-26T19:03:52.786069+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:03:08.527501+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 41.049,
+              "ended_at": "2026-04-26T19:04:33.839475+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:03:52.791258+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 40.652,
+              "ended_at": "2026-04-26T19:05:14.495890+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:04:33.843207+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 5103,
+          "prompt_tokens": 6818,
+          "total_duration": 159834087200
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:05:14.501522+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 2,
+      "recorded_at": "2026-04-26T19:05:14.513366+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_185439_934312\\sandbox"
+      },
+      "recorded_at": "2026-04-26T19:05:14.545989+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "duration_seconds": 2.241,
+        "figure_file_names": [],
+        "loaded_keys": [
+          "ITEM CODE",
+          "ITEM DESCRIPTION",
+          "ITEM TYPE",
+          "MONTH",
+          "RETAIL SALES",
+          "RETAIL TRANSFERS",
+          "SUPPLIER",
+          "WAREHOUSE SALES",
+          "YEAR"
+        ],
+        "processed_keys": [],
+        "result_table_names": []
+      },
+      "recorded_at": "2026-04-26T19:05:16.788984+00:00",
+      "status": "failed",
+      "step": "semantic_smoke_check"
+    },
+    {
+      "attempt_number": 3,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "yearly_sales_trend.png"
+          ],
+          "loaded_keys": [
+            "YEAR",
+            "MONTH",
+            "SUPPLIER",
+            "ITEM CODE",
+            "ITEM DESCRIPTION",
+            "ITEM TYPE",
+            "RETAIL SALES",
+            "RETAIL TRANSFERS",
+            "WAREHOUSE SALES"
+          ],
+          "processed_keys": [
+            "YEAR",
+            "MONTH",
+            "SUPPLIER",
+            "ITEM CODE",
+            "ITEM DESCRIPTION",
+            "ITEM TYPE",
+            "RETAIL SALES",
+            "RETAIL TRANSFERS",
+            "WAREHOUSE SALES"
+          ],
+          "result_table_names": [
+            "yearly_sales_summary",
+            "item_performance_summary"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 7.465,
+          "ended_at": "2026-04-26T19:05:24.280087+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T19:05:16.815836+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 201,
+          "prompt_tokens": 1388,
+          "total_duration": 7426178100
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:05:24.283629+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 3,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 35.167,
+              "ended_at": "2026-04-26T19:05:59.453153+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:05:24.286600+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 54.901,
+              "ended_at": "2026-04-26T19:06:54.360232+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:05:59.456163+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 30.291,
+              "ended_at": "2026-04-26T19:07:24.659654+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:06:54.368410+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 39.767,
+              "ended_at": "2026-04-26T19:08:04.430424+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:07:24.662874+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 4972,
+          "prompt_tokens": 6780,
+          "total_duration": 160037812100
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:08:04.435038+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 3,
+      "recorded_at": "2026-04-26T19:08:04.442590+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 3,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_185439_934312\\sandbox"
+      },
+      "recorded_at": "2026-04-26T19:08:04.472484+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 3,
+      "details": {
+        "duration_seconds": 2.318,
+        "figure_file_names": [],
+        "loaded_keys": [
+          "ITEM CODE",
+          "ITEM DESCRIPTION",
+          "ITEM TYPE",
+          "MONTH",
+          "RETAIL SALES",
+          "RETAIL TRANSFERS",
+          "SUPPLIER",
+          "WAREHOUSE SALES",
+          "YEAR"
+        ],
+        "processed_keys": [],
+        "result_table_names": []
+      },
+      "recorded_at": "2026-04-26T19:08:06.791299+00:00",
+      "status": "failed",
+      "step": "semantic_smoke_check"
+    },
+    {
+      "attempt_number": 4,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "sales_trend.png"
+          ],
+          "loaded_keys": [
+            "YEAR",
+            "MONTH",
+            "SUPPLIER",
+            "ITEM CODE",
+            "ITEM DESCRIPTION",
+            "ITEM TYPE",
+            "RETAIL SALES",
+            "RETAIL TRANSFERS",
+            "WAREHOUSE SALES"
+          ],
+          "processed_keys": [
+            "YEAR",
+            "MONTH",
+            "SUPPLIER",
+            "ITEM CODE",
+            "ITEM DESCRIPTION",
+            "ITEM TYPE",
+            "RETAIL SALES",
+            "RETAIL TRANSFERS",
+            "WAREHOUSE SALES"
+          ],
+          "result_table_names": [
+            "sales_summary"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 6.966,
+          "ended_at": "2026-04-26T19:08:13.774713+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T19:08:06.808460+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 188,
+          "prompt_tokens": 1388,
+          "total_duration": 6950897900
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:08:13.775757+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 4,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 24.998,
+              "ended_at": "2026-04-26T19:08:38.778313+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:08:13.781257+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 43.737,
+              "ended_at": "2026-04-26T19:09:22.519982+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:08:38.780395+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 51.164,
+              "ended_at": "2026-04-26T19:10:13.689959+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:09:22.524936+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 40.733,
+              "ended_at": "2026-04-26T19:10:54.430611+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:10:13.697459+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 5043,
+          "prompt_tokens": 6745,
+          "total_duration": 160527440000
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:10:54.434981+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 4,
+      "recorded_at": "2026-04-26T19:10:54.444186+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 4,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_185439_934312\\sandbox"
+      },
+      "recorded_at": "2026-04-26T19:10:54.471633+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 4,
+      "details": {
+        "duration_seconds": 2.177,
+        "figure_file_names": [],
+        "loaded_keys": [
+          "ITEM CODE",
+          "ITEM DESCRIPTION",
+          "ITEM TYPE",
+          "MONTH",
+          "RETAIL SALES",
+          "RETAIL TRANSFERS",
+          "SUPPLIER",
+          "WAREHOUSE SALES",
+          "YEAR"
+        ],
+        "processed_keys": [],
+        "result_table_names": []
+      },
+      "recorded_at": "2026-04-26T19:10:56.650816+00:00",
+      "status": "failed",
+      "step": "semantic_smoke_check"
+    },
+    {
+      "attempt_number": 5,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "sales_trend_by_item_type.png"
+          ],
+          "loaded_keys": [
+            "YEAR",
+            "MONTH",
+            "SUPPLIER",
+            "ITEM CODE",
+            "ITEM DESCRIPTION",
+            "ITEM TYPE",
+            "RETAIL SALES",
+            "RETAIL TRANSFERS",
+            "WAREHOUSE SALES"
+          ],
+          "processed_keys": [
+            "YEAR",
+            "MONTH",
+            "SUPPLIER",
+            "ITEM CODE",
+            "ITEM DESCRIPTION",
+            "ITEM TYPE",
+            "RETAIL SALES",
+            "RETAIL TRANSFERS",
+            "WAREHOUSE SALES"
+          ],
+          "result_table_names": [
+            "sales_by_item_type",
+            "sales_trends_by_month"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 7.884,
+          "ended_at": "2026-04-26T19:11:04.549788+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-26T19:10:56.665539+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 209,
+          "prompt_tokens": 1388,
+          "total_duration": 7873374600
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:11:04.553265+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 5,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 32.076,
+              "ended_at": "2026-04-26T19:11:36.632985+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:11:04.556902+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 38.656,
+              "ended_at": "2026-04-26T19:12:15.294899+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:11:36.637946+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 52.806,
+              "ended_at": "2026-04-26T19:13:08.104446+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:12:15.298421+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 35.577,
+              "ended_at": "2026-04-26T19:13:43.687239+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-26T19:13:08.111334+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 5128,
+          "prompt_tokens": 6700,
+          "total_duration": 158969828900
+        }
+      },
+      "model": "gemma4:e2b",
+      "recorded_at": "2026-04-26T19:13:43.697776+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 5,
+      "recorded_at": "2026-04-26T19:13:43.706826+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 5,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_185439_934312\\sandbox"
+      },
+      "recorded_at": "2026-04-26T19:13:43.731573+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 5,
+      "details": {
+        "duration_seconds": 2.087,
+        "figure_file_names": [],
+        "loaded_keys": [
+          "ITEM CODE",
+          "ITEM DESCRIPTION",
+          "ITEM TYPE",
+          "MONTH",
+          "RETAIL SALES",
+          "RETAIL TRANSFERS",
+          "SUPPLIER",
+          "WAREHOUSE SALES",
+          "YEAR"
+        ],
+        "processed_keys": [],
+        "result_table_names": []
+      },
+      "recorded_at": "2026-04-26T19:13:45.823683+00:00",
+      "status": "failed",
+      "step": "semantic_smoke_check"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260426_185439_934312\\outputs\\summary.json"
+}
