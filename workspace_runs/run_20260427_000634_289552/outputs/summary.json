@@ -1,0 +1,21 @@
+{
+  "attempt_count": 0,
+  "attempts": [],
+  "failure_reason": "Ollama request failed: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=120)",
+  "figures": [],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_000634_289552\\metadata.json",
+  "results": [],
+  "run_id": "run_20260427_000634_289552",
+  "status": "failed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-27T00:06:35.769901+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_000634_289552\\outputs\\summary.json"
+}

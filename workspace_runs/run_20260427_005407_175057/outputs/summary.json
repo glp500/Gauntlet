@@ -1,0 +1,583 @@
+{
+  "attempt_count": 5,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "failure_reason": "Ollama request failed: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=120)",
+      "recorded_at": "2026-04-27T00:59:47.455723+00:00",
+      "retryable": true,
+      "stage": "backend_request",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 2,
+      "failure_reason": "Semantic smoke check failed with exit code 1. ImportError: cannot import name 'list' from 'typing' (C:\\Users\\xeleo\\miniforge3\\envs\\proto-gauntlet\\Lib\\typing.py). Did you mean: 'List'?; Semantic smoke stderr summary: File \"C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_005407_175057\\sandbox\\figures.py\", line 3, in <module> | from typing import list | ImportError: cannot import name 'list' from 'typing' (C:\\Users\\xeleo\\miniforge3\\envs\\proto-gauntlet\\Lib\\typing.py). Did you mean: 'List'?",
+      "recorded_at": "2026-04-27T01:05:18.556262+00:00",
+      "retryable": true,
+      "stage": "semantic_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 3,
+      "failure_reason": "Input data dictionary must contain 'warehouse_and_retail_sales'.; load_data returned keys: ['sales_data']",
+      "recorded_at": "2026-04-27T01:10:56.973720+00:00",
+      "retryable": true,
+      "stage": "semantic_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 4,
+      "failure_reason": "create_figures keys did not match the shared contract. Expected=['sales_trend_over_time.png'], actual=['total_sales_by_item_type_comparison.png'].; load_data returned keys: ['warehouse_and_retail_sales']; preprocess returned keys: ['time_series_sales']; run_analysis returned result tables: ['total_sales_by_item_type']; run_analysis result value types: {'total_sales_by_item_type': 'DataFrame'}; create_figures returned figure files: ['total_sales_by_item_type_comparison.png']",
+      "recorded_at": "2026-04-27T01:16:24.030074+00:00",
+      "retryable": true,
+      "stage": "semantic_validation",
+      "status": "failed"
+    },
+    {
+      "attempt_number": 5,
+      "failure_reason": "run_analysis keys did not match the shared contract. Expected=['sales_by_item_type'], actual=['total_sales_by_item_type'].; load_data returned keys: ['warehouse_and_retail_sales']; preprocess returned keys: ['time_series_sales']; run_analysis returned result tables: ['total_sales_by_item_type']; run_analysis result value types: {'total_sales_by_item_type': 'DataFrame'}",
+      "recorded_at": "2026-04-27T01:22:05.969813+00:00",
+      "retryable": true,
+      "stage": "semantic_validation",
+      "status": "failed"
+    }
+  ],
+  "failure_reason": "Code generation failed after 5 attempts. Last error: run_analysis keys did not match the shared contract. Expected=['sales_by_item_type'], actual=['total_sales_by_item_type'].; load_data returned keys: ['warehouse_and_retail_sales']; preprocess returned keys: ['time_series_sales']; run_analysis returned result tables: ['total_sales_by_item_type']; run_analysis result value types: {'total_sales_by_item_type': 'DataFrame'}",
+  "figures": [],
+  "metadata_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_005407_175057\\metadata.json",
+  "results": [],
+  "run_id": "run_20260427_005407_175057",
+  "status": "failed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-27T00:54:08.687805+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "ollama",
+      "details": {
+        "request_details": {
+          "duration_seconds": 92.552,
+          "ended_at": "2026-04-27T00:55:41.331742+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-27T00:54:08.780182+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 1168,
+          "prompt_tokens": 776,
+          "total_duration": 92534998600
+        }
+      },
+      "model": "gemma4:e4b",
+      "recorded_at": "2026-04-27T00:55:41.335894+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "total_sales_trend.png"
+          ],
+          "loaded_keys": [
+            "warehouse_and_retail_sales"
+          ],
+          "processed_keys": [
+            "aggregated_sales_data"
+          ],
+          "result_table_names": [
+            "sales_summary_by_type"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 5.407,
+          "ended_at": "2026-04-27T00:55:46.774292+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-27T00:55:41.366796+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 59,
+          "prompt_tokens": 804,
+          "total_duration": 5376259200
+        }
+      },
+      "model": "gemma4:e4b",
+      "recorded_at": "2026-04-27T00:55:46.776124+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 2,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "sales_trend_over_time.png"
+          ],
+          "loaded_keys": [
+            "raw_sales_data"
+          ],
+          "processed_keys": [
+            "monthly_sales_summary"
+          ],
+          "result_table_names": [
+            "seasonal_sales_by_item_type"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 8.997,
+          "ended_at": "2026-04-27T00:59:56.469103+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-27T00:59:47.473027+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 96,
+          "prompt_tokens": 1058,
+          "total_duration": 8975487800
+        }
+      },
+      "model": "gemma4:e4b",
+      "recorded_at": "2026-04-27T00:59:56.471774+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 2,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 49.379,
+              "ended_at": "2026-04-27T01:00:45.854116+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T00:59:56.471774+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 78.021,
+              "ended_at": "2026-04-27T01:02:03.878301+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:00:45.858732+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 78.659,
+              "ended_at": "2026-04-27T01:03:22.542822+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:02:03.884593+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 113.494,
+              "ended_at": "2026-04-27T01:05:16.041713+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:03:22.546235+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 3960,
+          "prompt_tokens": 5180,
+          "total_duration": 319458897900
+        }
+      },
+      "model": "gemma4:e4b",
+      "recorded_at": "2026-04-27T01:05:16.045710+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 2,
+      "recorded_at": "2026-04-27T01:05:16.047724+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_005407_175057\\sandbox"
+      },
+      "recorded_at": "2026-04-27T01:05:16.078411+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 2,
+      "details": {
+        "duration_seconds": 2.468,
+        "figure_file_names": [],
+        "loaded_keys": [],
+        "processed_keys": [],
+        "result_table_names": []
+      },
+      "recorded_at": "2026-04-27T01:05:18.541719+00:00",
+      "status": "failed",
+      "step": "semantic_smoke_check"
+    },
+    {
+      "attempt_number": 3,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "total_sales_trend.png"
+          ],
+          "loaded_keys": [
+            "sales_data"
+          ],
+          "processed_keys": [
+            "monthly_sales_summary"
+          ],
+          "result_table_names": [
+            "sales_performance_by_item_type"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 5.795,
+          "ended_at": "2026-04-27T01:05:24.366784+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-27T01:05:18.571814+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 57,
+          "prompt_tokens": 1530,
+          "total_duration": 5781580800
+        }
+      },
+      "model": "gemma4:e4b",
+      "recorded_at": "2026-04-27T01:05:24.370500+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 3,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 48.395,
+              "ended_at": "2026-04-27T01:06:12.769750+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:05:24.370500+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 89.438,
+              "ended_at": "2026-04-27T01:07:42.211190+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:06:12.773409+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 73.524,
+              "ended_at": "2026-04-27T01:08:55.740529+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:07:42.212706+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 119.055,
+              "ended_at": "2026-04-27T01:10:54.802335+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:08:55.745543+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 4036,
+          "prompt_tokens": 7053,
+          "total_duration": 330308422500
+        }
+      },
+      "model": "gemma4:e4b",
+      "recorded_at": "2026-04-27T01:10:54.807006+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 3,
+      "recorded_at": "2026-04-27T01:10:54.813490+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 3,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_005407_175057\\sandbox"
+      },
+      "recorded_at": "2026-04-27T01:10:54.851375+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 3,
+      "details": {
+        "duration_seconds": 2.121,
+        "figure_file_names": [],
+        "loaded_keys": [
+          "sales_data"
+        ],
+        "processed_keys": [],
+        "result_table_names": []
+      },
+      "recorded_at": "2026-04-27T01:10:56.973720+00:00",
+      "status": "failed",
+      "step": "semantic_smoke_check"
+    },
+    {
+      "attempt_number": 4,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "sales_trend_over_time.png"
+          ],
+          "loaded_keys": [
+            "warehouse_and_retail_sales"
+          ],
+          "processed_keys": [
+            "time_series_sales"
+          ],
+          "result_table_names": [
+            "total_sales_by_item_type"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 6.082,
+          "ended_at": "2026-04-27T01:11:03.090740+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-27T01:10:57.008784+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 63,
+          "prompt_tokens": 1341,
+          "total_duration": 6070861100
+        }
+      },
+      "model": "gemma4:e4b",
+      "recorded_at": "2026-04-27T01:11:03.092095+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 4,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 21.41,
+              "ended_at": "2026-04-27T01:11:24.507190+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:11:03.092095+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 106.751,
+              "ended_at": "2026-04-27T01:13:11.261737+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:11:24.511308+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 84.081,
+              "ended_at": "2026-04-27T01:14:35.347439+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:13:11.265809+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 105.043,
+              "ended_at": "2026-04-27T01:16:20.394925+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:14:35.350180+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 3895,
+          "prompt_tokens": 6550,
+          "total_duration": 317197412700
+        }
+      },
+      "model": "gemma4:e4b",
+      "recorded_at": "2026-04-27T01:16:20.396901+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 4,
+      "recorded_at": "2026-04-27T01:16:20.403650+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 4,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_005407_175057\\sandbox"
+      },
+      "recorded_at": "2026-04-27T01:16:20.435149+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 4,
+      "details": {
+        "duration_seconds": 3.59,
+        "figure_file_names": [
+          "total_sales_by_item_type_comparison.png"
+        ],
+        "loaded_keys": [
+          "warehouse_and_retail_sales"
+        ],
+        "processed_keys": [
+          "time_series_sales"
+        ],
+        "result_table_names": [
+          "total_sales_by_item_type"
+        ]
+      },
+      "recorded_at": "2026-04-27T01:16:24.025917+00:00",
+      "status": "failed",
+      "step": "semantic_smoke_check"
+    },
+    {
+      "attempt_number": 5,
+      "backend": "ollama",
+      "details": {
+        "bundle_contract": {
+          "figure_file_names": [
+            "total_sales_by_item_type_comparison.png"
+          ],
+          "loaded_keys": [
+            "warehouse_and_retail_sales"
+          ],
+          "processed_keys": [
+            "time_series_sales"
+          ],
+          "result_table_names": [
+            "sales_by_item_type"
+          ]
+        },
+        "request_details": {
+          "duration_seconds": 9.25,
+          "ended_at": "2026-04-27T01:16:33.313790+00:00",
+          "endpoint": "http://localhost:11434/api/generate",
+          "started_at": "2026-04-27T01:16:24.064905+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "completion_tokens": 100,
+          "prompt_tokens": 1700,
+          "total_duration": 9235353500
+        }
+      },
+      "model": "gemma4:e4b",
+      "recorded_at": "2026-04-27T01:16:33.317345+00:00",
+      "status": "completed",
+      "step": "plan_bundle_contract"
+    },
+    {
+      "attempt_number": 5,
+      "backend": "ollama",
+      "details": {
+        "file_generation_count": 4,
+        "request_details": {
+          "file_requests": [
+            {
+              "duration_seconds": 51.05,
+              "ended_at": "2026-04-27T01:17:24.369603+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:16:33.320129+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 91.273,
+              "ended_at": "2026-04-27T01:18:55.647438+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:17:24.372896+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 77.905,
+              "ended_at": "2026-04-27T01:20:13.557356+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:18:55.650986+00:00",
+              "status_code": 200
+            },
+            {
+              "duration_seconds": 110.067,
+              "ended_at": "2026-04-27T01:22:03.629820+00:00",
+              "endpoint": "http://localhost:11434/api/generate",
+              "started_at": "2026-04-27T01:20:13.563094+00:00",
+              "status_code": 200
+            }
+          ]
+        },
+        "usage": {
+          "completion_tokens": 4034,
+          "prompt_tokens": 7105,
+          "total_duration": 330207798500
+        }
+      },
+      "model": "gemma4:e4b",
+      "recorded_at": "2026-04-27T01:22:03.631747+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 5,
+      "recorded_at": "2026-04-27T01:22:03.642193+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 5,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_005407_175057\\sandbox"
+      },
+      "recorded_at": "2026-04-27T01:22:03.671911+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 5,
+      "details": {
+        "duration_seconds": 2.29,
+        "figure_file_names": [],
+        "loaded_keys": [
+          "warehouse_and_retail_sales"
+        ],
+        "processed_keys": [
+          "time_series_sales"
+        ],
+        "result_table_names": [
+          "total_sales_by_item_type"
+        ]
+      },
+      "recorded_at": "2026-04-27T01:22:05.963866+00:00",
+      "status": "failed",
+      "step": "semantic_smoke_check"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_005407_175057\\outputs\\summary.json"
+}

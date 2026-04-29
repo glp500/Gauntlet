@@ -1,0 +1,20 @@
+2026-04-27 03:05:18,541 | INFO | gauntlet.execution | Semantic smoke check exit code: 1
+2026-04-27 03:05:18,541 | INFO | gauntlet.execution | Semantic smoke check stderr:
+Traceback (most recent call last):
+  File "<string>", line 13, in <module>
+  File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_005407_175057\sandbox\figures.py", line 3, in <module>
+    from typing import list
+ImportError: cannot import name 'list' from 'typing' (C:\Users\xeleo\miniforge3\envs\proto-gauntlet\Lib\typing.py). Did you mean: 'List'?
+
+2026-04-27 03:10:56,973 | INFO | gauntlet.execution | Semantic smoke check exit code: 0
+2026-04-27 03:10:56,973 | INFO | gauntlet.execution | Semantic smoke check stdout:
+{"status": "failed", "loaded_keys": ["sales_data"], "processed_keys": [], "result_table_names": [], "result_value_types": {}, "figure_paths": [], "figure_file_names": [], "failure_reason": "Input data dictionary must contain 'warehouse_and_retail_sales'.", "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 81, in <module>\n  File \"C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_005407_175057\\sandbox\\preprocessing.py\", line 20, in preprocess\n    raise ValueError(f\"Input data dictionary must contain '{RAW_DATA_KEY}'.\")\nValueError: Input data dictionary must contain 'warehouse_and_retail_sales'.\n"}
+
+2026-04-27 03:16:24,025 | INFO | gauntlet.execution | Semantic smoke check exit code: 0
+2026-04-27 03:16:24,025 | INFO | gauntlet.execution | Semantic smoke check stdout:
+{"status": "failed", "loaded_keys": ["warehouse_and_retail_sales"], "processed_keys": ["time_series_sales"], "result_table_names": ["total_sales_by_item_type"], "result_value_types": {"total_sales_by_item_type": "DataFrame"}, "figure_paths": ["C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_005407_175057\\sandbox\\_semantic_smoke_outputs/total_sales_by_item_type_comparison.png"], "figure_file_names": ["total_sales_by_item_type_comparison.png"], "failure_reason": "create_figures keys did not match the shared contract. Expected=['sales_trend_over_time.png'], actual=['total_sales_by_item_type_comparison.png'].", "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 130, in <module>\n  File \"<string>\", line 43, in _assert_expected_keys\nValueError: create_figures keys did not match the shared contract. Expected=['sales_trend_over_time.png'], actual=['total_sales_by_item_type_comparison.png'].\n"}
+
+2026-04-27 03:22:05,963 | INFO | gauntlet.execution | Semantic smoke check exit code: 0
+2026-04-27 03:22:05,963 | INFO | gauntlet.execution | Semantic smoke check stdout:
+{"status": "failed", "loaded_keys": ["warehouse_and_retail_sales"], "processed_keys": ["time_series_sales"], "result_table_names": ["total_sales_by_item_type"], "result_value_types": {"total_sales_by_item_type": "DataFrame"}, "figure_paths": [], "figure_file_names": [], "failure_reason": "run_analysis keys did not match the shared contract. Expected=['sales_by_item_type'], actual=['total_sales_by_item_type'].", "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 114, in <module>\n  File \"<string>\", line 43, in _assert_expected_keys\nValueError: run_analysis keys did not match the shared contract. Expected=['sales_by_item_type'], actual=['total_sales_by_item_type'].\n"}
+

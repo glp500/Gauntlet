@@ -1,0 +1,39 @@
+SYSTEM:
+You plan one shared contract for a constrained Python analysis bundle. Return JSON only with exactly these keys: loaded_keys, processed_keys, result_table_names, figure_file_names. Each value must be a non-empty list of short strings. loaded_keys, processed_keys, and result_table_names must use lowercase snake_case names. loaded_keys and processed_keys must name whole pandas tables or datasets, never raw CSV columns. Use result table names without file extensions. Use figure file names that end in .png and use lowercase snake_case stems.
+
+USER:
+Plan a single shared contract for the sandbox bundle described below.
+
+**Task Objective**
+Analyze the sales performance across the provided dataset. The goal is to generate a clear, written summary of the key insights and produce one informative figure that visually explains a significant trend or relationship observed in the data (e.g., sales trends over time, or comparison of sales metrics by category).
+
+**Input Dataset Summary**
+The single input file is `Warehouse_and_Retail_Sales.csv`. This dataset contains transaction-level records detailing various sales activities, including retail sales, warehouse sales, and retail transfers, linked to specific suppliers and items over time.
+
+**Assumptions From Schema**
+1.  **Key Metrics:** The columns `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are float-type numerical columns suitable for aggregation (SUM, AVG) and quantitative analysis.
+2.  **Grouping Variables:** `YEAR`, `MONTH`, `SUPPLIER`, and `ITEM TYPE` are suitable categorical or temporal dimensions for grouping and segmenting the analysis.
+3.  **Temporal Data:** `YEAR` and `MONTH` columns are available for time-series analysis.
+
+**Required Outputs**
+1.  **Analysis Summary (Textual):** A comprehensive, well-written summary detailing the overall sales performance, identifying key drivers (e.g., top performing suppliers/item types, seasonal trends, or dominant sales channels).
+2.  **Visualization (Figure):** One single, high-quality figure (e.g., a line plot or bar chart) that visually supports the key finding in the summary. Recommended visualization focus: Total sales volume trend over time or total sales comparison across `ITEM TYPE`.
+
+**Code Constraints**
+*   Generated code must be contained within the modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+*   Allowed libraries are strictly limited to `pandas` and `matplotlib`.
+*   No external network access or shell commands are permitted.
+*   The logic implemented must be explicit, step-by-step, and highly readable.
+
+The contract will be reused by data_loader.py, preprocessing.py, analysis.py, and figures.py.
+Rules:
+- loaded_keys are the dictionary keys returned by load_data.
+- processed_keys are the dictionary keys returned by preprocess.
+- result_table_names are the dictionary keys returned by run_analysis.
+- figure_file_names are the .png file names returned by create_figures.
+- Keep the contract small and explicit.
+- loaded_keys and processed_keys must usually contain 1 to 3 whole-table keys such as `sales_data`, `monthly_sales`, or `supplier_summary`.
+- Do not use CSV schema columns such as `YEAR`, `MONTH`, or `RETAIL SALES` as contract keys.
+- Every non-figure contract name must be lowercase snake_case.
+- For this task, include at least one result table name and at least one figure file name.
+- The keys and file names must be internally consistent across the whole bundle.

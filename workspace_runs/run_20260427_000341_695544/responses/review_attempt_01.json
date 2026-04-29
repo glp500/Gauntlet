@@ -1,0 +1,96 @@
+{
+  "backend": "openai",
+  "content": "{\"status\":\"blocked\",\"summary\":\"The bundle mostly follows the expected structure, but there is one contract issue: the dictionaries passed between stages are not fully consistent because create_figures depends on result keys that run_analysis may or may not populate, and there is no explicit guarantee of the same shared key set across all stages. It also appears likely to produce outputs, but the dependency review notes one import outside the allowed core set is absent; overall dependencies are acceptable. The main blocking concern is the cross-stage data contract ambiguity.\",\"issues\":[{\"category\":\"contract\",\"message\":\"The expected public functions exist, but the data contract is not fully explicit across stages. load_data returns {'sales'}, preprocess preserves arbitrary incoming keys, run_analysis consumes 'sales' and emits a different result-key set, and create_figures reads selected result keys without a clearly defined shared schema guaranteeing consistency end-to-end.\",\"blocking\":true},{\"category\":\"contract\",\"message\":\"run_analysis returns only pandas DataFrames, which is good, but the pipeline contract around the result dictionary keys is not tightly specified and could lead to mismatches if upstream data keys change.\",\"blocking\":true},{\"category\":\"readability\",\"message\":\"The code is reasonably readable and explicit overall, with clear docstrings and straightforward transformations.\",\"blocking\":false}]}",
+  "model": "gpt-5.4-mini-2026-03-17",
+  "raw_response": {
+    "background": false,
+    "billing": {
+      "payer": "developer"
+    },
+    "completed_at": 1777248244,
+    "created_at": 1777248241,
+    "error": null,
+    "frequency_penalty": 0.0,
+    "id": "resp_0208f3ca8c0b1e800069eea7f1a0048197be5f06161865ec04",
+    "incomplete_details": null,
+    "instructions": "You review a constrained Python analysis bundle. Return JSON only with keys: status, summary, issues. status must be either 'approved' or 'blocked'. issues must be a list of objects with keys: category, message, blocking. Allowed categories are contract, dependency, sandbox, readability, other.",
+    "max_output_tokens": null,
+    "max_tool_calls": null,
+    "metadata": {},
+    "model": "gpt-5.4-mini-2026-03-17",
+    "moderation": null,
+    "object": "response",
+    "output": [
+      {
+        "content": [
+          {
+            "annotations": [],
+            "logprobs": [],
+            "text": "{\"status\":\"blocked\",\"summary\":\"The bundle mostly follows the expected structure, but there is one contract issue: the dictionaries passed between stages are not fully consistent because create_figures depends on result keys that run_analysis may or may not populate, and there is no explicit guarantee of the same shared key set across all stages. It also appears likely to produce outputs, but the dependency review notes one import outside the allowed core set is absent; overall dependencies are acceptable. The main blocking concern is the cross-stage data contract ambiguity.\",\"issues\":[{\"category\":\"contract\",\"message\":\"The expected public functions exist, but the data contract is not fully explicit across stages. load_data returns {'sales'}, preprocess preserves arbitrary incoming keys, run_analysis consumes 'sales' and emits a different result-key set, and create_figures reads selected result keys without a clearly defined shared schema guaranteeing consistency end-to-end.\",\"blocking\":true},{\"category\":\"contract\",\"message\":\"run_analysis returns only pandas DataFrames, which is good, but the pipeline contract around the result dictionary keys is not tightly specified and could lead to mismatches if upstream data keys change.\",\"blocking\":true},{\"category\":\"readability\",\"message\":\"The code is reasonably readable and explicit overall, with clear docstrings and straightforward transformations.\",\"blocking\":false}]}",
+            "type": "output_text"
+          }
+        ],
+        "id": "msg_0208f3ca8c0b1e800069eea7f218708197ba7470aaa6535683",
+        "phase": "final_answer",
+        "role": "assistant",
+        "status": "completed",
+        "type": "message"
+      }
+    ],
+    "parallel_tool_calls": true,
+    "presence_penalty": 0.0,
+    "previous_response_id": null,
+    "prompt_cache_key": null,
+    "prompt_cache_retention": "in_memory",
+    "reasoning": {
+      "effort": "none",
+      "summary": null
+    },
+    "safety_identifier": null,
+    "service_tier": "default",
+    "status": "completed",
+    "store": true,
+    "temperature": 1.0,
+    "text": {
+      "format": {
+        "type": "text"
+      },
+      "verbosity": "medium"
+    },
+    "tool_choice": "auto",
+    "tools": [],
+    "top_logprobs": 0,
+    "top_p": 0.98,
+    "truncation": "disabled",
+    "usage": {
+      "input_tokens": 1876,
+      "input_tokens_details": {
+        "cached_tokens": 0
+      },
+      "output_tokens": 260,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 2136
+    },
+    "user": null
+  },
+  "request_details": {
+    "duration_seconds": 3.196,
+    "ended_at": "2026-04-27T00:04:04.061251+00:00",
+    "endpoint": "https://api.openai.com/v1/responses",
+    "started_at": "2026-04-27T00:04:00.860738+00:00",
+    "status_code": 200
+  },
+  "usage": {
+    "input_tokens": 1876,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 260,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 2136
+  }
+}

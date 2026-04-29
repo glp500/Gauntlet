@@ -6,7 +6,7 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
-DEFAULT_LOCAL_MODEL = "hf.co/mradermacher/IBM-Grok4-UltraFast-Coder-1B-GGUF:Q4_K_M"
+DEFAULT_LOCAL_MODEL = "hf.co/mradermacher/TQL-Coder-Qwen3.5-9B-thinking-GGUF:IQ4_XS"
 #DEFAULT_LOCAL_MODEL = "gemma4:e2b"
 
 LARGE_LOCAL_MODEL = "gemma4:26b"

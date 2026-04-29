@@ -1,0 +1,60 @@
+{
+  "attempt_number": 5,
+  "failure_stage": "semantic_validation",
+  "file_guidance": {
+    "analysis.py": [
+      "run_analysis must consume the processed dictionary keys from preprocess and return only pandas DataFrames under the contracted result_table_names."
+    ],
+    "data_loader.py": [
+      "Keep load_data aligned with the shared contract keys and return the dataset dictionary expected by preprocess."
+    ],
+    "figures.py": [
+      "create_figures must use the processed data and analysis results to save at least one PNG and return its path."
+    ],
+    "preprocessing.py": [
+      "preprocess must preserve or intentionally transform dictionary keys in a way that still matches what run_analysis expects."
+    ]
+  },
+  "file_issues": {},
+  "issues": [
+    "create_figures keys did not match the shared contract. Expected=['sales_trend_over_time.png'], actual=['total_sales_by_item_type_comparison.png'].",
+    "load_data returned keys: ['warehouse_and_retail_sales']",
+    "preprocess returned keys: ['time_series_sales']",
+    "run_analysis returned result tables: ['total_sales_by_item_type']",
+    "run_analysis result value types: {'total_sales_by_item_type': 'DataFrame'}",
+    "create_figures returned figure files: ['total_sales_by_item_type_comparison.png']"
+  ],
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ],
+  "semantic_validation_result": {
+    "duration_seconds": 3.59,
+    "failure_reason": "create_figures keys did not match the shared contract. Expected=['sales_trend_over_time.png'], actual=['total_sales_by_item_type_comparison.png'].",
+    "figure_file_names": [
+      "total_sales_by_item_type_comparison.png"
+    ],
+    "figure_paths": [
+      "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_005407_175057\\sandbox\\_semantic_smoke_outputs/total_sales_by_item_type_comparison.png"
+    ],
+    "loaded_keys": [
+      "warehouse_and_retail_sales"
+    ],
+    "processed_keys": [
+      "time_series_sales"
+    ],
+    "result_table_names": [
+      "total_sales_by_item_type"
+    ],
+    "result_value_types": {
+      "total_sales_by_item_type": "DataFrame"
+    },
+    "status": "failed",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 130, in <module>\n  File \"<string>\", line 43, in _assert_expected_keys\nValueError: create_figures keys did not match the shared contract. Expected=['sales_trend_over_time.png'], actual=['total_sales_by_item_type_comparison.png'].\n"
+  },
+  "stderr_summary": null,
+  "violation_details": []
+}

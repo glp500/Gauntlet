@@ -41,6 +41,7 @@ $env:GENERATION_BACKEND="ollama"
 $env:REVIEW_BACKEND="ollama"
 $env:OLLAMA_BASE_URL="http://localhost:11434/api"
 $env:OLLAMA_MODEL="gemma4:e2b"
+$env:OLLAMA_MODEL="hf.co/mradermacher/AutoBM-Seed-Coder-8B-R-GGUF:Q4_K_M"
 ```
 
 `REVIEW_BACKEND` can stay as `openai` if you only want to move generation to Ollama.

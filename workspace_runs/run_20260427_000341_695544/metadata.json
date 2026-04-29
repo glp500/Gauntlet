@@ -1,0 +1,288 @@
+{
+  "artifacts": {
+    "figures": [
+      "outputs/figures/item_type_sales.png",
+      "outputs/figures/yearly_sales_trend.png"
+    ],
+    "results": [
+      "outputs/results/item_type_summary.csv",
+      "outputs/results/monthly_trend.csv",
+      "outputs/results/numeric_summary.csv",
+      "outputs/results/schema.csv",
+      "outputs/results/shape.csv",
+      "outputs/results/top_suppliers.csv",
+      "outputs/results/totals.csv",
+      "outputs/results/yearly_trend.csv"
+    ]
+  },
+  "attempt_count": 1,
+  "attempts": [
+    {
+      "attempt_number": 1,
+      "details": {
+        "produced_figures": [
+          "outputs/figures/item_type_sales.png",
+          "outputs/figures/yearly_sales_trend.png"
+        ],
+        "produced_results": [
+          "outputs/results/item_type_summary.csv",
+          "outputs/results/monthly_trend.csv",
+          "outputs/results/numeric_summary.csv",
+          "outputs/results/schema.csv",
+          "outputs/results/shape.csv",
+          "outputs/results/top_suppliers.csv",
+          "outputs/results/totals.csv",
+          "outputs/results/yearly_trend.csv"
+        ],
+        "review_advisory_issues": [
+          "The expected public functions exist, but the data contract is not fully explicit across stages. load_data returns {'sales'}, preprocess preserves arbitrary incoming keys, run_analysis consumes 'sales' and emits a different result-key set, and create_figures reads selected result keys without a clearly defined shared schema guaranteeing consistency end-to-end.",
+          "run_analysis returns only pandas DataFrames, which is good, but the pipeline contract around the result dictionary keys is not tightly specified and could lead to mismatches if upstream data keys change.",
+          "The code is reasonably readable and explicit overall, with clear docstrings and straightforward transformations."
+        ]
+      },
+      "recorded_at": "2026-04-27T00:04:07.280981+00:00",
+      "retryable": false,
+      "stage": "execution",
+      "status": "completed"
+    }
+  ],
+  "created_at": "2026-04-27T00:03:41.695544+00:00",
+  "input_manifest": {
+    "datasets": [
+      {
+        "columns": [
+          "YEAR",
+          "MONTH",
+          "SUPPLIER",
+          "ITEM CODE",
+          "ITEM DESCRIPTION",
+          "ITEM TYPE",
+          "RETAIL SALES",
+          "RETAIL TRANSFERS",
+          "WAREHOUSE SALES"
+        ],
+        "dtypes": {
+          "ITEM CODE": "str",
+          "ITEM DESCRIPTION": "str",
+          "ITEM TYPE": "str",
+          "MONTH": "int64",
+          "RETAIL SALES": "float64",
+          "RETAIL TRANSFERS": "float64",
+          "SUPPLIER": "str",
+          "WAREHOUSE SALES": "float64",
+          "YEAR": "int64"
+        },
+        "file_name": "Warehouse_and_Retail_Sales.csv",
+        "rows": 307645,
+        "sample_values": {
+          "ITEM CODE": [
+            "100009",
+            "100024",
+            "1001"
+          ],
+          "ITEM DESCRIPTION": [
+            "BOOTLEG RED - 750ML",
+            "MOMENT DE PLAISIR - 750ML",
+            "S SMITH ORGANIC PEAR CIDER - 18.7OZ"
+          ],
+          "ITEM TYPE": [
+            "WINE",
+            "BEER",
+            "LIQUOR"
+          ],
+          "MONTH": [
+            "1",
+            "9",
+            "7"
+          ],
+          "RETAIL SALES": [
+            "0.0",
+            "0.82",
+            "2.76"
+          ],
+          "RETAIL TRANSFERS": [
+            "0.0",
+            "1.0",
+            "4.0"
+          ],
+          "SUPPLIER": [
+            "REPUBLIC NATIONAL DISTRIBUTING CO",
+            "PWSWN INC",
+            "RELIABLE CHURCHILL LLLP"
+          ],
+          "WAREHOUSE SALES": [
+            "2.0",
+            "4.0",
+            "1.0"
+          ],
+          "YEAR": [
+            "2020",
+            "2017",
+            "2018"
+          ]
+        }
+      }
+    ],
+    "task_text": "Analyze the dataset and produce a clear summary. Create at least one figure that helps explain the result."
+  },
+  "run_id": "run_20260427_000341_695544",
+  "status": "completed",
+  "steps": [
+    {
+      "details": {
+        "dataset_count": 1
+      },
+      "recorded_at": "2026-04-27T00:03:43.151424+00:00",
+      "status": "completed",
+      "step": "load_input_manifest"
+    },
+    {
+      "backend": "openai",
+      "details": {
+        "request_details": {
+          "duration_seconds": 5.146,
+          "ended_at": "2026-04-27T00:03:48.298213+00:00",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "started_at": "2026-04-27T00:03:43.152433+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "input_tokens": 642,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 661,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 1303
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-27T00:03:48.298213+00:00",
+      "status": "completed",
+      "step": "refine_prompt"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "openai",
+      "details": {
+        "request_details": {
+          "duration_seconds": 9.101,
+          "ended_at": "2026-04-27T00:03:57.409037+00:00",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "started_at": "2026-04-27T00:03:48.307808+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "input_tokens": 906,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 1957,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2863
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-27T00:03:57.409037+00:00",
+      "status": "completed",
+      "step": "generate_code"
+    },
+    {
+      "attempt_number": 1,
+      "recorded_at": "2026-04-27T00:03:57.423011+00:00",
+      "status": "completed",
+      "step": "validate_code_bundle"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "sandbox_dir": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_000341_695544\\sandbox"
+      },
+      "recorded_at": "2026-04-27T00:03:57.455520+00:00",
+      "status": "completed",
+      "step": "prepare_sandbox"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "duration_seconds": 3.406,
+        "figure_file_names": [
+          "item_type_sales.png",
+          "yearly_sales_trend.png"
+        ],
+        "loaded_keys": [
+          "sales"
+        ],
+        "processed_keys": [
+          "sales"
+        ],
+        "result_table_names": [
+          "item_type_summary",
+          "monthly_trend",
+          "numeric_summary",
+          "schema",
+          "shape",
+          "top_suppliers",
+          "totals",
+          "yearly_trend"
+        ]
+      },
+      "recorded_at": "2026-04-27T00:04:00.860738+00:00",
+      "status": "completed",
+      "step": "semantic_smoke_check"
+    },
+    {
+      "attempt_number": 1,
+      "backend": "openai",
+      "details": {
+        "request_details": {
+          "duration_seconds": 3.196,
+          "ended_at": "2026-04-27T00:04:04.061251+00:00",
+          "endpoint": "https://api.openai.com/v1/responses",
+          "started_at": "2026-04-27T00:04:00.860738+00:00",
+          "status_code": 200
+        },
+        "usage": {
+          "input_tokens": 1876,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 260,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 2136
+        }
+      },
+      "model": "gpt-5.4-mini-2026-03-17",
+      "recorded_at": "2026-04-27T00:04:04.063460+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "advisory_issue_count": 3,
+        "blocking_issue_count": 0
+      },
+      "recorded_at": "2026-04-27T00:04:04.063460+00:00",
+      "status": "completed",
+      "step": "review_code"
+    },
+    {
+      "attempt_number": 1,
+      "details": {
+        "duration_seconds": 3.188,
+        "exit_code": 0
+      },
+      "recorded_at": "2026-04-27T00:04:07.241930+00:00",
+      "status": "completed",
+      "step": "execute_sandbox"
+    }
+  ],
+  "summary_path": "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_000341_695544\\outputs\\summary.json"
+}

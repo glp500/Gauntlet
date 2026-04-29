@@ -1,0 +1,37 @@
+{
+  "attempt_number": 4,
+  "failure_stage": "semantic_validation",
+  "file_guidance": {
+    "data_loader.py": [
+      "Keep load_data aligned with the shared contract keys and return the dataset dictionary expected by preprocess."
+    ]
+  },
+  "file_issues": {},
+  "issues": [
+    "Input data dictionary must contain 'warehouse_and_retail_sales'.",
+    "load_data returned keys: ['sales_data']"
+  ],
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ],
+  "semantic_validation_result": {
+    "duration_seconds": 2.121,
+    "failure_reason": "Input data dictionary must contain 'warehouse_and_retail_sales'.",
+    "figure_file_names": [],
+    "figure_paths": [],
+    "loaded_keys": [
+      "sales_data"
+    ],
+    "processed_keys": [],
+    "result_table_names": [],
+    "result_value_types": {},
+    "status": "failed",
+    "traceback": "Traceback (most recent call last):\n  File \"<string>\", line 81, in <module>\n  File \"C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_005407_175057\\sandbox\\preprocessing.py\", line 20, in preprocess\n    raise ValueError(f\"Input data dictionary must contain '{RAW_DATA_KEY}'.\")\nValueError: Input data dictionary must contain 'warehouse_and_retail_sales'.\n"
+  },
+  "stderr_summary": null,
+  "violation_details": []
+}

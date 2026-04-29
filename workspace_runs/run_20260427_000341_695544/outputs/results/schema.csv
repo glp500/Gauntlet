@@ -1,0 +1,10 @@
+column,dtype,missing_count
+YEAR,Int64,0
+MONTH,Int64,0
+SUPPLIER,string,0
+ITEM CODE,string,0
+ITEM DESCRIPTION,string,0
+ITEM TYPE,string,0
+RETAIL SALES,float64,3
+RETAIL TRANSFERS,float64,0
+WAREHOUSE SALES,float64,0

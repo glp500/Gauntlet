@@ -1,0 +1,106 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of data_loader.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `load_data`.
+
+USER:
+Generate only data_loader.py for the sandbox bundle described below.
+
+**Task Objective**
+Analyze the sales performance across the provided dataset. The goal is to generate a clear, written summary of the key insights and produce one informative figure that visually explains a significant trend or relationship observed in the data (e.g., sales trends over time, or comparison of sales metrics by category).
+
+**Input Dataset Summary**
+The single input file is `Warehouse_and_Retail_Sales.csv`. This dataset contains transaction-level records detailing various sales activities, including retail sales, warehouse sales, and retail transfers, linked to specific suppliers and items over time.
+
+**Assumptions From Schema**
+1.  **Key Metrics:** The columns `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are float-type numerical columns suitable for aggregation (SUM, AVG) and quantitative analysis.
+2.  **Grouping Variables:** `YEAR`, `MONTH`, `SUPPLIER`, and `ITEM TYPE` are suitable categorical or temporal dimensions for grouping and segmenting the analysis.
+3.  **Temporal Data:** `YEAR` and `MONTH` columns are available for time-series analysis.
+
+**Required Outputs**
+1.  **Analysis Summary (Textual):** A comprehensive, well-written summary detailing the overall sales performance, identifying key drivers (e.g., top performing suppliers/item types, seasonal trends, or dominant sales channels).
+2.  **Visualization (Figure):** One single, high-quality figure (e.g., a line plot or bar chart) that visually supports the key finding in the summary. Recommended visualization focus: Total sales volume trend over time or total sales comparison across `ITEM TYPE`.
+
+**Code Constraints**
+*   Generated code must be contained within the modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+*   Allowed libraries are strictly limited to `pandas` and `matplotlib`.
+*   No external network access or shell commands are permitted.
+*   The logic implemented must be explicit, step-by-step, and highly readable.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Shared bundle contract:
+- These names are bundle-level dictionary keys for whole pandas tables, not raw CSV column names.
+- load_data must return keys: warehouse_and_retail_sales.
+- preprocess must return keys: time_series_sales.
+- run_analysis must return result tables: sales_by_item_type.
+- create_figures must return figure files: total_sales_by_item_type_comparison.png.
+
+Role contract for data_loader.py:
+- Required public function: `load_data`.
+- Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- Do not preprocess data, run analysis, or create figures here.
+
+Repair guidance for this file:
+- Prior failure stage: semantic_validation.
+- Keep working parts of this file stable unless the listed issues require a rewrite.
+- Follow this targeted guidance:
+  - Keep load_data aligned with the shared contract keys and return the dataset dictionary expected by preprocess.
+- Previous attempt issues:
+  - create_figures keys did not match the shared contract. Expected=['sales_trend_over_time.png'], actual=['total_sales_by_item_type_comparison.png'].
+  - load_data returned keys: ['warehouse_and_retail_sales']
+  - preprocess returned keys: ['time_series_sales']
+  - run_analysis returned result tables: ['total_sales_by_item_type']
+  - run_analysis result value types: {'total_sales_by_item_type': 'DataFrame'}
+  - create_figures returned figure files: ['total_sales_by_item_type_comparison.png']
+
+Previous version of data_loader.py:
+import pandas as pd
+import os
+
+def load_data(input_dir: str) -> dict[str, pd.DataFrame]:
+    """
+    Loads the raw sales data from the specified directory.
+
+    Args:
+        input_dir: Directory containing the input CSV file (Warehouse_and_Retail_Sales.csv).
+
+    Returns:
+        A dictionary containing the loaded raw sales DataFrame under the key 'warehouse_and_retail_sales'.
+    """
+    # Construct the full file path
+    file_path = os.path.join(input_dir, 'Warehouse_and_Retail_Sales.csv')
+    
+    # Load the dataset
+    df = pd.DataFrame()
+    try:
+        # Attempt to read the CSV file
+        df = pd.read_csv(file_path)
+    except FileNotFoundError:
+        # In a constrained environment, simply handling the error
+        pass 
+    except Exception:
+        # Catch other potential reading errors (e.g., parsing errors)
+        pass
+        
+    # Return the data under the required contract key 'warehouse_and_retail_sales'
+    return {
+        'warehouse_and_retail_sales': df
+    }

@@ -1,0 +1,15 @@
+{
+  "backend": "ollama",
+  "content": "",
+  "error": "Ollama request failed: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=120)",
+  "model": "hf.co/mradermacher/TQL-Coder-Qwen3.5-9B-thinking-GGUF:IQ4_XS",
+  "raw_response": {},
+  "request_details": {
+    "duration_seconds": 120.027,
+    "ended_at": "2026-04-27T00:16:24.170856+00:00",
+    "endpoint": "http://localhost:11434/api/generate",
+    "error_type": "ReadTimeout",
+    "started_at": "2026-04-27T00:14:24.143446+00:00"
+  },
+  "usage": null
+}

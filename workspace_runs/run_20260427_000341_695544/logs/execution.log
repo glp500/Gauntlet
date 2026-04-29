@@ -1,0 +1,19 @@
+2026-04-27 02:04:00,860 | INFO | gauntlet.execution | Semantic smoke check exit code: 0
+2026-04-27 02:04:00,860 | INFO | gauntlet.execution | Semantic smoke check stdout:
+{"status": "completed", "loaded_keys": ["sales"], "processed_keys": ["sales"], "result_table_names": ["item_type_summary", "monthly_trend", "numeric_summary", "schema", "shape", "top_suppliers", "totals", "yearly_trend"], "result_value_types": {"schema": "DataFrame", "shape": "DataFrame", "numeric_summary": "DataFrame", "item_type_summary": "DataFrame", "top_suppliers": "DataFrame", "yearly_trend": "DataFrame", "monthly_trend": "DataFrame", "totals": "DataFrame"}, "figure_paths": ["C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_000341_695544\\sandbox\\_semantic_smoke_outputs\\item_type_sales.png", "C:\\Users\\xeleo\\Documents\\ML Projects\\Proto-Gauntlet\\workspace_runs\\run_20260427_000341_695544\\sandbox\\_semantic_smoke_outputs\\yearly_sales_trend.png"], "figure_file_names": ["item_type_sales.png", "yearly_sales_trend.png"]}
+
+2026-04-27 02:04:07,241 | INFO | gauntlet.execution | Sandbox exit code: 0
+2026-04-27 02:04:07,241 | INFO | gauntlet.execution | Sandbox stdout:
+Results written:
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_000341_695544\outputs\results\schema.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_000341_695544\outputs\results\shape.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_000341_695544\outputs\results\numeric_summary.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_000341_695544\outputs\results\item_type_summary.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_000341_695544\outputs\results\top_suppliers.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_000341_695544\outputs\results\yearly_trend.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_000341_695544\outputs\results\monthly_trend.csv
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_000341_695544\outputs\results\totals.csv
+Figures written:
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_000341_695544\outputs\figures\item_type_sales.png
+C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_000341_695544\outputs\figures\yearly_sales_trend.png
+

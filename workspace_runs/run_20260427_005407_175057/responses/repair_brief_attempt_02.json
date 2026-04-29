@@ -1,0 +1,19 @@
+{
+  "attempt_number": 2,
+  "failure_stage": "backend_request",
+  "file_guidance": {},
+  "file_issues": {},
+  "issues": [
+    "Ollama request failed: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=120)"
+  ],
+  "preserve_requirements": [
+    "Keep the four-file bundle shape exactly: data_loader.py, preprocessing.py, analysis.py, figures.py.",
+    "Expose the exact public functions: load_data, preprocess, run_analysis, create_figures.",
+    "Use only pandas, matplotlib, and the standard library.",
+    "Do not add shell execution, network access, or writes outside the provided output directory.",
+    "Minimize changes and keep compliant files stable across repair attempts."
+  ],
+  "semantic_validation_result": null,
+  "stderr_summary": null,
+  "violation_details": []
+}

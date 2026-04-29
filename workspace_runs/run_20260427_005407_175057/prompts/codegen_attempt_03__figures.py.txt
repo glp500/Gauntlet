@@ -1,0 +1,147 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of figures.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `create_figures`.
+
+USER:
+Generate only figures.py for the sandbox bundle described below.
+
+**Task Objective**
+Analyze the sales performance across the provided dataset. The goal is to generate a clear, written summary of the key insights and produce one informative figure that visually explains a significant trend or relationship observed in the data (e.g., sales trends over time, or comparison of sales metrics by category).
+
+**Input Dataset Summary**
+The single input file is `Warehouse_and_Retail_Sales.csv`. This dataset contains transaction-level records detailing various sales activities, including retail sales, warehouse sales, and retail transfers, linked to specific suppliers and items over time.
+
+**Assumptions From Schema**
+1.  **Key Metrics:** The columns `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are float-type numerical columns suitable for aggregation (SUM, AVG) and quantitative analysis.
+2.  **Grouping Variables:** `YEAR`, `MONTH`, `SUPPLIER`, and `ITEM TYPE` are suitable categorical or temporal dimensions for grouping and segmenting the analysis.
+3.  **Temporal Data:** `YEAR` and `MONTH` columns are available for time-series analysis.
+
+**Required Outputs**
+1.  **Analysis Summary (Textual):** A comprehensive, well-written summary detailing the overall sales performance, identifying key drivers (e.g., top performing suppliers/item types, seasonal trends, or dominant sales channels).
+2.  **Visualization (Figure):** One single, high-quality figure (e.g., a line plot or bar chart) that visually supports the key finding in the summary. Recommended visualization focus: Total sales volume trend over time or total sales comparison across `ITEM TYPE`.
+
+**Code Constraints**
+*   Generated code must be contained within the modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+*   Allowed libraries are strictly limited to `pandas` and `matplotlib`.
+*   No external network access or shell commands are permitted.
+*   The logic implemented must be explicit, step-by-step, and highly readable.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Shared bundle contract:
+- These names are bundle-level dictionary keys for whole pandas tables, not raw CSV column names.
+- load_data must return keys: sales_data.
+- preprocess must return keys: monthly_sales_summary.
+- run_analysis must return result tables: sales_performance_by_item_type.
+- create_figures must return figure files: total_sales_trend.png.
+
+Role contract for figures.py:
+- Required public function: `create_figures`.
+- Consume `data`, `results`, and `output_dir`, save figure files into the provided output directory, and return `list[str]` paths. Do not load files or run the pipeline.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- Do not call `run_analysis` or orchestrate the pipeline here.
+- Close figures after saving them.
+
+Files already generated for this attempt:
+
+- data_loader.py: function `load_data`. Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+- preprocessing.py: function `preprocess`. Transform the provided `data` dictionary and return another `dict[str, pd.DataFrame]`. Do not load files, run analysis, or create plots.
+- analysis.py: function `run_analysis`. Consume the preprocessed `data` dictionary and return `dict[str, pd.DataFrame]` analysis results. Do not load files, do not call plotting, and do not orchestrate the other generated modules.
+
+Repair guidance for this file:
+- Prior failure stage: semantic_validation.
+- Keep working parts of this file stable unless the listed issues require a rewrite.
+- Follow this targeted guidance:
+  - figures.py failed during module import or top-level evaluation. Ensure every top-level reference is imported and keep the file import-safe.
+  - Do not rely on function-local imports for names used in module-level annotations or other top-level code.
+- Previous attempt issues:
+  - Semantic smoke check failed with exit code 1. ImportError: cannot import name 'list' from 'typing' (C:\Users\xeleo\miniforge3\envs\proto-gauntlet\Lib\typing.py). Did you mean: 'List'?
+  - Semantic smoke stderr summary: File "C:\Users\xeleo\Documents\ML Projects\Proto-Gauntlet\workspace_runs\run_20260427_005407_175057\sandbox\figures.py", line 3, in <module> | from typing import list | ImportError: cannot import name 'list' from 'typing' (C:\Users\xeleo\miniforge3\envs\proto-gauntlet\Lib\typing.py). Did you mean: 'List'?
+
+Previous version of figures.py:
+import pandas as pd
+import matplotlib.pyplot as plt
+from typing import list
+
+def create_figures(data: dict, results: dict, output_dir: str) -> list[str]:
+    """
+    Generates an informative visualization comparing total sales across different item types
+    and saves it to the specified output directory.
+
+    Args:
+        data: Dictionary containing preprocessed data (e.g., monthly summary).
+        results: Dictionary containing analysis results (e.g., seasonal sales by item type).
+        output_dir: Directory path to save the figures.
+
+    Returns:
+        A list containing the absolute path(s) of the saved figure(s).
+    """
+    
+    # --- Visualization Strategy: Total Sales Comparison by Item Type ---
+    
+    # 1. Extract the data relevant for item type comparison
+    # Assuming 'seasonal_sales_by_item_type' contains sales metrics categorized by ITEM TYPE
+    if 'seasonal_sales_by_item_type' not in results:
+        print("Error: 'seasonal_sales_by_item_type' not found in analysis results.")
+        return []
+    
+    df_item_sales = results['seasonal_sales_by_item_type']
+    
+    # 2. Calculate the grand total sales for each Item Type across all years/months
+    # We sum all numerical sales columns to get the overall contribution per item type.
+    sales_cols = [col for col in df_item_sales.columns if 'SALES' in col.upper() and col not in ['ITEM TYPE']]
+    
+    # Group by item type and sum the sales columns
+    total_sales_by_type = df_item_sales.groupby('ITEM TYPE')[sales_cols].sum().reset_index()
+    
+    # Calculate the overall grand total sales for each item type (for plotting purposes)
+    # We will sum all available sales columns to get the maximum possible comparison metric.
+    if sales_cols:
+        total_sales_by_type['Total Sales'] = total_sales_by_type[sales_cols].sum(axis=1)
+    else:
+        print("Warning: No identifiable sales columns found for plotting.")
+        return []
+
+    # 3. Create the figure
+    plt.figure(figsize=(12, 7))
+    
+    # Use a bar chart to compare the total contribution of each item type
+    plt.bar(total_sales_by_type['ITEM TYPE'], total_sales_by_type['Total Sales'], color='skyblue')
+    
+    # Add labels and title for clarity
+    plt.title('Total Sales Contribution by Item Type Across All Recorded Periods', fontsize=16)
+    plt.xlabel('Item Type', fontsize=12)
+    plt.ylabel('Total Sales Volume (Sum of Retail/Warehouse Sales)', fontsize=12)
+    
+    # Rotate x-axis labels if there are many item types
+    plt.xticks(rotation=45, ha='right')
+    
+    # Add grid for easier reading
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    
+    # Ensure layout fits everything
+    plt.tight_layout()
+    
+    # 4. Save the figure
+    figure_path = f"{output_dir}/sales_trend_over_time.png"
+    plt.savefig(figure_path)
+    plt.close()
+    
+    return [figure_path]

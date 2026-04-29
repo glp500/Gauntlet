@@ -1,0 +1,122 @@
+SYSTEM:
+You write exactly one readable Python file for a constrained local sandbox. Return only the full contents of preprocessing.py. Do not return JSON, markdown fences, or commentary. The file must expose the required public function `preprocess`.
+
+USER:
+Generate only preprocessing.py for the sandbox bundle described below.
+
+**Task Objective**
+Analyze the sales performance across the provided dataset. The goal is to generate a clear, written summary of the key insights and produce one informative figure that visually explains a significant trend or relationship observed in the data (e.g., sales trends over time, or comparison of sales metrics by category).
+
+**Input Dataset Summary**
+The single input file is `Warehouse_and_Retail_Sales.csv`. This dataset contains transaction-level records detailing various sales activities, including retail sales, warehouse sales, and retail transfers, linked to specific suppliers and items over time.
+
+**Assumptions From Schema**
+1.  **Key Metrics:** The columns `RETAIL SALES`, `RETAIL TRANSFERS`, and `WAREHOUSE SALES` are float-type numerical columns suitable for aggregation (SUM, AVG) and quantitative analysis.
+2.  **Grouping Variables:** `YEAR`, `MONTH`, `SUPPLIER`, and `ITEM TYPE` are suitable categorical or temporal dimensions for grouping and segmenting the analysis.
+3.  **Temporal Data:** `YEAR` and `MONTH` columns are available for time-series analysis.
+
+**Required Outputs**
+1.  **Analysis Summary (Textual):** A comprehensive, well-written summary detailing the overall sales performance, identifying key drivers (e.g., top performing suppliers/item types, seasonal trends, or dominant sales channels).
+2.  **Visualization (Figure):** One single, high-quality figure (e.g., a line plot or bar chart) that visually supports the key finding in the summary. Recommended visualization focus: Total sales volume trend over time or total sales comparison across `ITEM TYPE`.
+
+**Code Constraints**
+*   Generated code must be contained within the modules: `data_loader.py`, `preprocessing.py`, `analysis.py`, and `figures.py`.
+*   Allowed libraries are strictly limited to `pandas` and `matplotlib`.
+*   No external network access or shell commands are permitted.
+*   The logic implemented must be explicit, step-by-step, and highly readable.
+
+Sandbox runtime flow:
+- run_analysis.py is the only pipeline orchestrator.
+- The runtime imports the generated modules instead of executing them as scripts.
+- The runtime calls the generated functions in this fixed order: `load_data(input_dir)`, `preprocess(data)`, `run_analysis(processed_data)`, `create_figures(processed_data, analysis_results, output_dir)`.
+
+Shared bundle contract:
+- These names are bundle-level dictionary keys for whole pandas tables, not raw CSV column names.
+- load_data must return keys: raw_sales_data.
+- preprocess must return keys: monthly_sales_summary.
+- run_analysis must return result tables: seasonal_sales_by_item_type.
+- create_figures must return figure files: sales_trend_over_time.png.
+
+Role contract for preprocessing.py:
+- Required public function: `preprocess`.
+- Transform the provided `data` dictionary and return another `dict[str, pd.DataFrame]`. Do not load files, run analysis, or create plots.
+
+Bundle rules:
+- The final bundle must contain exactly data_loader.py, preprocessing.py, analysis.py, and figures.py.
+- Use only pandas, matplotlib, and the Python standard library.
+- Keep code explicit and readable.
+- Add comments only where logic is not obvious.
+- No network access.
+- No shell commands.
+- Do not write files outside the provided output directory.
+
+Negative rules:
+- Do not import data_loader, preprocessing, analysis, or figures.
+- Do not add `if __name__ == "__main__"` blocks.
+- Do not add print-driven pipeline orchestration.
+- Do not include example code, demo code, or test code in the file.
+- Do not use `plt.show()`.
+- Do not read from file paths or touch the output directory here.
+
+Files already generated for this attempt:
+
+- data_loader.py: function `load_data`. Load CSV-like inputs from the provided input directory and return `dict[str, pd.DataFrame]`. This file is the only place that should touch input paths.
+
+Repair guidance for this file:
+- Prior failure stage: backend_request.
+- Keep working parts of this file stable unless the listed issues require a rewrite.
+- Previous attempt issues:
+  - Ollama request failed: HTTPConnectionPool(host='localhost', port=11434): Read timed out. (read timeout=120)
+
+Previous version of preprocessing.py:
+def preprocess(data: dict) -> dict:
+    """
+    Cleans and aggregates the raw sales transaction data by time, item type, and supplier.
+
+    Args:
+        data: A dictionary containing raw DataFrames. Expects 'warehouse_and_retail_sales'.
+
+    Returns:
+        A dictionary containing the aggregated DataFrame under the key 'aggregated_sales_data'.
+    """
+    df = data['warehouse_and_retail_sales'].copy()
+
+    # 1. Drop unnecessary or highly redundant columns if necessary, 
+    #    though generally pandas handles summation correctly. 
+    #    We focus on keeping the grouping keys and the metrics.
+
+    # 2. Aggregate the data. We sum the sales components over all dimensions
+    #    (Year, Month, Item Type, Supplier) to get total performance metrics.
+    aggregation_keys = ['YEAR', 'MONTH', 'ITEM TYPE', 'SUPPLIER']
+    metric_columns = ['RETAIL SALES', 'RETAIL TRANSFERS', 'WAREHOUSE SALES']
+
+    # Aggregate by the key dimensions, summing the relevant sales metrics
+    aggregated_df = df.groupby(aggregation_keys)[metric_columns].sum().reset_index()
+
+    # 3. Feature Engineering/Creation: Calculate a total sales column
+    # This combined metric is often more useful for high-level analysis.
+    aggregated_df['TOTAL SALES'] = (
+        aggregated_df['RETAIL SALES'] + 
+        aggregated_df['RETAIL TRANSFERS'] + 
+        aggregated_df['WAREHOUSE SALES']
+    )
+
+    # 4. Rename and select final required columns for clarity in downstream steps
+    final_columns = [
+        'YEAR', 
+        'MONTH', 
+        'TOTAL SALES', 
+        'RETAIL SALES', 
+        'RETAIL TRANSFERS', 
+        'WAREHOUSE SALES', 
+        'ITEM TYPE', 
+        'SUPPLIER'
+    ]
+    
+    # Ensure all expected columns are present, even if some groupings resulted in NaNs (unlikely here)
+    # We select only the columns we kept/created to maintain structure.
+    aggregated_df = aggregated_df[final_columns].copy()
+
+    return {
+        'aggregated_sales_data': aggregated_df
+    }
