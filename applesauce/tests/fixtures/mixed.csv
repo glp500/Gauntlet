@@ -1,0 +1,8 @@
+Order ID,Customer Segment,Order Date,Revenue,Cost,Region,Returned,Notes
+1,Enterprise,2026-01-01,1200.50,700,North,false,priority
+2,SMB,2026-01-02,350.00,120,West,false,
+3,Enterprise,2026-01-03,980.75,600,North,true,late shipment
+4,Consumer,2026-01-04,125.00,80,South,false,
+5,SMB,2026-01-05,,90,East,false,missing revenue
+5,SMB,2026-01-05,,90,East,false,missing revenue
+6,Consumer,2026-01-06,220.00,150,South,true,

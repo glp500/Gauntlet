@@ -1,0 +1,63 @@
+{
+  "charts": [
+    {
+      "id": "demographic_breakdown",
+      "title": "Demographic Distribution by Age and Gender",
+      "goal": "Provide a clear overview of the age and gender distribution of teens in the dataset, establishing the demographic baseline for all subsequent insights.",
+      "chart_type": "bar",
+      "columns": [
+        "age",
+        "gender"
+      ],
+      "rationale": "A grouped bar chart allows the executive audience to quickly assess which age groups and genders are most represented in the data, supporting meaningful subgroup analysis in later charts."
+    },
+    {
+      "id": "behavior_distribution",
+      "title": "Distribution of Key Behavioral Factors",
+      "goal": "Summarize the range and typical values for daily social media use, sleep duration, and physical activity among teens.",
+      "chart_type": "box",
+      "columns": [
+        "daily_social_media_hours",
+        "sleep_hours",
+        "physical_activity"
+      ],
+      "rationale": "Box plots provide an executive-friendly summary of the central tendency, spread, and potential outliers for each numeric behavioral variable, making it easy to grasp at-a-glance variation and trends."
+    },
+    {
+      "id": "mental_health_prevalence",
+      "title": "Prevalence of Mental Health Outcomes",
+      "goal": "Highlight how common high levels of stress, anxiety, addiction, and depression are among teens in the dataset.",
+      "chart_type": "histogram",
+      "columns": [
+        "stress_level",
+        "anxiety_level",
+        "addiction_level"
+      ],
+      "rationale": "Histograms enable a straightforward visualization of the frequency of different levels for each mental health factor, supporting a high-level understanding of the overall burden."
+    },
+    {
+      "id": "behavior_vs_mentalhealth",
+      "title": "Relationships Between Behaviors and Mental Health Indicators",
+      "goal": "Explore whether and how daily social media hours and sleep hours relate to stress, anxiety, and depression scores.",
+      "chart_type": "scatter",
+      "columns": [
+        "daily_social_media_hours",
+        "sleep_hours",
+        "stress_level"
+      ],
+      "rationale": "Scatter plots can reveal potential patterns or correlations between key behavioral measures and mental health outcomes, directly addressing policymaker and educator questions about drivers of risk."
+    },
+    {
+      "id": "depression_by_group",
+      "title": "Depression Prevalence by Gender, Age Group, and Platform Usage",
+      "goal": "Compare the rates of depression (depression_label) across different key subgroups to identify potential areas for targeted intervention.",
+      "chart_type": "bar",
+      "columns": [
+        "depression_label",
+        "gender",
+        "age"
+      ],
+      "rationale": "A grouped or stacked bar chart makes it easy to directly compare how depression prevalence varies with gender, age, and allows for easy further breakdown by platform usage if desired, supporting actionable insights."
+    }
+  ]
+}

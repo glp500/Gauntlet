@@ -1,0 +1,25 @@
+{
+  "objective": "Provide a broad overview of the insights in the Teen Mental Health Dataset, summarizing key patterns and relationships across demographics, behaviors, and mental health outcomes.",
+  "tone": "executive",
+  "audience": "General audience (stakeholders, educators, policy makers, mental health professionals)",
+  "key_questions": [
+    "What are the basic demographic distributions (age, gender)?",
+    "What are the overall distributions of behavioral variables (social media use, platform usage, physical activity, sleep)?",
+    "How prevalent are stress, anxiety, addiction, and depression across the dataset?",
+    "Are there notable relationships between behavioral factors (e.g., social media use, sleep hours) and mental health indicators (stress, anxiety, addiction, depression)?",
+    "Do academic performance and social interaction relate to mental health indicators?",
+    "Are there observable differences by gender or age group in behaviors or mental health?"
+  ],
+  "recommended_tables": [
+    "Summary statistics table for all numeric variables",
+    "Frequency tables for categorical variables (gender, platform_usage, social_interaction_level)",
+    "Cross-tab of depression_label by gender, age group, and platform usage"
+  ],
+  "chart_goals": [
+    "Bar charts for demographic and platform usage breakdowns",
+    "Histograms or boxplots for numeric behavioral and mental health variables",
+    "Scatterplots/correlation plots to show relationships between behavioral factors (screen time, sleep) and mental health scores",
+    "Stacked bar or grouped bar charts to compare depression_label across key subgroups (gender, age, platform usage)"
+  ],
+  "narrative": "The analysis will begin with an overview of who is in the dataset (ages, gender diversity) and their basic behaviors (social media, sleep, physical activity, social interaction). It will then describe the prevalence and distributions of core mental health factors\u2014stress, anxiety, addiction, and depression. Using summary statistics, frequency tables, and visual charts, the report will highlight broad trends and key relationships, particularly focusing on how behaviors and demographics relate to mental health indicators. The aim is to offer high-level, actionable insights that can inform further research or intervention strategies."
+}

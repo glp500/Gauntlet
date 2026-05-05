@@ -1,0 +1,36 @@
+In runityaself mode, locate the agents with the largest and most complicated tasks. 
+Then split these agents into multiple agents with more limited scopes.
+
+
+
+Give each agent a sandbox?
+
+Compare this system to SOTA harnessing system. How can we improve
+
+Make sure pip installs are placed
+
+The cli startup flow
+
+Data table viewer should have columns like kaggle preview
+
+Large files break graph generation in notebook
+
+
+[redacted OpenAI API key]
+$env:OPENAI_API_KEY = "[redacted OpenAI API key]"
+
+cd C:\Users\liamc\Desktop\Gauntlet\applesauce
+python -m applesauce
+
+python -m applesauce eval --out runs/evals --include-large
+
+C:\Users\liamc\Downloads\archive (1)\Teen_Mental_Health_Dataset.csv
+I want a broad overview of the insights in this data
+C:\Users\liamc\Desktop\Gauntlet\applesauce
+
+Ich, wenn der Beat dropt:
+( ͡° ͜ʖ ͡°)
+( ͡⊙ ͜ʖ ͡⊙)
+( ͡◉ ͜ʖ ͡◉)
+
+C:\Users\liamc\Downloads\archive (6)\world_happiness_report_2005_2025.csv

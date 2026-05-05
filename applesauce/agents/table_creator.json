@@ -1,0 +1,32 @@
+{
+  "tables": [
+    {
+      "id": "sample_overview",
+      "title": "Sample of Teen Mental Health Data",
+      "description": "A random sample of 10 rows to provide a quick look at individual records and their structure across demographics, behaviors, and mental health indicators.",
+      "kind": "sample",
+      "max_rows": 10
+    },
+    {
+      "id": "numeric_summary_all",
+      "title": "Summary Statistics of Numeric Variables",
+      "description": "Descriptive statistics (mean, std, min, max, quartiles) for all numeric variables such as age, daily_social_media_hours, sleep_hours, screen_time_before_sleep, academic_performance, physical_activity, stress_level, anxiety_level, addiction_level, and depression_label.",
+      "kind": "numeric_summary",
+      "max_rows": 20
+    },
+    {
+      "id": "categorical_frequency",
+      "title": "Frequency of Categorical Variables",
+      "description": "Frequency counts for key categorical variables: gender, platform_usage, and social_interaction_level, to understand the sample composition and behavioral modes.",
+      "kind": "categorical_summary",
+      "max_rows": 10
+    },
+    {
+      "id": "mental_health_by_group",
+      "title": "Depression Prevalence by Gender, Age Group, and Platform Usage",
+      "description": "A cross-tab showing the frequency of depression_label across combinations of gender, age (binned groups), and platform usage. Highlights prevalence patterns among major demographic and behavioral groups.",
+      "kind": "categorical_summary",
+      "max_rows": 20
+    }
+  ]
+}
